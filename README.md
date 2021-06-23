@@ -1,0 +1,1 @@
+This package provides a support of the VHDL design language into Sphinx.
