@@ -55,6 +55,26 @@ class VHDLEnumTypeDirective(ObjectDescription):
             self.env.domaindata['vhdl']['refs']['types'][sig.split('.')[-1]].append((sig, (self.env.docname, name)))
 
 
+class VHDLEnumValDirective(ObjectDescription):
+    has_content = True
+    required_arguments = 1
+
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        signode += addnodes.desc_name(text=sig)
+        return sig
+
+
+class VHDLEntityDirective(ObjectDescription):
+    has_content = True
+    required_arguments = 1
+
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        signode += addnodes.desc_sig_keyword(text='ENTITY ')
+        signode += addnodes.desc_name(text=sig)
+        signode += addnodes.desc_sig_keyword(text=' IS')
+        return sig
+
+
 class VHDLTypeIndex(Index):
     name = 'typeindex'
     localname = "Type Index"
@@ -96,6 +116,8 @@ class VHDLDomain(Domain):
     directives = {
         'portsignal': VHDLPortSignalDirective,
         'enum': VHDLEnumTypeDirective,
+        'enumval': VHDLEnumValDirective,
+        'entity': VHDLEntityDirective,
     }
     initial_data = {
         'types': [],

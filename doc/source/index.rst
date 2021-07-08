@@ -23,8 +23,9 @@ Recognized directives
 ================================== ==================================
 Directive                          Description
 ================================== ==================================
-``vhdl:enum``                      Enumeration-defined type. :rst:dir:`Example <vhdl:enum>`
-``vhdl:portsignal``                A port of an entity. :rst:dir:`Example <vhdl:portsignal>`
+:rst:dir:`vhdl:entity`             A single entity.
+:rst:dir:`vhdl:enum`               Enumeration-defined type.
+:rst:dir:`vhdl:portsignal`         A port of an entity.
 ================================== ==================================
 
 

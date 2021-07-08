@@ -1,10 +1,18 @@
 Directives
 ==========
 
+.. rst:directive:: vhdl:entity
+
+    Used for documenting individual entitites. Individual ports and generics
+    should be specified under :rst:dir:`vhdl:ports` or
+    :rst:dir:`vhdl:generics`, respectively.
+
+    TODO example
+
 .. rst:directive:: vhdl:enum
 
     Used for documenting enumeration defined types. Individual enum values can
-    be defined using :rst:dir:`vhdl:enumVal <vhdl:enumVal>`.
+    be defined using :rst:dir:`vhdl:enumVal <vhdl:enumval>`.
 
     .. code-block:: rst
 
@@ -12,7 +20,22 @@ Directives
 
             Your type fulltext description.
 
-.. rst:directive:: vhdl:enumVal
+            .. vhdl:enumval:: YourTypeFirstPossibleValue
+
+                Your first possible value fulltext documentation
+
+            .. vhdl:enumval:: YourTypeSecondPossibleValue
+
+.. rst:directive:: vhdl:enumval
+
+    Describes a single possible enumeration type value. Should only appear in
+    :rst:dir:`vhdl:enum`
+
+.. rst:directive:: vhdl:generics
+
+    TODO
+
+.. rst:directive:: vhdl:ports
 
     TODO
 
