@@ -50,6 +50,8 @@ Directives
 
     .. rst:directive:option:: init: Describes the initial value of the port, optional.
 
+    .. rst:directive:option:: mode: One of IN, OUT, INOUT, BUFFER, LINKAGE, mandatory.
+
     .. code-block:: rst
 
       .. vhdl:portsignal:: YourPortName

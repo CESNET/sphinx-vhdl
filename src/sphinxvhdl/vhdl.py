@@ -2,7 +2,7 @@ from typing import Iterable, Tuple, List, Dict, Optional
 
 from docutils.nodes import Element
 
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import directives, Directive
 from sphinx.addnodes import desc_signature, pending_xref
 from sphinx.directives import ObjectDescription, T
 from sphinx import addnodes
@@ -10,6 +10,7 @@ from sphinx.domains import Domain, Index, IndexEntry
 from sphinx.application import Sphinx
 from sphinx.util.nodes import make_refnode
 from collections import defaultdict
+from .directives import mode
 
 
 class VHDLPortSignalDirective(ObjectDescription):
@@ -17,14 +18,18 @@ class VHDLPortSignalDirective(ObjectDescription):
     required_arguments = 1
     option_spec = {
         'type': directives.unchanged_required,
-        'init': directives.unchanged
+        'init': directives.unchanged,
+        'mode': mode,
     }
 
     def handle_signature(self, sig: str, signode: desc_signature):
+        signode += addnodes.desc_sig_keyword(text='SIGNAL ')
         signode += addnodes.desc_name(text=sig)
 
-        if 'type' in self.options:
+        if 'type' in self.options and 'mode' in self.options:
             signode += addnodes.desc_sig_operator(text=' : ')
+            signode += addnodes.desc_sig_keyword(text=self.options.get('mode'))
+            signode += addnodes.desc_sig_operator(text=' ')
             refnode = pending_xref(refdomain='vhdl', reftype='type', reftarget=self.options.get('type'))
             refnode += addnodes.desc_type(text=self.options.get('type'))
             signode += refnode
@@ -75,6 +80,14 @@ class VHDLEntityDirective(ObjectDescription):
         return sig
 
 
+class VHDLPortsDirective(Directive):
+    has_content = True
+    required_arguments = 0
+
+    def run(self):
+        return [addnodes.desc_sig_keyword(text='PORT ( …')]
+
+
 class VHDLTypeIndex(Index):
     name = 'typeindex'
     localname = "Type Index"
@@ -118,6 +131,7 @@ class VHDLDomain(Domain):
         'enum': VHDLEnumTypeDirective,
         'enumval': VHDLEnumValDirective,
         'entity': VHDLEntityDirective,
+        'ports': VHDLPortsDirective,
     }
     initial_data = {
         'types': [],

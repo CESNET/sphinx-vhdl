@@ -1,3 +1,4 @@
+from docutils.parsers.rst.directives import choice
 def string_list(argument: str, required_amount: int = 0) -> list[str]:
     if argument is None:
         return []
@@ -11,3 +12,9 @@ def string_list_required(argument: str, required_amount: int = 0) -> list[str]:
     if argument is None:
         raise ValueError("argument required but none supplied")
     return string_list(argument, required_amount)
+
+
+def mode(argument: str) -> str:
+    if argument is None or argument.upper() not in ('IN', 'OUT', 'INOUT', 'BUFFER', 'LINKAGE'):
+        raise ValueError('Expected one of IN, OUT, INOUT, BUFFER, LINKAGE')
+    return argument.upper()
