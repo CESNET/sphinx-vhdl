@@ -11,35 +11,6 @@ from sphinx.application import Sphinx
 from sphinx.directives import ObjectDescription, T
 from sphinx.domains import Domain, Index, IndexEntry
 from sphinx.util.nodes import make_refnode
-from .directives import mode
-
-
-class VHDLPortSignalDirective(ObjectDescription):
-    has_content = True
-    required_arguments = 1
-    option_spec = {
-        'type': directives.unchanged_required,
-        'init': directives.unchanged,
-        'mode': mode,
-    }
-
-    def handle_signature(self, sig: str, signode: desc_signature):
-        signode += addnodes.desc_sig_keyword(text='SIGNAL ')
-        signode += addnodes.desc_name(text=sig)
-
-        if 'type' in self.options and 'mode' in self.options:
-            signode += addnodes.desc_sig_operator(text=' : ')
-            signode += addnodes.desc_sig_keyword(text=self.options.get('mode'))
-            signode += addnodes.desc_sig_operator(text=' ')
-            refnode = pending_xref(refdomain='vhdl', reftype='type', reftarget=self.options.get('type'))
-            refnode += addnodes.desc_type(text=self.options.get('type'))
-            signode += refnode
-
-        if 'init' in self.options:
-            signode += addnodes.desc_sig_operator(text=' := ')
-            signode += addnodes.desc_sig_literal_string(text=self.options.get('init'))
-
-        return sig
 
 
 class VHDLEnumTypeDirective(ObjectDescription):
