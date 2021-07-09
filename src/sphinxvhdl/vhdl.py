@@ -1,15 +1,16 @@
-from typing import Iterable, Tuple, List, Dict, Optional
+from collections import defaultdict
+from typing import Iterable, Tuple, List, Optional
 
 from docutils import nodes
-
 from docutils.parsers.rst import directives, Directive
-from sphinx.addnodes import desc_signature, pending_xref
-from sphinx.directives import ObjectDescription, T
+from docutils.statemachine import StringList
+
 from sphinx import addnodes
-from sphinx.domains import Domain, Index, IndexEntry
+from sphinx.addnodes import desc_signature, pending_xref
 from sphinx.application import Sphinx
+from sphinx.directives import ObjectDescription, T
+from sphinx.domains import Domain, Index, IndexEntry
 from sphinx.util.nodes import make_refnode
-from collections import defaultdict
 from .directives import mode
 
 
@@ -106,33 +107,31 @@ class VHDLPortsDirective(Directive):
         row += nodes.entry('', nodes.paragraph('', nodes.Text('Description')))
         head += row
         row = None
-        content_copy: list[str] = [x for x in self.content]
-        last_row_paragraph_has_description = False
-        while len(content_copy) > 0:
-            if len(content_copy[0]) > 0 and not content_copy[0][0].isspace():
+        current_description_lines = StringList()
+        index = 0
+        description_entry = nodes.entry('')
+        while len(self.content) > index:
+            if len(self.content[index]) > 0 and not self.content[index][0].isspace():
                 if row is not None:
-                    if not last_row_paragraph_has_description:
-                        del row[-1][-1]
                     body += row
                 row = nodes.row()
-                row['ids'].append(f'vhdl-portsignal-{self.arguments[0].lower()}-{content_copy[0].split(":")[0].strip().lower()}')
-                row += nodes.entry('', nodes.paragraph('', nodes.Text(content_copy[0].split(":")[0].strip())))
-                row += nodes.entry('', nodes.paragraph('', nodes.Text(content_copy[0].split(":", 1)[1].strip().split()[0])))
-                row += nodes.entry('', nodes.paragraph('', nodes.Text(content_copy[0].split(":", 1)[1].strip().split(maxsplit=1)[1])))
-                row += nodes.entry('', nodes.paragraph(''))
-                last_row_paragraph_has_description = False
-            elif len(content_copy[0]) == 0 or content_copy[0].isspace():
-                if last_row_paragraph_has_description:
-                    row[-1] += nodes.paragraph('')
-                    last_row_paragraph_has_description = False
+                row['ids'].append(
+                    f'vhdl-portsignal-{self.arguments[0].lower()}-{self.content[index].split(":")[0].strip().lower()}')
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(self.content[index].split(":")[0].strip())))
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(
+                    self.content[index].split(":", 1)[1].strip().split()[0])))
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(
+                    self.content[index].split(":", 1)[1].strip().split(maxsplit=1)[1])))
+
+                self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
+                description_entry = nodes.entry('')
+                row += description_entry
+                current_description_lines = StringList()
             else:
-                row[-1][-1] += nodes.Text(content_copy[0].strip())
-                row[-1][-1] += nodes.Text(" ")
-                last_row_paragraph_has_description = True
-            del content_copy[0]
+                current_description_lines.append(self.content[index], source=self.content.info(index))
+            index += 1
         if row is not None:
-            if not last_row_paragraph_has_description:
-                del row[-1][-1]
+            self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
             body += row
 
         return [addnodes.desc_sig_keyword(text='Ports'), table]
