@@ -81,9 +81,15 @@ class VHDLEntityDirective(ObjectDescription):
         return sig
 
 
-class VHDLPortsDirective(Directive):
+class VHDLEntityIOGenericDirective(Directive):
     has_content = True
     required_arguments = 1
+    table_headers: tuple[str, str, str, str]
+    title: str
+    id_title: str
+
+    def get_fields_from_definition(self, definition: str) -> tuple[str, str, str]:
+        raise NotImplementedError
 
     def run(self):
         table = nodes.table()
@@ -101,10 +107,10 @@ class VHDLPortsDirective(Directive):
 
         row: Optional[nodes.row]
         row = nodes.row()
-        row += nodes.entry('', nodes.paragraph('', nodes.Text('Port')))
-        row += nodes.entry('', nodes.paragraph('', nodes.Text('Mode')))
-        row += nodes.entry('', nodes.paragraph('', nodes.Text('Type')))
-        row += nodes.entry('', nodes.paragraph('', nodes.Text('Description')))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[0])))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[1])))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[2])))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[3])))
         head += row
         row = None
         current_description_lines = StringList()
@@ -115,16 +121,16 @@ class VHDLPortsDirective(Directive):
                 if row is not None:
                     body += row
                 row = nodes.row()
+                fields = self.get_fields_from_definition(self.content[index])
                 row['ids'].append(
-                    f'vhdl-portsignal-{self.arguments[0].lower()}-{self.content[index].split(":")[0].strip().lower()}')
-                row += nodes.entry('', nodes.paragraph('', nodes.Text(self.content[index].split(":")[0].strip())))
-                row += nodes.entry('', nodes.paragraph('', nodes.Text(
-                    self.content[index].split(":", 1)[1].strip().split()[0])))
+                    f'vhdl-{self.id_title}-{self.arguments[0].lower()}-{fields[0].lower()}')
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[0])))
 
-                refnode = pending_xref(refdomain='vhdl', reftype='type',
-                                       reftarget=self.content[index].split(":", 1)[1].strip().split(maxsplit=1)[1])
-                refnode += nodes.Text(self.content[index].split(":", 1)[1].strip().split(maxsplit=1)[1])
+                refnode = pending_xref(refdomain='vhdl', reftype='type', reftarget=fields[1])
+                refnode += nodes.Text(fields[1])
                 row += nodes.entry('', nodes.paragraph('', '', refnode))
+
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[2])))
 
                 self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
                 description_entry = nodes.entry('')
@@ -137,7 +143,43 @@ class VHDLPortsDirective(Directive):
             self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
             body += row
 
-        return [addnodes.desc_sig_keyword(text='Ports'), table]
+        return [addnodes.desc_sig_keyword(text=self.title), table]
+
+
+class VHDLPortsDirective(VHDLEntityIOGenericDirective):
+    id_title = 'portsignal'
+    title = 'Ports'
+    table_headers = 'Port', 'Type', 'Mode', 'Description'
+
+    def get_fields_from_definition(self, definition: str) -> tuple[str, str, str]:
+        try:
+            return (
+                definition.split(":")[0].strip(),
+                definition.split(":", 1)[1].strip().split(maxsplit=1)[1],
+                definition.split(":", 1)[1].strip().split()[0]
+            )
+        except:
+            raise ValueError(
+                f'Malformed port definition, must be in the form `name : mode type`, got {definition}'
+            )
+
+
+class VHDLGenericsDirective(VHDLEntityIOGenericDirective):
+    id_title = 'genconstant'
+    title = 'Generics'
+    table_headers = 'Generic', 'Type', 'Default', 'Description'
+
+    def get_fields_from_definition(self, definition: str) -> tuple[str, str, str]:
+        try:
+            return (
+                definition.split(':')[0].strip(),
+                definition.split(':', 1)[1].split(':=')[0].strip(),
+                definition.split(':=')[1].strip()
+            )
+        except:
+            raise ValueError(
+                f"Malformed generic definition, must be in the form `name : type := defaultValue`, got {definition}"
+            )
 
 
 class VHDLTypeIndex(Index):
@@ -183,6 +225,7 @@ class VHDLDomain(Domain):
         'enumval': VHDLEnumValDirective,
         'entity': VHDLEntityDirective,
         'ports': VHDLPortsDirective,
+        'generics': VHDLGenericsDirective,
     }
     initial_data = {
         'types': [],

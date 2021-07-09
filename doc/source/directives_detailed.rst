@@ -33,19 +33,53 @@ Directives
 
 .. rst:directive:: vhdl:generics
 
-    TODO
+    Used for documenting the generic constants of an entity. Has one required
+    argument; the name of the entity being documented, and uses a custom syntax
+    for description of the individual constants.
+
+    Individual constant are described in the content of the directive; where
+    lines aligned to the left offset define the constants and lines offset from
+    those are detailed descriptions of the constants above, supporting all the
+    standard REStructured Text formatting and directives. Constant definitions
+    then take on the form ``constantName : constantType := defaultValue``,
+    where all the fields are mandatory and whitespace may be arbitrary.
+
+    Individual constants will automatically cross-reference the definitions of
+    their types if found, unless disabled by
+    :py:attr:`vhdl_autolink_type_disable`
+
+    Example
+
+    .. code-block:: rst
+
+        .. vhdl:generics:: UART_RX
+
+            WORD_SIZE:natural:=8
+                The machine word here is 8 bits.
+
+
+                It just is.
+            DWORD_SIZE   : integer := 16
+
+
+            QWORD_SIZE : float     := 32.0
+                Because why sink when you can float?
 
 .. rst:directive:: vhdl:ports
 
     Used for documenting the ports of an entity. Has one required argument;
     the name of the entity being documented, and uses a custom syntax for
-    describing the individual ports.
+    descriptions of the individual ports.
 
     Individual ports are described in the content of the directive; where lines
     aligned to the left offset define the ports and lines offset from those are
-    detailed descriptions of the ports above, with blank lines for paragraph
-    ends. Port definitions then take on the form ``portName : mode type``,
-    where whitespace can be arbitrary.
+    detailed descriptions of the ports above, supporting all the standard
+    REStructured text formatting and directives. Port definitions then take on
+    the form ``portName : mode type``, where whitespace can be arbitrary.
+
+    Individual ports will automatically cross-reference the definitions of
+    their types if found, unless disabled by
+    :py:attr:`vhdl_autolink_type_disable`
 
     Example
 
