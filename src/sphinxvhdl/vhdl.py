@@ -2,7 +2,6 @@ from collections import defaultdict
 from typing import Iterable, Tuple, List, Optional
 
 from docutils import nodes
-from docutils.parsers.rst import directives, Directive
 from docutils.statemachine import StringList
 
 from sphinx import addnodes
@@ -10,6 +9,8 @@ from sphinx.addnodes import desc_signature, pending_xref
 from sphinx.application import Sphinx
 from sphinx.directives import ObjectDescription, T
 from sphinx.domains import Domain, Index, IndexEntry
+from sphinx.roles import XRefRole
+from sphinx.util.docutils import SphinxDirective
 from sphinx.util.nodes import make_refnode
 
 
@@ -52,7 +53,7 @@ class VHDLEntityDirective(ObjectDescription):
         return sig
 
 
-class VHDLEntityIOGenericDirective(Directive):
+class VHDLEntityIOGenericDirective(SphinxDirective):
     has_content = True
     required_arguments = 1
     table_headers: tuple[str, str, str, str]
@@ -93,8 +94,9 @@ class VHDLEntityIOGenericDirective(Directive):
                     body += row
                 row = nodes.row()
                 fields = self.get_fields_from_definition(self.content[index])
-                row['ids'].append(
-                    f'vhdl-{self.id_title}-{self.arguments[0].lower()}-{fields[0].lower()}')
+                row_id = f'vhdl-{self.id_title}-{self.arguments[0].lower()}-{fields[0].lower()}'
+                self.env.domaindata['vhdl']['refs'][self.id_title][fields[0].lower()].append((self.arguments[0].lower(), (self.env.docname, row_id)))
+                row['ids'].append(row_id)
                 row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[0])))
 
                 refnode = pending_xref(refdomain='vhdl', reftype='type', reftarget=fields[1])
@@ -183,7 +185,7 @@ def get_closest_identifier(target_identifier: str, search_through: list[tuple[st
     """
     # TODO implement
     for x in search_through:
-        if target_identifier.split('.')[-1] in x[0]:
+        # if target_identifier.split('.')[-1].lower() in x[0].lower():
             return x
     raise ValueError
 
@@ -200,19 +202,32 @@ class VHDLDomain(Domain):
     }
     initial_data = {
         'types': [],
-        'refs': {'types': defaultdict(list)}
+        'refs': {
+            'types': defaultdict(list),
+            'portsignal': defaultdict(list),
+            'genconstant': defaultdict(list),
+        }
     }
     indices = {
         VHDLTypeIndex
+    }
+    roles = {
+        'portsignal': XRefRole(),
+        'genconstant': XRefRole(),
+        'type': XRefRole(),
     }
 
     def resolve_xref(self, env: "BuildEnvironment", fromdocname: str, builder: "Builder", typ: str, target: str,
                      node: pending_xref, contnode: nodes.Element) -> Optional[nodes.Element]:
         if typ == 'type':
             index = self.data['refs']['types']
+        elif typ == 'portsignal':
+            index = self.data['refs']['portsignal']
+        elif typ == 'genconstant':
+            index = self.data['refs']['genconstant']
         elif True:
             raise NotImplementedError
-        simple_name = target.split('.')[-1]
+        simple_name = target.split('.')[-1].lower()
         if simple_name in index and not env.app.config.vhdl_autolink_type_disable:
             target_address = get_closest_identifier(target, index[simple_name])
             result = make_refnode(builder, fromdocname,
