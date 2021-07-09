@@ -37,25 +37,33 @@ Directives
 
 .. rst:directive:: vhdl:ports
 
-    TODO
+    Used for documenting the ports of an entity. Has one required argument;
+    the name of the entity being documented, and uses a custom syntax for
+    describing the individual ports.
 
-.. rst:directive:: vhdl:portsignal
+    Individual ports are described in the content of the directive; where lines
+    aligned to the left offset define the ports and lines offset from those are
+    detailed descriptions of the ports above, with blank lines for paragraph
+    ends. Port definitions then take on the form ``portName : mode type``,
+    where whitespace can be arbitrary.
 
-    Used for documenting individual ports of an entity.
-
-    .. rst:directive:option:: type: Describes the type of the port, mandatory.
-
-        Unless :py:attr:`vhdl_autolink_type_disable` is set, a link to the
-        documentation of the type will be created if found.
-
-    .. rst:directive:option:: init: Describes the initial value of the port, optional.
-
-    .. rst:directive:option:: mode: One of IN, OUT, INOUT, BUFFER, LINKAGE, mandatory.
+    Example
 
     .. code-block:: rst
 
-      .. vhdl:portsignal:: YourPortName
-        :type: std_logic
-        :init: '0'
+        .. vhdl:ports:: UART_RX
 
-        Your port fulltext description
+            CLK:in std_logic
+                Receiver clock at 8 times the frequency of the input signal
+            RST      :  in std_logic
+                Reset signal
+
+                Pull to high for at least one clock cycle before using this
+                entity
+            DIN      : in std_logic
+                Data input line
+
+            DOUT     : out std_logic_vector(7 downto 0)
+                The received data will be written here
+            DOUT_VLD : out std_logic
+                When high, denotes the DOUT being valid

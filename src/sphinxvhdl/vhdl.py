@@ -1,6 +1,6 @@
 from typing import Iterable, Tuple, List, Dict, Optional
 
-from docutils.nodes import Element
+from docutils import nodes
 
 from docutils.parsers.rst import directives, Directive
 from sphinx.addnodes import desc_signature, pending_xref
@@ -82,10 +82,60 @@ class VHDLEntityDirective(ObjectDescription):
 
 class VHDLPortsDirective(Directive):
     has_content = True
-    required_arguments = 0
+    required_arguments = 1
 
     def run(self):
-        return [addnodes.desc_sig_keyword(text='PORT ( …')]
+        table = nodes.table()
+        group = nodes.tgroup()
+        table += group
+
+        head = nodes.thead()
+        body = nodes.tbody()
+        group += nodes.colspec(colwidth=10)
+        group += nodes.colspec(colwidth=10)
+        group += nodes.colspec(colwidth=10)
+        group += nodes.colspec(colwidth=70)
+        group += head
+        group += body
+
+        row: Optional[nodes.row]
+        row = nodes.row()
+        row += nodes.entry('', nodes.paragraph('', nodes.Text('Port')))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text('Mode')))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text('Type')))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text('Description')))
+        head += row
+        row = None
+        content_copy: list[str] = [x for x in self.content]
+        last_row_paragraph_has_description = False
+        while len(content_copy) > 0:
+            if len(content_copy[0]) > 0 and not content_copy[0][0].isspace():
+                if row is not None:
+                    if not last_row_paragraph_has_description:
+                        del row[-1][-1]
+                    body += row
+                row = nodes.row()
+                row['ids'].append(f'vhdl-portsignal-{self.arguments[0].lower()}-{content_copy[0].split(":")[0].strip().lower()}')
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(content_copy[0].split(":")[0].strip())))
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(content_copy[0].split(":", 1)[1].strip().split()[0])))
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(content_copy[0].split(":", 1)[1].strip().split(maxsplit=1)[1])))
+                row += nodes.entry('', nodes.paragraph(''))
+                last_row_paragraph_has_description = False
+            elif len(content_copy[0]) == 0 or content_copy[0].isspace():
+                if last_row_paragraph_has_description:
+                    row[-1] += nodes.paragraph('')
+                    last_row_paragraph_has_description = False
+            else:
+                row[-1][-1] += nodes.Text(content_copy[0].strip())
+                row[-1][-1] += nodes.Text(" ")
+                last_row_paragraph_has_description = True
+            del content_copy[0]
+        if row is not None:
+            if not last_row_paragraph_has_description:
+                del row[-1][-1]
+            body += row
+
+        return [addnodes.desc_sig_keyword(text='Ports'), table]
 
 
 class VHDLTypeIndex(Index):
@@ -127,7 +177,6 @@ class VHDLDomain(Domain):
     name = 'vhdl'
     label = 'VHDL Language'
     directives = {
-        'portsignal': VHDLPortSignalDirective,
         'enum': VHDLEnumTypeDirective,
         'enumval': VHDLEnumValDirective,
         'entity': VHDLEntityDirective,
@@ -142,7 +191,7 @@ class VHDLDomain(Domain):
     }
 
     def resolve_xref(self, env: "BuildEnvironment", fromdocname: str, builder: "Builder", typ: str, target: str,
-                     node: pending_xref, contnode: Element) -> Optional[Element]:
+                     node: pending_xref, contnode: nodes.Element) -> Optional[nodes.Element]:
         if typ == 'type':
             index = self.data['refs']['types']
         elif True:
