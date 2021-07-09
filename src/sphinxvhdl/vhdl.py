@@ -120,8 +120,11 @@ class VHDLPortsDirective(Directive):
                 row += nodes.entry('', nodes.paragraph('', nodes.Text(self.content[index].split(":")[0].strip())))
                 row += nodes.entry('', nodes.paragraph('', nodes.Text(
                     self.content[index].split(":", 1)[1].strip().split()[0])))
-                row += nodes.entry('', nodes.paragraph('', nodes.Text(
-                    self.content[index].split(":", 1)[1].strip().split(maxsplit=1)[1])))
+
+                refnode = pending_xref(refdomain='vhdl', reftype='type',
+                                       reftarget=self.content[index].split(":", 1)[1].strip().split(maxsplit=1)[1])
+                refnode += nodes.Text(self.content[index].split(":", 1)[1].strip().split(maxsplit=1)[1])
+                row += nodes.entry('', nodes.paragraph('', '', refnode))
 
                 self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
                 description_entry = nodes.entry('')
