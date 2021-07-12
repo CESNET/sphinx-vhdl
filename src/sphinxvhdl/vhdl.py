@@ -26,11 +26,12 @@ class VHDLEnumTypeDirective(ObjectDescription):
         return sig
 
     def add_target_and_index(self, name: T, sig: str, signode: desc_signature) -> None:
-        name = f'vhdl-enum-{sig}'
+        name = f'vhdl-enum-{sig.lower()}'
         signode['ids'].append(name)
         if 'noindex' not in self.options:
             self.env.domaindata['vhdl']['types'].append((name, sig, 'Enumeration', self.env.docname))
-            self.env.domaindata['vhdl']['refs']['types'][sig.split('.')[-1]].append((sig, (self.env.docname, name)))
+            self.env.domaindata['vhdl']['refs']['types'][sig.split('.')[-1].lower()].append(
+                (sig.lower(), (self.env.docname, name)))
 
 
 class VHDLEnumValDirective(ObjectDescription):
@@ -95,13 +96,16 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
                 row = nodes.row()
                 fields = self.get_fields_from_definition(self.content[index])
                 row_id = f'vhdl-{self.id_title}-{self.arguments[0].lower()}-{fields[0].lower()}'
-                self.env.domaindata['vhdl']['refs'][self.id_title][fields[0].lower()].append((self.arguments[0].lower(), (self.env.docname, row_id)))
+                self.env.domaindata['vhdl']['refs'][self.id_title][fields[0].lower()].append(
+                    (self.arguments[0].lower(), (self.env.docname, row_id)))
                 row['ids'].append(row_id)
                 row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[0])))
 
                 refnode = pending_xref(refdomain='vhdl', reftype='type', reftarget=fields[1])
                 refnode += nodes.Text(fields[1])
-                row += nodes.entry('', nodes.paragraph('', '', refnode))
+                type_node = nodes.entry('')
+                self.state.nested_parse(StringList(initlist=[fields[1]]), 0, type_node)
+                row += type_node
 
                 row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[2])))
 
@@ -116,13 +120,13 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
             self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
             body += row
 
-        return [addnodes.desc_sig_keyword(text=self.title), table]
+        return [addnodes.desc_signature(text=self.title), table]
 
 
 class VHDLPortsDirective(VHDLEntityIOGenericDirective):
     id_title = 'portsignal'
     title = 'Ports'
-    table_headers = 'Port', 'Type', 'Mode', 'Description'
+    table_headers = 'Port', 'Width', 'Mode', 'Description'
 
     def get_fields_from_definition(self, definition: str) -> tuple[str, str, str]:
         try:
@@ -183,11 +187,15 @@ def get_closest_identifier(target_identifier: str, search_through: list[tuple[st
     :param search_through: List of pairs of an identifier and any other bound data
     :return: The tuple with closes match
     """
-    # TODO implement
+    identifier_part = target_identifier.split('.')
+    option_list = []
     for x in search_through:
-        # if target_identifier.split('.')[-1].lower() in x[0].lower():
-            return x
-    raise ValueError
+        a = 0
+        for y in x[0].split('.'):
+            if y in identifier_part:
+                a += 1
+        option_list.append((a, x))
+    return max(option_list, key=lambda z: z[0])[1]
 
 
 class VHDLDomain(Domain):
@@ -228,7 +236,7 @@ class VHDLDomain(Domain):
         elif True:
             raise NotImplementedError
         simple_name = target.split('.')[-1].lower()
-        if simple_name in index and not env.app.config.vhdl_autolink_type_disable:
+        if simple_name in index:
             target_address = get_closest_identifier(target, index[simple_name])
             result = make_refnode(builder, fromdocname,
                                   target_address[1][0],
@@ -238,7 +246,6 @@ class VHDLDomain(Domain):
 
 
 def setup(app: Sphinx):
-    app.add_config_value('vhdl_autolink_type_disable', False, 'html')
     app.add_domain(VHDLDomain)
 
     return {

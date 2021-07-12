@@ -25,16 +25,28 @@ Directive                          Description
 ================================== ==================================
 :rst:dir:`vhdl:entity`             A single entity.
 :rst:dir:`vhdl:enum`               Enumeration-defined type.
-:rst:dir:`vhdl:portsignal`         A port of an entity.
+:rst:dir:`vhdl:enumval`            A single value in :rst:dir:`vhdl:enum`.
+:rst:dir:`vhdl:generics`           Ports of an :rst:dir:`vhdl:entity`.
+:rst:dir:`vhdl:ports`              Generics of an :rst:dir:`vhdl:entity`.
 ================================== ==================================
 
+Recognized roles
+================
+
+================================== ==================================
+Role                               Description
+================================== ==================================
+:rst:role:`vhdl:genconstant`       References individual constants in :rst:dir:`vhdl:generics`.
+:rst:role:`vhdl:portsignal`        References individual ports in :rst:dir:`vhdl:ports`.
+:rst:role:`vhdl:type`              References :rst:dir:`vhdl:enum`.
+================================== ==================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    directives_detailed.rst
-   config.rst
+   roles_detailed.rst
 
 
 Indices and tables
