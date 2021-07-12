@@ -7,7 +7,19 @@ Directives
     should be specified under :rst:dir:`vhdl:ports` or
     :rst:dir:`vhdl:generics`, respectively.
 
-    TODO example
+    .. code-block:: rst
+
+        .. vhdl:entity:: EntityName
+
+            Entity description and full-text documentation
+
+            .. vhdl:generics:: EntityName
+
+                FREQ: natural := 5
+
+            .. vhdl:ports:: EntityName
+
+                CLK : in 1
 
 .. rst:directive:: vhdl:enum
 
@@ -44,9 +56,7 @@ Directives
     then take on the form ``constantName : constantType := defaultValue``,
     where all the fields are mandatory and whitespace may be arbitrary.
 
-    Individual constants will automatically cross-reference the definitions of
-    their types if found, unless disabled by
-    :py:attr:`vhdl_autolink_type_disable`
+    The types and description may contain full ReST syntax.
 
     Example
 
@@ -55,11 +65,11 @@ Directives
         .. vhdl:generics:: UART_RX
 
             WORD_SIZE:natural:=8
-                The machine word here is 8 bits.
+                The machine word here is 8 bits. Used for :vhdl:portsignal:`DOUT`.
 
 
                 It just is.
-            DWORD_SIZE   : integer := 16
+            DWORD_SIZE   : :vhdl:type:`YourAwesomeType` := 16
 
 
             QWORD_SIZE : float     := 32.0
@@ -75,11 +85,11 @@ Directives
     aligned to the left offset define the ports and lines offset from those are
     detailed descriptions of the ports above, supporting all the standard
     REStructured text formatting and directives. Port definitions then take on
-    the form ``portName : mode type``, where whitespace can be arbitrary.
+    the form ``portName : mode sig_width``, where whitespace can be arbitrary.
 
-    Individual ports will automatically cross-reference the definitions of
-    their types if found, unless disabled by
-    :py:attr:`vhdl_autolink_type_disable`
+    Data width signifies the width of the ``std_logic_vector`` on the port.
+
+    The signal width and description may contain full ReST syntax.
 
     Example
 
@@ -87,17 +97,17 @@ Directives
 
         .. vhdl:ports:: UART_RX
 
-            CLK:in std_logic
+            CLK:in 1
                 Receiver clock at 8 times the frequency of the input signal
-            RST      :  in std_logic
+            RST      :  in 1
                 Reset signal
 
                 Pull to high for at least one clock cycle before using this
                 entity
-            DIN      : in std_logic
+            DIN      : in 1
                 Data input line
 
-            DOUT     : out std_logic_vector(7 downto 0)
+            DOUT     : out :vhdl:genconstant:`WORD_SIZE <UART_RX.WORD_SIZE>`
                 The received data will be written here
-            DOUT_VLD : out std_logic
-                When high, denotes the DOUT being valid
+            DOUT_VLD : out 1
+                When high, denotes the :vhdl:portsignal:`UART_RX.DOUT` being valid
