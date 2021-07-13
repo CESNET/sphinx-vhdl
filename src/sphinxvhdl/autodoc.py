@@ -16,7 +16,7 @@ from pyVHDLParser.Token.Parser import Tokenizer
 from pyVHDLParser.Blocks import TokenToBlockParser, MetaBlock, CommentBlock
 from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock
 from pyVHDLParser.Blocks.Structural import Entity
-from pyVHDLParser.Blocks.List import PortList
+from pyVHDLParser.Blocks.List import PortList, GenericList
 from pyVHDLParser.Base import ParserException
 import logging
 
@@ -24,6 +24,8 @@ LOG = logging.getLogger('sphinxvhdl-autodoc')
 
 entities = {}
 portsignals = defaultdict(dict)
+generics = defaultdict(dict)
+
 
 def init(path: str) -> None:
     for block in MetaBlock.BLOCKS:
@@ -60,6 +62,17 @@ def init(path: str) -> None:
                         continue
                     pure_part = str(block).strip().split(':=')[0]
                     portsignals[current_entity.lower()][pure_part] = current_doc
+                    current_doc = []
+                print(type(block))
+                print(GenericList.GenericListInterfaceConstantBlock)
+                if type(block) is GenericList.GenericListInterfaceConstantBlock:
+                    if len(str(block).strip()) == 0:
+                        current_doc = []
+                        continue
+                    if not ':=' in str(block).strip():
+                        generics[current_entity.lower()][str(block).strip() + ":= UNDEFINED"] = current_doc
+                    else:
+                        generics[current_entity.lower()][str(block).strip() + str(next(block_stream, 'UNDEFINED')).strip()] = current_doc
                     current_doc = []
         except NotImplementedError:
             LOG.error(f'File {filename} constains unsupported syntax')

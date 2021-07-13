@@ -205,9 +205,23 @@ class VHDLAutoPortsDirective(VHDLPortsDirective):
     has_content = False
 
     def run(self):
+        init_autodoc(self.env.domains['vhdl'])
         self.content = StringList(
             [item for subitem in [[key, *[f'  {x}' for x in autodoc.portsignals[self.arguments[0].lower()][key]]]
                                   for key in autodoc.portsignals[self.arguments[0].lower()].keys()] for item in subitem]
+        )
+        return super().run()
+
+
+class VHDLAutoGenericsDirective(VHDLGenericsDirective):
+    has_content = False
+
+    def run(self):
+        init_autodoc(self.env.domains['vhdl'])
+        print(autodoc.generics)
+        self.content = StringList(
+            [item for subitem in [[key, *[f'  {x}' for x in autodoc.generics[self.arguments[0].lower()][key]]]
+                                  for key in autodoc.generics[self.arguments[0].lower()].keys()] for item in subitem]
         )
         return super().run()
 
@@ -260,6 +274,7 @@ class VHDLDomain(Domain):
         'entity': VHDLEntityDirective,
         'autoentity': VHDLAutoEntityDirective,
         'autoports': VHDLAutoPortsDirective,
+        'autogenerics': VHDLAutoGenericsDirective,
         'ports': VHDLPortsDirective,
         'generics': VHDLGenericsDirective,
     }
