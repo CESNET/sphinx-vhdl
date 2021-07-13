@@ -3,6 +3,7 @@ from typing import Iterable, Tuple, List, Optional
 
 from docutils import nodes
 from docutils.statemachine import StringList
+from docutils.parsers.rst import directives
 
 from sphinx import addnodes
 from sphinx.addnodes import desc_signature, pending_xref
@@ -12,6 +13,14 @@ from sphinx.domains import Domain, Index, IndexEntry
 from sphinx.roles import XRefRole
 from sphinx.util.docutils import SphinxDirective
 from sphinx.util.nodes import make_refnode
+
+from . import autodoc
+
+
+def init_autodoc(domain: Domain):
+    if not domain.data['autodoc_initialized']:
+        domain.data['autodoc_initialized'] = True
+        autodoc.init(domain.env.app.config.vhdl_autodoc_source_path)
 
 
 class VHDLEnumTypeDirective(ObjectDescription):
@@ -159,6 +168,31 @@ class VHDLGenericsDirective(VHDLEntityIOGenericDirective):
             )
 
 
+class VHDLAutoEntityDirective(VHDLEntityDirective):
+    option_spec = {
+        'noautoports': directives.flag,
+        'noautogenerics': directives.flag
+    }
+
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        init_autodoc(self.env.domains['vhdl'])
+        self.content = self.content + StringList(['', ''] + autodoc.entities[sig])
+        if 'noautoports' not in self.options:
+            self.content = self.content + StringList(['', f'.. vhdl:autoports:: {sig}', ''])
+        return super().handle_signature(sig, signode)
+
+
+class VHDLAutoPortsDirective(VHDLPortsDirective):
+    has_content = False
+
+    def run(self):
+        self.content = StringList(
+            [item for subitem in [[key, *[f'  {x}' for x in autodoc.portsignals[self.arguments[0].lower()][key]]]
+                                  for key in autodoc.portsignals[self.arguments[0].lower()].keys()] for item in subitem]
+        )
+        return super().run()
+
+
 class VHDLTypeIndex(Index):
     name = 'typeindex'
     localname = "Type Index"
@@ -205,6 +239,8 @@ class VHDLDomain(Domain):
         'enum': VHDLEnumTypeDirective,
         'enumval': VHDLEnumValDirective,
         'entity': VHDLEntityDirective,
+        'autoentity': VHDLAutoEntityDirective,
+        'autoports': VHDLAutoPortsDirective,
         'ports': VHDLPortsDirective,
         'generics': VHDLGenericsDirective,
     }
@@ -214,7 +250,8 @@ class VHDLDomain(Domain):
             'types': defaultdict(list),
             'portsignal': defaultdict(list),
             'genconstant': defaultdict(list),
-        }
+        },
+        'autodoc_initialized': False
     }
     indices = {
         VHDLTypeIndex
@@ -247,6 +284,7 @@ class VHDLDomain(Domain):
 
 def setup(app: Sphinx):
     app.add_domain(VHDLDomain)
+    app.add_config_value('vhdl_autodoc_source_path', '.', 'env', [str])
 
     return {
         'version': '0.1'
