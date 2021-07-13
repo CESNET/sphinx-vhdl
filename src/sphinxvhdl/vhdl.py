@@ -73,6 +73,14 @@ class VHDLEntityDirective(ObjectDescription):
         signode += addnodes.desc_sig_keyword(text=' IS')
         return sig
 
+    def add_target_and_index(self, name: T, sig: str, signode: desc_signature) -> None:
+        name = f'vhdl-entity-{sig.lower()}'
+        signode['ids'].append(name)
+        if 'noindex' not in self.options:
+            self.env.domaindata['vhdl']['refs']['entity'][sig.split('.')[-1].lower()].append(
+                (sig.lower(), (self.env.docname, name))
+            )
+
 
 class VHDLEntityIOGenericDirective(SphinxDirective):
     has_content = True
@@ -261,6 +269,7 @@ class VHDLDomain(Domain):
             'types': defaultdict(list),
             'portsignal': defaultdict(list),
             'genconstant': defaultdict(list),
+            'entity': defaultdict(list),
         },
         'autodoc_initialized': False
     }
@@ -271,6 +280,7 @@ class VHDLDomain(Domain):
         'portsignal': XRefRole(),
         'genconstant': XRefRole(),
         'type': XRefRole(),
+        'entity': XRefRole(),
     }
 
     def resolve_xref(self, env: "BuildEnvironment", fromdocname: str, builder: "Builder", typ: str, target: str,
@@ -281,6 +291,8 @@ class VHDLDomain(Domain):
             index = self.data['refs']['portsignal']
         elif typ == 'genconstant':
             index = self.data['refs']['genconstant']
+        elif typ == 'entity':
+            index = self.data['refs']['entity']
         elif True:
             raise NotImplementedError
         simple_name = target.split('.')[-1].lower()
