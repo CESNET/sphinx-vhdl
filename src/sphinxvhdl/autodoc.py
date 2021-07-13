@@ -33,7 +33,9 @@ def init(path: str) -> None:
             block.__cls_init__()
         except AttributeError:
             pass
-    for filename in (glob.glob(os.path.join(path, "**", "*.vhd"), recursive=True) + glob.glob(os.path.join(path, "**", "*.vhdl"), recursive=True)):
+    for filename in (
+            glob.glob(os.path.join(path, "**", "*.vhd"), recursive=True) + glob.glob(os.path.join(path, "**", "*.vhdl"),
+                                                                                     recursive=True)):
         with open(filename, 'r') as source_file:
             source_code = source_file.read()
         token_stream = Tokenizer.GetVHDLTokenizer(source_code)
@@ -63,16 +65,15 @@ def init(path: str) -> None:
                     pure_part = str(block).strip().split(':=')[0]
                     portsignals[current_entity.lower()][pure_part] = current_doc
                     current_doc = []
-                print(type(block))
-                print(GenericList.GenericListInterfaceConstantBlock)
                 if type(block) is GenericList.GenericListInterfaceConstantBlock:
                     if len(str(block).strip()) == 0:
                         current_doc = []
                         continue
-                    if not ':=' in str(block).strip():
+                    if ':=' not in str(block).strip():
                         generics[current_entity.lower()][str(block).strip() + ":= UNDEFINED"] = current_doc
                     else:
-                        generics[current_entity.lower()][str(block).strip() + str(next(block_stream, 'UNDEFINED')).strip()] = current_doc
+                        generics[current_entity.lower()][
+                            str(block).strip() + str(next(block_stream, 'UNDEFINED')).strip()] = current_doc
                     current_doc = []
         except NotImplementedError:
             LOG.error(f'File {filename} constains unsupported syntax')

@@ -218,7 +218,6 @@ class VHDLAutoGenericsDirective(VHDLGenericsDirective):
 
     def run(self):
         init_autodoc(self.env.domains['vhdl'])
-        print(autodoc.generics)
         self.content = StringList(
             [item for subitem in [[key, *[f'  {x}' for x in autodoc.generics[self.arguments[0].lower()][key]]]
                                   for key in autodoc.generics[self.arguments[0].lower()].keys()] for item in subitem]
