@@ -1,9 +1,9 @@
 Configuration options
 =====================
 
-.. py:attribute:: vhdl_autolink_type_disable
-  :type: bool
-  :value: False
+.. py:attribute:: vhdl_autodoc_source_path
+  :type: string
+  :value: "."
 
-  Disables the automatic creation of links to type definitions from signatures
-  where they are referenced.
+  Determines the root of the directory structure where the VHDL source codes
+  used for automatic documentation generation reside.

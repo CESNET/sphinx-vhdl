@@ -111,3 +111,29 @@ Directives
                 The received data will be written here
             DOUT_VLD : out 1
                 When high, denotes the :vhdl:portsignal:`UART_RX.DOUT` being valid
+
+Auto- Directives
+----------------
+
+.. rst:directive:: vhdl:autoentity
+
+    Automatically generates a documentation for an entity. Has one required
+    argument, the  name of the entity. For the automatic generation to work,
+    the :py:attr:`vhdl_autodoc_source_path` configuration option must be set to
+    point to a valid directory containing VHDL sources describing this entity.
+    See :ref:`autodoc_usage` for further instructions on how the source code
+    must be set up.
+
+    .. rst:directive:option:: noautoports
+
+        Do not generate a :rst:dir:`vhdl:autoentity` directive as part of
+        generating the automatic documentation for the entity.
+
+.. rst:directive:: vhdl:autoports
+
+    Automatically generates a documentation for an entity's ports. Has one
+    required argument, the name of the entity whose ports to document. For the
+    automatic generation to work, the :py:attr:`vhdl_autodoc_source_path`
+    configuration option must be set to point to a valid directory containing
+    VHDL sources describing the target entity. See :ref:`autodoc_usage` for
+    further instruction on how the source must be set up

@@ -23,6 +23,8 @@ Recognized directives
 ================================== ==================================
 Directive                          Description
 ================================== ==================================
+:rst:dir:`vhdl:autoentity`         Automatic documentation of entity.
+:rst:dir:`vhdl:autoports`          Automatic documentation of ports.
 :rst:dir:`vhdl:entity`             A single entity.
 :rst:dir:`vhdl:enum`               Enumeration-defined type.
 :rst:dir:`vhdl:enumval`            A single value in :rst:dir:`vhdl:enum`.
@@ -47,6 +49,8 @@ Role                               Description
 
    directives_detailed.rst
    roles_detailed.rst
+   config.rst
+   autodoc.rst
 
 
 Indices and tables
