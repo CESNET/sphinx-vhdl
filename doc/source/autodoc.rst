@@ -21,4 +21,33 @@ omitted).
 All documentation comments to be extracted must immediately precede the object
 they are documenting; if a comment is not meant to be a documentation comment
 and thus should not be extracted; it should be separated by at least a blank
-line, or placed after the object definition.
+line, or placed after the object definition. For a very short documentation
+comments, the comment immediately following the declaration on the same line is
+also acceptable.
+
+Example
+-------
+
+.. code-block:: vhdl
+
+    -- This is not a documentation comment
+
+    -- This is also not a documentation comment
+    --Because this comment has no space
+    -- This is a documentation comment for the entity
+    -- Here it continues
+    --
+    -- Above here is a blank line in the documentation.
+    -- It is still a documentation comment
+    entity entityName is
+    -- This is just a random comment, not documentation
+    begin
+    port (
+      -- This is a documentation for the port
+      signal portName : inout std_logic bus := ‘1’;
+      -- This is not a documentation comment due to the blank line
+
+      portName2 : bit;
+      portName3 : in bit    -- This is a documentation comment for portName3
+    );
+    end entity entityName;

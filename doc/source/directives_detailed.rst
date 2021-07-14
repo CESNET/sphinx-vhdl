@@ -124,6 +124,11 @@ Auto- Directives
     See :ref:`autodoc_usage` for further instructions on how the source code
     must be set up.
 
+    .. rst:directive:option:: noautogenerics
+
+        Do not generate a :rst:dir:`vhdl:autogenerics` directive as part of
+        generating the automatic documentation for the entity.
+
     .. rst:directive:option:: noautoports
 
         Do not generate a :rst:dir:`vhdl:autoentity` directive as part of

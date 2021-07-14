@@ -196,6 +196,8 @@ class VHDLAutoEntityDirective(VHDLEntityDirective):
     def handle_signature(self, sig: str, signode: desc_signature) -> T:
         init_autodoc(self.env.domains['vhdl'])
         self.content = self.content + StringList(['', ''] + autodoc.entities[sig])
+        if 'noautogenerics' not in self.options:
+            self.content = self.content + StringList(['', f'.. vhdl:autogenerics:: {sig}', ''])
         if 'noautoports' not in self.options:
             self.content = self.content + StringList(['', f'.. vhdl:autoports:: {sig}', ''])
         return super().handle_signature(sig, signode)

@@ -1,15 +1,20 @@
 Roles
 =====
 
+.. rst:role:: vhdl:entity
+
+    This role allows referencing entities defined by an :rst:dir:`vhdl:entity`
+    directive or :rst:dir:`vhdl:autoentity` directive.
+
 .. rst:role:: vhdl:genconstant
 
     This role allows referencing individual constants inside a
-    :rst:dir:`vhdl:generics` directive.
+    :rst:dir:`vhdl:generics` or :rst:dir:`vhdl:autogenerics` directive.
 
 .. rst:role:: vhdl:portsignal
 
     This role allows referencing individual ports inside a
-    :rst:dir:`vhdl:ports` directive.
+    :rst:dir:`vhdl:ports` or :rst:dir:`vhdl:autoports` directive.
 
 .. rst:role:: vhdl:type
 

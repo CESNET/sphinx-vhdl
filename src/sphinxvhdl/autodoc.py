@@ -25,6 +25,11 @@ LOG = logging.getLogger('sphinxvhdl-autodoc')
 entities = {}
 portsignals = defaultdict(dict)
 generics = defaultdict(dict)
+objects = {
+    'entities': entities,
+    'portsignals': portsignals,
+    'generics': generics
+}
 
 
 def init(path: str) -> None:
@@ -42,6 +47,7 @@ def init(path: str) -> None:
         block_stream = TokenToBlockParser.Transform(token_stream)
         current_doc = []
         current_entity = ''
+        last_documented = -1, None, 'undefined'  # line of definition; dictionary with objects; key in dictionary
         try:
             for block in block_stream:
                 if type(block) is IndentationBlock:
@@ -51,13 +57,23 @@ def init(path: str) -> None:
                     continue
                 if type(block) is CommentBlock:
                     if len(str(block).strip()) > 2:
-                        current_doc.append(str(block).strip()[3:])
+                        if str(block).strip().startswith('-- '):
+                            if block.StartToken.Start.Row == last_documented[0]:
+                                if len(last_documented[1][last_documented[2]]) == 0:
+                                    last_documented[1][last_documented[2]].append(str(block).strip()[3:])
+                                else:
+                                    raise ValueError('Got documentation comment immediately preceding and following a documented entity; only one is allowed')
+                            else:
+                                current_doc.append(str(block).strip()[3:])
+                        else:
+                            current_doc = []
                     else:
                         current_doc.append('')
                 if type(block) is Entity.NameBlock:
                     current_entity = str(block).strip().split()[1]
                     entities[current_entity] = current_doc
                     current_doc = []
+                    last_documented = block.StartToken.Start.Row, entities, current_entity
                 if type(block) is PortList.PortListInterfaceSignalBlock:
                     if len(str(block).strip()) == 0:
                         current_doc = []
@@ -65,16 +81,19 @@ def init(path: str) -> None:
                     pure_part = str(block).strip().split(':=')[0]
                     portsignals[current_entity.lower()][pure_part] = current_doc
                     current_doc = []
+                    last_documented = block.StartToken.Start.Row, portsignals[current_entity.lower()], pure_part
                 if type(block) is GenericList.GenericListInterfaceConstantBlock:
                     if len(str(block).strip()) == 0:
                         current_doc = []
                         continue
                     if ':=' not in str(block).strip():
-                        generics[current_entity.lower()][str(block).strip() + ":= UNDEFINED"] = current_doc
+                        pure_part = str(block).strip() + ":= UNDEFINED"
+                        generics[current_entity.lower()][pure_part] = current_doc
                     else:
-                        generics[current_entity.lower()][
-                            str(block).strip() + str(next(block_stream, 'UNDEFINED')).strip()] = current_doc
+                        pure_part = str(block).strip() + str(next(block_stream, 'UNDEFINED')).strip()
+                        generics[current_entity.lower()][pure_part] = current_doc
                     current_doc = []
+                    last_documented = block.StartToken.Start.Row, generics[current_entity.lower()], pure_part
         except NotImplementedError:
             LOG.error(f'File {filename} constains unsupported syntax')
         except ParserException as ex:
