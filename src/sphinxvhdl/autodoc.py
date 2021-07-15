@@ -3,12 +3,9 @@
 import glob
 from collections import defaultdict
 import os
-from pyVHDLParser.Token.Parser import Tokenizer
-from pyVHDLParser.Blocks import TokenToBlockParser, MetaBlock, CommentBlock
-from pyVHDLParser.Blocks.Common import LinebreakBlock, IndentationBlock
-from pyVHDLParser.Blocks.Structural import Entity
-from pyVHDLParser.Blocks.List import PortList, GenericList
-from pyVHDLParser.Base import ParserException
+from typing import Optional
+from enum import Enum, auto
+
 import logging
 
 LOG = logging.getLogger('sphinxvhdl-autodoc')
@@ -23,69 +20,87 @@ objects = {
 }
 
 
+def parse_inline_doc_or_raise(line: str, current_doc: list[str]):
+    if '-- ' in line:
+        if len(current_doc) > 0:
+            raise ValueError(
+                'Documented entity has both a pre- and inline documentation; only one is allowed. Offending line:\n' +
+                line)
+        else:
+            current_doc.append(line.split('-- ', 1)[1])
+
+
+class ParseState(Enum):
+    ENTITY_DECL = auto()
+    PORT = auto()
+    GENERIC = auto()
+
+
 def init(path: str) -> None:
-    for block in MetaBlock.BLOCKS:
-        try:
-            block.__cls_init__()
-        except AttributeError:
-            pass
     for filename in (
             glob.glob(os.path.join(path, "**", "*.vhd"), recursive=True) + glob.glob(os.path.join(path, "**", "*.vhdl"),
                                                                                      recursive=True)):
         with open(filename, 'r') as source_file:
-            source_code = source_file.read()
-        token_stream = Tokenizer.GetVHDLTokenizer(source_code)
-        block_stream = TokenToBlockParser.Transform(token_stream)
+            source_code = source_file.readlines()
+
         current_doc = []
         current_entity = ''
-        last_documented = -1, None, 'undefined'  # line of definition; dictionary with objects; key in dictionary
-        try:
-            for block in block_stream:
-                if type(block) is IndentationBlock:
-                    continue
-                if type(block) is LinebreakBlock:
-                    current_doc = []
-                    continue
-                if type(block) is CommentBlock:
-                    if len(str(block).strip()) > 2:
-                        if str(block).strip().startswith('-- '):
-                            if block.StartToken.Start.Row == last_documented[0]:
-                                if len(last_documented[1][last_documented[2]]) == 0:
-                                    last_documented[1][last_documented[2]].append(str(block).strip()[3:])
-                                else:
-                                    raise ValueError('Got documentation comment immediately preceding and following a documented entity; only one is allowed')
-                            else:
-                                current_doc.append(str(block).strip()[3:])
-                        else:
-                            current_doc = []
-                    else:
-                        current_doc.append('')
-                if type(block) is Entity.NameBlock:
-                    current_entity = str(block).strip().split()[1]
-                    entities[current_entity] = current_doc
-                    current_doc = []
-                    last_documented = block.StartToken.Start.Row, entities, current_entity
-                if type(block) is PortList.PortListInterfaceSignalBlock:
-                    if len(str(block).strip()) == 0:
-                        current_doc = []
-                        continue
-                    pure_part = str(block).strip().split(':=')[0]
-                    portsignals[current_entity.lower()][pure_part] = current_doc
-                    current_doc = []
-                    last_documented = block.StartToken.Start.Row, portsignals[current_entity.lower()], pure_part
-                if type(block) is GenericList.GenericListInterfaceConstantBlock:
-                    if len(str(block).strip()) == 0:
-                        current_doc = []
-                        continue
-                    if ':=' not in str(block).strip():
-                        pure_part = str(block).strip() + ":= UNDEFINED"
-                        generics[current_entity.lower()][pure_part] = current_doc
-                    else:
-                        pure_part = str(block).strip() + str(next(block_stream, 'UNDEFINED')).strip()
-                        generics[current_entity.lower()][pure_part] = current_doc
-                    current_doc = []
-                    last_documented = block.StartToken.Start.Row, generics[current_entity.lower()], pure_part
-        except NotImplementedError:
-            LOG.error(f'File {filename} constains unsupported syntax')
-        except ParserException as ex:
-            LOG.error(f'Error parsing file {filename}: {ex}')
+        state: Optional[ParseState] = None
+        open_parentheses = 0
+        lineno = 0
+        for line in source_code:
+            lineno += 1
+            line = line.strip()
+            if line.startswith('-- '):
+                current_doc.append(line[3:])
+            elif line == '--':
+                current_doc.append('')
+            elif line.lower().startswith('entity ') and ' is' in line:
+                try:
+                    parse_inline_doc_or_raise(line, current_doc)
+                except ValueError as ex:
+                    LOG.warning(f'Error parsing file {filename} at line {lineno}:')
+                    LOG.warning(ex.args[0])
+                current_entity = line.split()[1]
+                entities[current_entity.lower()] = current_doc
+                current_doc = []
+                state = ParseState.ENTITY_DECL
+            elif state == ParseState.ENTITY_DECL and line.lower().startswith('port'):
+                state = ParseState.PORT
+                current_doc = []
+            elif state == ParseState.ENTITY_DECL and line.lower().startswith('generic'):
+                state = ParseState.GENERIC
+                current_doc = []
+            elif state == ParseState.PORT and ':' in line:
+                try:
+                    parse_inline_doc_or_raise(line, current_doc)
+                except ValueError as ex:
+                    LOG.warning(f'Error parsing file {filename} at line {lineno}:')
+                    LOG.warning(ex.args[0])
+                definition = line.split(';')[0].split(':=')[0].strip()
+                if definition.lower().startswith('signal'):
+                    definition = definition[6:].strip()
+                portsignals[current_entity.lower()][definition] = current_doc
+                current_doc = []
+            elif state == ParseState.GENERIC and ':' in line:
+                try:
+                    parse_inline_doc_or_raise(line, current_doc)
+                except ValueError as ex:
+                    LOG.warning(f'Error parsing file {filename} at line {lineno}:')
+                    LOG.warning(ex.args[0])
+                definition = line.split(';')[0].strip()
+                if ':=' not in definition:
+                    definition += ':= UNDEFINED'
+                if definition.lower().startswith('constant'):
+                    definition = definition[8:].strip()
+                generics[current_entity.lower()][definition] = current_doc
+                current_doc = []
+            elif state == ParseState.ENTITY_DECL and line.lower().startswith('end'):
+                state = None
+                current_doc = []
+            else: current_doc = []
+            if state in (ParseState.PORT, ParseState.GENERIC):
+                open_parentheses += line.count('(')
+                open_parentheses -= line.count(')')
+                if open_parentheses == 0:
+                    state = ParseState.ENTITY_DECL

@@ -11,7 +11,7 @@ with the sources for automatic documentation reside. Please refer to
 The Sphinx-VHDL automatic documentation generation depends on being able to
 extract documentation comments from the source code. Extraction of
 documentation is only attempted from files with the ``.vhd`` or ``.vhdl``
-suffix, and requires those source files to be mostly syntactically valid.
+suffix, and requires those source files to be reasonably well formatted, even if not necessarily syntactically valid.
 Documentation is only extracted from continuous line comment blocks; and allows
 the full range of reStructuredText syntax on the inside; however, a mandatory
 space symbol is expected just after each ``--``, and blank documentation lines
@@ -24,6 +24,20 @@ and thus should not be extracted; it should be separated by at least a blank
 line, or placed after the object definition. For a very short documentation
 comments, the comment immediately following the declaration on the same line is
 also acceptable.
+
+Formatting
+----------
+
+For the automatic extraction to work, the code must be particularly formatted. Specifically:
+
+- entity declaration should be on its own individual line
+  .. code-block:: vhdl
+    entity entityName is
+- inside entity declarations, the ``port (`` and ``generic (`` keywords should
+  be on their own individual lines
+- every signal/constant defined should be on its own individual line
+- linebreaks must not be inserted *inside* signal/constant declarations - the
+  whole declaration should be on one line
 
 Example
 -------

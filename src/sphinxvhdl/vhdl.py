@@ -145,7 +145,7 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
 class VHDLPortsDirective(VHDLEntityIOGenericDirective):
     id_title = 'portsignal'
     title = 'Ports'
-    table_headers = 'Port', 'Width', 'Mode', 'Description'
+    table_headers = 'Port', 'Type', 'Mode', 'Description'
 
     def get_fields_from_definition(self, definition: str) -> tuple[str, str, str]:
         try:
