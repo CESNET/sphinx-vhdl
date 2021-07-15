@@ -75,6 +75,10 @@ Directives
             QWORD_SIZE : float     := 32.0
                 Because why sink when you can float?
 
+.. rst_directive:: vhdl:package
+
+    Used for documenting packages.
+
 .. rst:directive:: vhdl:ports
 
     Used for documenting the ports of an entity. Has one required argument;

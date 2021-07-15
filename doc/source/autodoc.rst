@@ -31,8 +31,11 @@ Formatting
 For the automatic extraction to work, the code must be particularly formatted. Specifically:
 
 - entity declaration should be on its own individual line
+
   .. code-block:: vhdl
+
     entity entityName is
+
 - inside entity declarations, the ``port (`` and ``generic (`` keywords should
   be on their own individual lines
 - every signal/constant defined should be on its own individual line

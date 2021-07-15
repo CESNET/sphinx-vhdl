@@ -178,6 +178,17 @@ class VHDLGenericsDirective(VHDLEntityIOGenericDirective):
             )
 
 
+class VHDLPackagesDirective(ObjectDescription):
+    has_content = True
+    required_arguments = 1
+
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        signode += addnodes.desc_sig_keyword(text='PACKAGE ')
+        signode += addnodes.desc_name(text=sig)
+        signode += addnodes.desc_sig_keyword(text=' IS')
+        return sig
+
+
 class VHDLAutoEntityDirective(VHDLEntityDirective):
     option_spec = {
         'noautoports': directives.flag,
@@ -269,6 +280,7 @@ class VHDLDomain(Domain):
         'autogenerics': VHDLAutoGenericsDirective,
         'ports': VHDLPortsDirective,
         'generics': VHDLGenericsDirective,
+        'package': VHDLPackagesDirective,
     }
     initial_data = {
         'types': [],

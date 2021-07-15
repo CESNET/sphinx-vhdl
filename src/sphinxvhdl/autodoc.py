@@ -13,6 +13,7 @@ LOG = logging.getLogger('sphinxvhdl-autodoc')
 entities = {}
 portsignals = defaultdict(dict)
 generics = defaultdict(dict)
+packages = {}
 objects = {
     'entities': entities,
     'portsignals': portsignals,
@@ -34,6 +35,7 @@ class ParseState(Enum):
     ENTITY_DECL = auto()
     PORT = auto()
     GENERIC = auto()
+    PACKAGE = auto()
 
 
 def init(path: str) -> None:
@@ -45,6 +47,7 @@ def init(path: str) -> None:
 
         current_doc = []
         current_entity = ''
+        current_package = ''
         state: Optional[ParseState] = None
         open_parentheses = 0
         lineno = 0
@@ -98,7 +101,16 @@ def init(path: str) -> None:
             elif state == ParseState.ENTITY_DECL and line.lower().startswith('end'):
                 state = None
                 current_doc = []
-            else: current_doc = []
+            elif state is None and line.lower().startswith('package'):
+                state = ParseState.PACKAGE
+                current_package = line.split()[1]
+                packages[current_package.lower()] = current_doc
+                current_doc = []
+            elif state is ParseState.PACKAGE and line.lower().startswith('end package'):
+                state = None
+                current_doc = []
+            else:
+                current_doc = []
             if state in (ParseState.PORT, ParseState.GENERIC):
                 open_parentheses += line.count('(')
                 open_parentheses -= line.count(')')
