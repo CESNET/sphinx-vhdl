@@ -3,7 +3,7 @@ Directives
 
 .. rst:directive:: vhdl:entity
 
-    Used for documenting individual entitites. Individual ports and generics
+    Used for documenting individual entities. Individual ports and generics
     should be specified under :rst:dir:`vhdl:ports` or
     :rst:dir:`vhdl:generics`, respectively.
 
@@ -141,6 +141,17 @@ Directives
     argument of this directive should take on the form of
     ``fieldName : fieldType``, where ``fieldType`` can contain arbitrary sphinx
     syntax.
+
+.. rst:directive:: vhdl:type
+
+    Used for documenting types other than record- and enumeration-defined ones.
+
+    For enumeration-defined types, please use :rst:dir:`vhdl:enum`. For record
+    defined types, please use :rst:dir:`vhdl:record`.
+
+    The argument of this directive should take on the form
+    ``typeName : type signature``; where ``type signature`` may contain
+    arbitrary sphinx formatting.
 
 Auto- Directives
 ----------------

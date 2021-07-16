@@ -35,6 +35,7 @@ Directive                          Description
 :rst:dir:`vhdl:ports`              Generics of an :rst:dir:`vhdl:entity`.
 :rst:dir:`vhdl:record`             Record-defined type.
 :rst:dir:`vhdl:recordelem`         A single field in :rst:dir:`vhdl:record`
+:rst:dir:`vhdl:type`               A type other than a record or enumeration.
 ================================== ==================================
 
 Recognized roles

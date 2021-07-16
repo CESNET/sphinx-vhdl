@@ -65,6 +65,28 @@ class VHDLRecordTypeDirective(ObjectDescription):
                 (sig.lower(), (self.env.docname, name)))
 
 
+class VHDLGeneralTypeDirective(ObjectDescription):
+    has_content = True
+    required_arguments = 1
+
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        signode += addnodes.desc_name(text=sig.split(':')[0].strip())
+        signode += addnodes.desc_sig_keyword(text=' : ')
+        tempnode = nodes.entry('')
+        self.state.nested_parse(StringList([sig.split(':', 1)[-1].strip()]), 0, tempnode)
+        type_name = addnodes.desc_name()
+        signode += type_name
+        type_name += tempnode[0][0]
+        return sig
+
+    def add_target_and_index(self, name: T, sig: str, signode: desc_signature) -> None:
+        name = f'vhdl-type-{sig.lower()}'
+        signode['ids'].append(name)
+        if 'noindex' not in self.options:
+            self.env.domaindata['vhdl']['types'].append((name, sig, 'Type', self.env.docname))
+            self.env.domaindata['vhdl']['refs']['types'][sig.split('.')[-1].lower()].append(
+                (sig.lower(), (self.env.docname, name)))
+
 class VHDLEnumValDirective(ObjectDescription):
     has_content = True
     required_arguments = 1
@@ -326,6 +348,7 @@ class VHDLDomain(Domain):
         'package': VHDLPackagesDirective,
         'record': VHDLRecordTypeDirective,
         'recordelem': VHDLRecordElementDirective,
+        'type': VHDLGeneralTypeDirective,
     }
     initial_data = {
         'types': [],
