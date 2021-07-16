@@ -25,12 +25,16 @@ Directive                          Description
 ================================== ==================================
 :rst:dir:`vhdl:autoentity`         Automatic documentation of entity.
 :rst:dir:`vhdl:autogenerics`       Automatic documentation of generics.
+:rst:dir:`vhdl:autopackage`        Automatic documentation of package.
 :rst:dir:`vhdl:autoports`          Automatic documentation of ports.
 :rst:dir:`vhdl:entity`             A single entity.
 :rst:dir:`vhdl:enum`               Enumeration-defined type.
 :rst:dir:`vhdl:enumval`            A single value in :rst:dir:`vhdl:enum`.
 :rst:dir:`vhdl:generics`           Ports of an :rst:dir:`vhdl:entity`.
+:rst:dir:`vhdl:package`            A whole single package.
 :rst:dir:`vhdl:ports`              Generics of an :rst:dir:`vhdl:entity`.
+:rst:dir:`vhdl:record`             Record-defined type.
+:rst:dir:`vhdl:recordelem`         A single field in :rst:dir:`vhdl:record`
 ================================== ==================================
 
 Recognized roles
@@ -39,6 +43,7 @@ Recognized roles
 ================================== ==================================
 Role                               Description
 ================================== ==================================
+:rst:role:`vhdl:entity`            References :rst:dir:`vhdl:entity`.
 :rst:role:`vhdl:genconstant`       References individual constants in :rst:dir:`vhdl:generics`.
 :rst:role:`vhdl:portsignal`        References individual ports in :rst:dir:`vhdl:ports`.
 :rst:role:`vhdl:type`              References :rst:dir:`vhdl:enum`.

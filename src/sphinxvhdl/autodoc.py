@@ -101,13 +101,14 @@ def init(path: str) -> None:
             elif state == ParseState.ENTITY_DECL and line.lower().startswith('end'):
                 state = None
                 current_doc = []
-            elif state is None and line.lower().startswith('package'):
+            elif (state is None or state is ParseState.PACKAGE) and line.lower().startswith('package'):
                 state = ParseState.PACKAGE
-                current_package = line.split()[1]
+                current_package = ('' if current_package == '' else (current_package + '.')) + line.split()[1]
                 packages[current_package.lower()] = current_doc
                 current_doc = []
             elif state is ParseState.PACKAGE and line.lower().startswith('end package'):
-                state = None
+                current_package = '.'.join(current_package.split('.')[:-1])
+                state = None if current_package == '' else ParseState.PACKAGE
                 current_doc = []
             else:
                 current_doc = []

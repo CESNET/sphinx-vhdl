@@ -75,7 +75,7 @@ Directives
             QWORD_SIZE : float     := 32.0
                 Because why sink when you can float?
 
-.. rst_directive:: vhdl:package
+.. rst:directive:: vhdl:package
 
     Used for documenting packages.
 
@@ -116,6 +116,32 @@ Directives
             DOUT_VLD : out 1
                 When high, denotes the :vhdl:portsignal:`UART_RX.DOUT` being valid
 
+.. rst:directive:: vhdl:record
+
+    Used for documenting record-defined types. Individual fields of the type
+    can be documented using :rst:dir:`vhdl:recordelem`.
+
+    .. code-block:: rst
+
+        .. vhdl:record:: PACKET_DATA
+
+            Describes the data associated with each packet
+
+            .. vhdl:recordelem:: SOURCE_IP : :vhdl:type:`IP`
+
+                The IP address of the packet sender
+
+            .. vhdl:recordelem:: ARRIVED_AT : TIME
+
+                The time when the packet was received.
+
+.. rst:directive:: vhdl:recordelem
+
+    Used for documenting individual fields of a :rst:dir:`vhdl:record`. The
+    argument of this directive should take on the form of
+    ``fieldName : fieldType``, where ``fieldType`` can contain arbitrary sphinx
+    syntax.
+
 Auto- Directives
 ----------------
 
@@ -145,7 +171,16 @@ Auto- Directives
     the automatic generation to work, the :py:attr:`vhdl_autodoc_source_path`
     configuration option must be set to point to a valid directory containing
     VHDL sources describing the target entity.  See  :ref:`autodoc_usage` for
-    further instruction on how the source must be set up
+    further instruction on how the source must be set up.
+
+.. rst:directive:: vhdl:autopackage
+
+    Automatically generates a documentation for a package. Has one required
+    argument, the name of the package to document. For the automatic generation
+    to work, the :py:attr:`vhdl_autodoc_source_path` configuration option must
+    be set to point to a valid directory containing VHDL sources defining the
+    target package. See :ref:`autodoc_usage` for further instructions on how
+    the source must be set up.
 
 .. rst:directive:: vhdl:autoports
 
@@ -154,4 +189,4 @@ Auto- Directives
     automatic generation to work, the :py:attr:`vhdl_autodoc_source_path`
     configuration option must be set to point to a valid directory containing
     VHDL sources describing the target entity. See :ref:`autodoc_usage` for
-    further instruction on how the source must be set up
+    further instruction on how the source must be set up.
