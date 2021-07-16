@@ -137,7 +137,7 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
     title: str
     id_title: str
 
-    def get_fields_from_definition(self, definition: str) -> tuple[str, str, str]:
+    def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
         raise NotImplementedError
 
     def run(self):
@@ -204,7 +204,7 @@ class VHDLPortsDirective(VHDLEntityIOGenericDirective):
     title = 'Ports'
     table_headers = 'Port', 'Type', 'Mode', 'Description'
 
-    def get_fields_from_definition(self, definition: str) -> tuple[str, str, str]:
+    def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
         try:
             return (
                 definition.split(":")[0].strip(),
@@ -222,7 +222,7 @@ class VHDLGenericsDirective(VHDLEntityIOGenericDirective):
     title = 'Generics'
     table_headers = 'Generic', 'Type', 'Default', 'Description'
 
-    def get_fields_from_definition(self, definition: str) -> tuple[str, str, str]:
+    def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
         try:
             return (
                 definition.split(':')[0].strip(),
@@ -324,7 +324,7 @@ class VHDLTypeIndex(Index):
         return result, True
 
 
-def get_closest_identifier(target_identifier: str, search_through: list[tuple[str, T]]) -> tuple[str, T]:
+def get_closest_identifier(target_identifier: str, search_through: List[Tuple[str, T]]) -> Tuple[str, T]:
     """
     Finds the item with the closes matching identifier to a target one in a list
     :param target_identifier: an identifier to match against

@@ -3,7 +3,7 @@
 import glob
 from collections import defaultdict
 import os
-from typing import Optional
+from typing import Optional, List
 from enum import Enum, auto
 
 import logging
@@ -23,7 +23,7 @@ objects = {
 }
 
 
-def parse_inline_doc_or_raise(line: str, current_doc: list[str]):
+def parse_inline_doc_or_raise(line: str, current_doc: List[str]):
     if '-- ' in line:
         if len(current_doc) > 0:
             raise ValueError(
