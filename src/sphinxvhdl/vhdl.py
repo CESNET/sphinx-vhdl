@@ -133,7 +133,7 @@ class VHDLEntityDirective(ObjectDescription):
 class VHDLEntityIOGenericDirective(SphinxDirective):
     has_content = True
     required_arguments = 1
-    table_headers: tuple[str, str, str, str]
+    table_headers: Tuple[str, str, str, str]
     title: str
     id_title: str
 
