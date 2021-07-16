@@ -14,6 +14,8 @@ entities = {}
 portsignals = defaultdict(dict)
 generics = defaultdict(dict)
 packages = {}
+records = {}
+record_elements = defaultdict(dict)
 objects = {
     'entities': entities,
     'portsignals': portsignals,
@@ -36,6 +38,7 @@ class ParseState(Enum):
     PORT = auto()
     GENERIC = auto()
     PACKAGE = auto()
+    RECORD = auto()
 
 
 def init(path: str) -> None:
@@ -48,6 +51,7 @@ def init(path: str) -> None:
         current_doc = []
         current_entity = ''
         current_package = ''
+        current_type_name = ''  # record or enum
         state: Optional[ParseState] = None
         open_parentheses = 0
         lineno = 0
@@ -109,6 +113,21 @@ def init(path: str) -> None:
             elif state is ParseState.PACKAGE and line.lower().startswith('end package'):
                 current_package = '.'.join(current_package.split('.')[:-1])
                 state = None if current_package == '' else ParseState.PACKAGE
+                current_doc = []
+            elif (state is None or state is ParseState.PACKAGE) and line.lower().startswith('type'):
+                if ' record' in line.split('--')[0].lower().split(maxsplit=2)[-1]:
+                    records[line.split()[1]] = current_doc
+                    current_doc = []
+                    state = ParseState.RECORD
+                    current_type_name = line.split()[1]
+            elif state is ParseState.RECORD and line.lower().startswith('end record'):
+                if current_package != '':
+                    state = ParseState.PACKAGE
+                else:
+                    state = None
+            elif state is ParseState.RECORD and ':' in line:
+                element_name, element_type = tuple([x.strip() for x in line.split(';')[0].split(':', 1)])
+                record_elements[current_type_name][f'{element_name} : {element_type}'] = current_doc
                 current_doc = []
             else:
                 current_doc = []
