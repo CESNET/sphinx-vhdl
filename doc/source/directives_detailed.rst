@@ -175,6 +175,15 @@ Auto- Directives
         Do not generate a :rst:dir:`vhdl:autoentity` directive as part of
         generating the automatic documentation for the entity.
 
+.. rst:directive:: vhdl:autoenum
+
+    Automatically generates a documentation for an enumeration defined type.
+    Has one required argument, the name of the type. For the automatic
+    generation to work, the :py:attr:`vhdl_autodoc_source_path` configuration
+    option must be set to point to a valid directory containing VHDL sources
+    describing this entity. See :ref:`autodoc_usage` for further instructions
+    on how the source code must be set up.
+
 .. rst:directive:: vhdl:autogenerics
 
     Automatically generates a documentation for an entity's generics. Has one

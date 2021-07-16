@@ -272,6 +272,15 @@ class VHDLAutoRecordDirective(VHDLRecordTypeDirective):
         return super().handle_signature(sig, signode)
 
 
+class VHDLAutoEnumDirective(VHDLEnumTypeDirective):
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        init_autodoc(self.env.domains['vhdl'])
+        self.content = self.content + StringList(['', ''] + autodoc.enums[sig])
+        for key, value in autodoc.enumvals[sig].items():
+            self.content = self.content + StringList(['', '', f'.. vhdl:enumval:: {key}', ''] + ['  ' + x for x in value])
+        return super().handle_signature(sig, signode)
+
+
 class VHDLAutoPackageDirective(VHDLPackagesDirective):
     def handle_signature(self, sig: str, signode: desc_signature) -> T:
         init_autodoc(self.env.domains['vhdl'])
@@ -354,6 +363,7 @@ class VHDLDomain(Domain):
         'autopackage': VHDLAutoPackageDirective,
         'autogenerics': VHDLAutoGenericsDirective,
         'autorecord': VHDLAutoRecordDirective,
+        'autoenum': VHDLAutoEnumDirective,
         'ports': VHDLPortsDirective,
         'generics': VHDLGenericsDirective,
         'package': VHDLPackagesDirective,

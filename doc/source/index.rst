@@ -24,6 +24,7 @@ Recognized directives
 Directive                          Description
 ================================== ==================================
 :rst:dir:`vhdl:autoentity`         Automatic documentation of entity.
+:rst:dir:`vhdl:autoenum`           Automatic documentation of enumeration types.
 :rst:dir:`vhdl:autogenerics`       Automatic documentation of generics.
 :rst:dir:`vhdl:autopackage`        Automatic documentation of package.
 :rst:dir:`vhdl:autoports`          Automatic documentation of ports.
