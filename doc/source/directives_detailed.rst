@@ -213,9 +213,19 @@ Auto- Directives
 
 .. rst:directive:: vhdl:autorecord
 
-    Autoamtically generates a documentation for a record-defined type. Has one
+    Automatically generates a documentation for a record-defined type. Has one
     required argument, the name of the type to document. For the automatic
     generation to work, the :py:attr:`vhdl_autodoc_source_path` configuration
     option must be set to point to a valid directory containing VHDL sources
-    describing the target entity. See :ref:`autodoc_usage` for further
-    instructions on how the source must be set up.
+    describing the type. See :ref:`autodoc_usage` for further instructions on
+    how the source must be set up.
+
+.. rst:directive:: vhdl:autotype
+
+    Automatically generates a documentation for a type other than enumeration-
+    record-defined one. Has one required argument, the name of the type to
+    document. For the automatic generation to work, the
+    :py:attr:`vhdl_autodoc_source_path` configuration option must be set to
+    point to a valid directory containing VHDL sources describing the type. See
+    :ref:`autodoc_usage` for further instructions on how the sources must be
+    set up.

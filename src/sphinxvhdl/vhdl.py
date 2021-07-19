@@ -70,6 +70,7 @@ class VHDLGeneralTypeDirective(ObjectDescription):
     required_arguments = 1
 
     def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        signode += addnodes.desc_sig_keyword(text='TYPE ')
         signode += addnodes.desc_name(text=sig.split(':')[0].strip())
         signode += addnodes.desc_sig_keyword(text=' : ')
         tempnode = nodes.entry('')
@@ -312,6 +313,15 @@ class VHDLAutoGenericsDirective(VHDLGenericsDirective):
         return super().run()
 
 
+class VHDLAutoTypeDirective(VHDLGeneralTypeDirective):
+
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        init_autodoc(self.env.domains['vhdl'])
+        closest_identifier = get_closest_identifier(sig, autodoc.types.items())
+        self.content = self.content + StringList(['', ''] + closest_identifier[1][1])
+        return super().handle_signature(sig + " : " + closest_identifier[1][0], signode)
+
+
 class VHDLTypeIndex(Index):
     name = 'typeindex'
     localname = "Type Index"
@@ -364,6 +374,7 @@ class VHDLDomain(Domain):
         'autogenerics': VHDLAutoGenericsDirective,
         'autorecord': VHDLAutoRecordDirective,
         'autoenum': VHDLAutoEnumDirective,
+        'autotype': VHDLAutoTypeDirective,
         'ports': VHDLPortsDirective,
         'generics': VHDLGenericsDirective,
         'package': VHDLPackagesDirective,

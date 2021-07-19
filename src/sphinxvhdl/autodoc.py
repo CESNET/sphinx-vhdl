@@ -18,6 +18,7 @@ records = {}
 record_elements = defaultdict(dict)
 enums = {}
 enumvals = defaultdict(dict)
+types = {}
 objects = {
     'entities': entities,
     'portsignals': portsignals,
@@ -131,6 +132,10 @@ def init(path: str) -> None:
                     current_doc = []
                     state = ParseState.ENUM
                     current_type_name = line.split()[1]
+                else:
+                    parse_inline_doc_or_raise(line, current_doc)
+                    types[line.split()[1]] = ' '.join(line.split()[3:]), current_doc
+                    current_doc = []
             elif state is ParseState.RECORD and line.lower().startswith('end record'):
                 if current_package != '':
                     state = ParseState.PACKAGE

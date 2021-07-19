@@ -29,6 +29,7 @@ Directive                          Description
 :rst:dir:`vhdl:autopackage`        Automatic documentation of package.
 :rst:dir:`vhdl:autoports`          Automatic documentation of ports.
 :rst:dir:`vhdl:autorecord`         Automatic documentation of record types.
+:rst:dir:`vhdl:autotype`           Automatic documentation of general types.
 :rst:dir:`vhdl:entity`             A single entity.
 :rst:dir:`vhdl:enum`               Enumeration-defined type.
 :rst:dir:`vhdl:enumval`            A single value in :rst:dir:`vhdl:enum`.
