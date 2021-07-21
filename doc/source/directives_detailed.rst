@@ -43,6 +43,26 @@ Directives
     Describes a single possible enumeration type value. Should only appear in
     :rst:dir:`vhdl:enum`
 
+.. rst:directive:: vhdl:function
+
+    Describes a pure function. Has two required space-separated arguments - the
+    name of the function and the return type.
+
+    Parameters of the function should be documented using
+    :rst:dir:`vhdl:parameters`
+
+    Example:
+
+    .. code-block:: rst
+
+        .. vhdl:function:: log2 integer
+
+            Calculates the base 2 logarithm of the parameter
+
+            .. vhdl:parameters:: n : in integer/std_logic_vector(31 downto 0)
+
+                The number to calculate the logarithm of
+
 .. rst:directive:: vhdl:generics
 
     Used for documenting the generic constants of an entity. Has one required
@@ -78,6 +98,43 @@ Directives
 .. rst:directive:: vhdl:package
 
     Used for documenting packages.
+
+.. rst:directive:: vhdl:parameters
+
+    Used for documenting the parameters of a subprogram (
+    :rst:dir:`vhdl:function` or :rst:dir:`vhdl:procedure` ). Has one required
+    argument; the name of the subprogram being documented, and uses a custom
+    syntax for descriptions of the individual parameters.
+
+    Individual parameters are described in the content of the directive; where
+    lines aligned to the left offset define the parameter names and lines
+    offset from those are detailed descriptions of the parameters above,
+    supporting all the standard reStructuredText formatting and directives.
+    Parameter definitions then take on the form
+    ``parameterName : mode type``, where whitespace can be arbitrary.
+
+    The type and description may contain full ReST syntax.
+
+    Example
+
+    .. code-block:: rst
+
+        .. vhdl:ports:: UART_RX
+
+            CLK:in std_logic
+                Receiver clock at 8 times the frequency of the input signal
+            RST      :  in std_logic
+                Reset signal
+
+                Pull to high for at least one clock cycle before using this
+                entity
+            DIN      : in std_logic
+                Data input line
+
+            DOUT     : out std_logic_vector( :vhdl:genconstant:`WORD_SIZE <UART_RX.WORD_SIZE>` - 1 downto 0)
+                The received data will be written here
+            DOUT_VLD : out std_logic
+                When high, denotes the :vhdl:portsignal:`UART_RX.DOUT` being valid
 
 .. rst:directive:: vhdl:ports
 
@@ -178,6 +235,15 @@ Auto- Directives
 .. rst:directive:: vhdl:autoenum
 
     Automatically generates a documentation for an enumeration defined type.
+    Has one required argument, the name of the type. For the automatic
+    generation to work, the :py:attr:`vhdl_autodoc_source_path` configuration
+    option must be set to point to a valid directory containing VHDL sources
+    describing this entity. See :ref:`autodoc_usage` for further instructions
+    on how the source code must be set up.
+
+.. rst:directive:: vhdl:autofunction
+
+    Automatically generates a documentation for a pure function.
     Has one required argument, the name of the type. For the automatic
     generation to work, the :py:attr:`vhdl_autodoc_source_path` configuration
     option must be set to point to a valid directory containing VHDL sources

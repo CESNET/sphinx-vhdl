@@ -112,6 +112,18 @@ class VHDLRecordElementDirective(ObjectDescription):
         return sig
 
 
+class VHDLFunctionDirective(ObjectDescription):
+    has_content = True
+    required_arguments = 1
+
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        signode += addnodes.desc_sig_keyword(text='FUNCTION ')
+        signode += addnodes.desc_name(text=sig.split()[0])
+        signode += addnodes.desc_sig_keyword(text=' RETURNS ')
+        signode += addnodes.desc_name(text=sig.split()[1])
+        return sig
+
+
 class VHDLEntityDirective(ObjectDescription):
     has_content = True
     required_arguments = 1
@@ -218,6 +230,24 @@ class VHDLPortsDirective(VHDLEntityIOGenericDirective):
             )
 
 
+class VHDLParametersDirective(VHDLEntityIOGenericDirective):
+    id_title = 'parameters'
+    title = 'Parameters'
+    table_headers = 'Parameter', 'Type', 'Mode', 'Description'
+
+    def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
+        try:
+            return (
+                definition.split(":")[0].strip(),
+                definition.split(":", 1)[1].strip().split(maxsplit=1)[1],
+                definition.split(":", 1)[1].strip().split()[0]
+            )
+        except:
+            raise ValueError(
+                f'Malformed port definition, must be in the form `name : mode type`, got {definition}'
+            )
+
+
 class VHDLGenericsDirective(VHDLEntityIOGenericDirective):
     id_title = 'genconstant'
     title = 'Generics'
@@ -255,7 +285,7 @@ class VHDLAutoEntityDirective(VHDLEntityDirective):
 
     def handle_signature(self, sig: str, signode: desc_signature) -> T:
         init_autodoc(self.env.domains['vhdl'])
-        self.content = self.content + StringList(['', ''] + autodoc.entities[sig])
+        self.content = self.content + StringList(['', ''] + autodoc.entities[sig.lower()])
         if 'noautogenerics' not in self.options:
             self.content = self.content + StringList(['', f'.. vhdl:autogenerics:: {sig}', ''])
         if 'noautoports' not in self.options:
@@ -271,6 +301,15 @@ class VHDLAutoRecordDirective(VHDLRecordTypeDirective):
             self.content = self.content + StringList(['', '', f'.. vhdl:recordelem:: {key}', ''] + ['  ' + x for x in value])
 
         return super().handle_signature(sig, signode)
+
+
+class VHDLAutoFunctionDirective(VHDLFunctionDirective):
+    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+        init_autodoc(self.env.domains['vhdl'])
+        identifier = get_closest_identifier(sig.lower(), list(autodoc.functions.items()))
+        self.content = self.content + StringList(['', ''] + identifier[1])
+        super().handle_signature(f'{identifier[0].split(".")[-1]} {identifier[0].split(".")[0]}', signode)
+        return sig
 
 
 class VHDLAutoEnumDirective(VHDLEnumTypeDirective):
@@ -375,6 +414,9 @@ class VHDLDomain(Domain):
         'autorecord': VHDLAutoRecordDirective,
         'autoenum': VHDLAutoEnumDirective,
         'autotype': VHDLAutoTypeDirective,
+        'autofunction': VHDLAutoFunctionDirective,
+        'function': VHDLFunctionDirective,
+        'parameters': VHDLParametersDirective,
         'ports': VHDLPortsDirective,
         'generics': VHDLGenericsDirective,
         'package': VHDLPackagesDirective,
@@ -388,6 +430,7 @@ class VHDLDomain(Domain):
             'types': defaultdict(list),
             'portsignal': defaultdict(list),
             'genconstant': defaultdict(list),
+            'parameters': defaultdict(list),
             'entity': defaultdict(list),
         },
         'autodoc_initialized': False
