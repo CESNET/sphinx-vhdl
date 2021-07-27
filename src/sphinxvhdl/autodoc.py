@@ -1,3 +1,7 @@
+# autodoc.py: A basic VHDL parser and documentation extractor
+# Copyright (C) 2021 CESNET z.s.p.o.
+# Author(s): Jindrich Dite <xditej01@stud.fit.vutbr.cz>
+#
 # SPDX-License-Identifier: BSD-3-Clause
 
 import glob

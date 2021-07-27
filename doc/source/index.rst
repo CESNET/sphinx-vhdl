@@ -5,8 +5,7 @@
 
 sphinx-vhdl
 ===========
-**sphinx-vhdl** is a `Sphinx`_ extension to generate documentation for the
-VHDL language
+**sphinx-vhdl** is a `Sphinx`_ extension to generate documentation for the VHDL language. It can be used both to manually write your documentation, describing different language constructs used, and to automatically pull your documentation from source code comments.
 
 
 Usage
@@ -16,6 +15,7 @@ Usage
 .. code-block:: python
 
   extensions = ['sphinxvhdl.vhdl']
+  vhdl_autodoc_source_path = 'path/to/your/vhdl/sources/root'
 
 Recognized directives
 =====================
@@ -25,6 +25,7 @@ Directive                          Description
 ================================== ==================================
 :rst:dir:`vhdl:autoentity`         Automatic documentation of entity.
 :rst:dir:`vhdl:autoenum`           Automatic documentation of enumeration types.
+:rst:dir:`vhdl:autofunction`       Automatic documentation of functions.
 :rst:dir:`vhdl:autogenerics`       Automatic documentation of generics.
 :rst:dir:`vhdl:autopackage`        Automatic documentation of package.
 :rst:dir:`vhdl:autoports`          Automatic documentation of ports.
@@ -33,8 +34,10 @@ Directive                          Description
 :rst:dir:`vhdl:entity`             A single entity.
 :rst:dir:`vhdl:enum`               Enumeration-defined type.
 :rst:dir:`vhdl:enumval`            A single value in :rst:dir:`vhdl:enum`.
+:rst:dir:`vhdl:function`           A pure function.
 :rst:dir:`vhdl:generics`           Ports of an :rst:dir:`vhdl:entity`.
 :rst:dir:`vhdl:package`            A whole single package.
+:rst:dir:`vhdl:parameters`         A parameter list to a subprogram.
 :rst:dir:`vhdl:ports`              Generics of an :rst:dir:`vhdl:entity`.
 :rst:dir:`vhdl:record`             Record-defined type.
 :rst:dir:`vhdl:recordelem`         A single field in :rst:dir:`vhdl:record`
@@ -62,6 +65,45 @@ Role                               Description
    config.rst
    autodoc.rst
 
+Example of VHDL code written for auto documentation
+===================================================
+
+.. code-block:: vhdl
+
+    library ieee;
+    use ieee.numeric_std.all;
+
+    -- This package provides basic mathematic functions utilised all through
+    -- the design
+    package math_pack is
+        -- This function calculates the base 2 logarithm of a number.
+        -- .. vhdl:parameters:: log2
+        --     a : in unsigned
+        --         The number of which to calculate the logarithm
+        function log2 parameter (a : unsigned) return integer;
+    end package math_pack;
+
+    library ieee;
+    use work.math_pack.all;
+    use ieee.std_logic_1164.all;
+
+    -- This is a simple counter entity that triggers its output once every
+    -- :vhdl:genconstant:`max_value <counter.max_value>` clock cycles.
+    entity counter is
+    generic (
+        -- Determines how many clock cycles should pass between each two
+        -- activations of the output.
+        constant max_value : integer := 16
+    );
+    port (
+        IN_EN  : in std_logic;  -- The input clock
+        OUT_EN : out std_logic  -- The output signal
+    );
+    end entity counter;
+
+To use the automatically extracted comments in your documentation, you then
+have to place one of the ``auto…`` directives above on the relevant place in
+your documentation files.
 
 Indices and tables
 ==================

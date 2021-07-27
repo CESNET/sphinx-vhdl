@@ -1,3 +1,7 @@
+# vhdl.py: A vhdl domain for the Sphinx documentation system
+# Copyright (C) 2021 CESNET z.s.p.o.
+# Author(s): Jindrich Dite <xditej01@stud.fit.vutbr.cz>
+#
 # SPDX-License-Identifier: BSD-3-Clause
 
 from collections import defaultdict
