@@ -328,7 +328,7 @@ class VHDLAutoEnumDirective(VHDLEnumTypeDirective):
 class VHDLAutoPackageDirective(VHDLPackagesDirective):
     def handle_signature(self, sig: str, signode: desc_signature) -> T:
         init_autodoc(self.env.domains['vhdl'])
-        self.content = self.content + StringList(['', ''] + get_closest_identifier(sig, list(autodoc.packages.items()))[1])
+        self.content = StringList(get_closest_identifier(sig, list(autodoc.packages.items()))[1] + ['', '']) + self.content
         return super().handle_signature(sig, signode)
 
 

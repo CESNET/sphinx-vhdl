@@ -88,14 +88,14 @@ def init(path: str) -> None:
                 current_doc = []
             elif state == ParseState.PORT and ':' in line:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
-                definition = line.split(';')[0].split(':=')[0].strip()
+                definition = line.split('--')[0].split(';')[0].split(':=')[0].strip()
                 if definition.lower().startswith('signal'):
                     definition = definition[6:].strip()
                 portsignals[current_entity.lower()][definition] = current_doc
                 current_doc = []
             elif state == ParseState.GENERIC and ':' in line:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
-                definition = line.split(';')[0].strip()
+                definition = line.split('--')[0].split(';')[0].strip()
                 if ':=' not in definition:
                     definition += ':= UNDEFINED'
                 if definition.lower().startswith('constant'):

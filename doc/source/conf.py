@@ -28,7 +28,10 @@ author = 'Cesnet z.s.p.o.'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinxvhdl.vhdl'
 ]
+
+vhdl_autodoc_source_path = 'source'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

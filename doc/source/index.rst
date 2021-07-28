@@ -10,6 +10,7 @@ sphinx-vhdl
 
 Usage
 =====
+To setup sphinx-vhdl for your project, please edit your sphinx ``conf.py`` file to include the following - an include of the actual module, and (optionally) a configuration of path to use for the autodoc feature
 ``doc/conf.py``
 
 .. code-block:: python
@@ -64,6 +65,7 @@ Role                               Description
    roles_detailed.rst
    config.rst
    autodoc.rst
+   example_built.rst
 
 Example of VHDL code written for auto documentation
 ===================================================
@@ -77,7 +79,9 @@ Example of VHDL code written for auto documentation
     -- the design
     package math_pack is
         -- This function calculates the base 2 logarithm of a number.
+        --
         -- .. vhdl:parameters:: log2
+        --
         --     a : in unsigned
         --         The number of which to calculate the logarithm
         function log2 parameter (a : unsigned) return integer;
@@ -87,23 +91,37 @@ Example of VHDL code written for auto documentation
     use work.math_pack.all;
     use ieee.std_logic_1164.all;
 
-    -- This is a simple counter entity that triggers its output once every
-    -- :vhdl:genconstant:`max_value <counter.max_value>` clock cycles.
+    -- This is a simple counter entity that counts the amount of passed input
+    -- clock cycles up to :vhdl:genconstant:`max_value <counter.max_value>`.
     entity counter is
     generic (
-        -- Determines how many clock cycles should pass between each two
-        -- activations of the output.
+        -- Determines how many clock cycles must pass before the buffer
+        -- overflowing.
         constant max_value : integer := 16
     );
     port (
-        IN_EN  : in std_logic;  -- The input clock
-        OUT_EN : out std_logic  -- The output signal
+        IN_EN  : in std_logic;                                       -- The input clock
+        OUT_EN : out std_logic_vector(log2(max_value) - 1 downto 0)  -- The output signal
     );
     end entity counter;
 
 To use the automatically extracted comments in your documentation, you then
 have to place one of the ``auto…`` directives above on the relevant place in
-your documentation files.
+your documentation files. See :ref:`example_doc` for how this code will look
+when built.
+
+.. code-block:: rst
+
+  .. _example_doc:
+
+   Example Documentation
+   =====================
+
+   .. vhdl:autopackage:: math_pack
+
+     .. vhdl:autofunction:: log2
+
+   .. vhdl:autoentity:: counter
 
 Indices and tables
 ==================

@@ -6,4 +6,5 @@ Configuration options
   :value: "."
 
   Determines the root of the directory structure where the VHDL source codes
-  used for automatic documentation generation reside.
+  used for automatic documentation generation reside. Must be relative to from
+  where the build command is run.
