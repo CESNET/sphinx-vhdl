@@ -17,7 +17,7 @@ To setup sphinx-vhdl for your project, please edit your sphinx ``conf.py`` file 
   extensions = ['sphinxvhdl.vhdl']
   vhdl_autodoc_source_path = 'path/to/your/vhdl/sources/root'
 
-See :ref:`_configuration` for more information.
+See :ref:`configuration` for more information.
 
 Recognized directives
 =====================
@@ -46,7 +46,7 @@ Directive                          Description
 :rst:dir:`vhdl:type`               A type other than a record or enumeration.
 ================================== ==================================
 
-See :ref:`_directives` for more information.
+See :ref:`directives` for more information.
 
 Recognized roles
 ================
@@ -60,7 +60,7 @@ Role                               Description
 :rst:role:`vhdl:type`              References :rst:dir:`vhdl:enum`.
 ================================== ==================================
 
-See :ref:`_roles` for more information.
+See :ref:`roles` for more information.
 
 Example of VHDL code written for auto documentation
 ===================================================
@@ -118,7 +118,7 @@ when built.
 
    .. vhdl:autoentity:: counter
 
-See :ref:`_autodoc_usage` for more information.
+See :ref:`autodoc_usage` for more information.
 
 Indices and tables
 ==================
