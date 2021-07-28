@@ -31,7 +31,7 @@ extensions = [
     'sphinxvhdl.vhdl'
 ]
 
-vhdl_autodoc_source_path = 'source'
+vhdl_autodoc_source_path = 'doc/source'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
