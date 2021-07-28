@@ -109,7 +109,6 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 
-.. _Sphinx: https://http://www.sphinx-doc.org
+.. _Sphinx: https://www.sphinx-doc.org
