@@ -7,7 +7,6 @@ sphinx-vhdl
 ===========
 **sphinx-vhdl** is a `Sphinx`_ extension to generate documentation for the VHDL language. It can be used both to manually write your documentation, describing different language constructs used, and to automatically pull your documentation from source code comments.
 
-
 Usage
 =====
 To setup sphinx-vhdl for your project, please edit your sphinx ``conf.py`` file to include the following - an include of the actual module, and (optionally) a configuration of path to use for the autodoc feature
@@ -17,6 +16,8 @@ To setup sphinx-vhdl for your project, please edit your sphinx ``conf.py`` file 
 
   extensions = ['sphinxvhdl.vhdl']
   vhdl_autodoc_source_path = 'path/to/your/vhdl/sources/root'
+
+See :ref:`_configuration` for more information.
 
 Recognized directives
 =====================
@@ -45,6 +46,8 @@ Directive                          Description
 :rst:dir:`vhdl:type`               A type other than a record or enumeration.
 ================================== ==================================
 
+See :ref:`_directives` for more information.
+
 Recognized roles
 ================
 
@@ -57,15 +60,7 @@ Role                               Description
 :rst:role:`vhdl:type`              References :rst:dir:`vhdl:enum`.
 ================================== ==================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   directives_detailed.rst
-   roles_detailed.rst
-   config.rst
-   autodoc.rst
-   example_built.rst
+See :ref:`_roles` for more information.
 
 Example of VHDL code written for auto documentation
 ===================================================
@@ -123,10 +118,22 @@ when built.
 
    .. vhdl:autoentity:: counter
 
+See :ref:`_autodoc_usage` for more information.
+
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`search`
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   directives_detailed.rst
+   roles_detailed.rst
+   config.rst
+   autodoc.rst
+   example_built.rst
 
 .. _Sphinx: https://www.sphinx-doc.org
