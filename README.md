@@ -10,7 +10,7 @@ You can see the detailed documentation at https://ndk.gitlab.liberouter.org:5051
 
 The python package must be installed with
 ```shell
-todo
+pip3 install sphinx-vhdl
 ```
 
 The usage of this extension requires Python >= 3.7 and Sphinx >= 4.0.0.
