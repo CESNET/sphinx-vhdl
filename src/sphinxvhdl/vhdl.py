@@ -213,7 +213,7 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
             self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
             body += row
 
-        return [addnodes.desc_signature(text=self.title), table]
+        return [addnodes.desc_name(text=self.title), table]
 
 
 class VHDLPortsDirective(VHDLEntityIOGenericDirective):
