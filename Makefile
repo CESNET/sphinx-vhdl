@@ -1,12 +1,8 @@
-# Minimal makefile for Sphinx documentation
-#
-
-# You can set these variables from the command line, and also
-# from the environment for the first two.
+# Makefile for generating documentation fof sphinx-vhdl in doc/build
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = source
-BUILDDIR      = build
+SOURCEDIR     = doc/source
+BUILDDIR      = doc/build
 
 # Put it first so that "make" without argument is like "make help".
 help:
