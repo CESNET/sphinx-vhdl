@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>sphinx-vhdl &#8212; sphinx-vhdl  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -33,11 +34,11 @@
           <div class="body" role="main">
             
   <section id="sphinx-vhdl">
-<h1>sphinx-vhdl<a class="headerlink" href="#sphinx-vhdl" title="Permalink to this headline">¶</a></h1>
+<h1>sphinx-vhdl<a class="headerlink" href="#sphinx-vhdl" title="Permalink to this heading">¶</a></h1>
 <p><strong>sphinx-vhdl</strong> is a <a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a> extension to generate documentation for the VHDL language. It can be used both to manually write your documentation, describing different language constructs used, and to automatically pull your documentation from source code comments.</p>
 </section>
 <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h1>
 <p>To setup sphinx-vhdl for your project, please edit your sphinx <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> file to include the following - an include of the actual module, and (optionally) a configuration of path to use for the autodoc feature
 <code class="docutils literal notranslate"><span class="pre">doc/conf.py</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sphinxvhdl.vhdl&#39;</span><span class="p">]</span>
@@ -47,12 +48,8 @@
 <p>See <a class="reference internal" href="config.html#configuration"><span class="std std-ref">Configuration options</span></a> for more information.</p>
 </section>
 <section id="recognized-directives">
-<h1>Recognized directives<a class="headerlink" href="#recognized-directives" title="Permalink to this headline">¶</a></h1>
+<h1>Recognized directives<a class="headerlink" href="#recognized-directives" title="Permalink to this heading">¶</a></h1>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 43%" />
-<col style="width: 57%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Directive</p></th>
 <th class="head"><p>Description</p></th>
@@ -121,12 +118,8 @@
 <p>See <a class="reference internal" href="directives_detailed.html#directives"><span class="std std-ref">Directives</span></a> for more information.</p>
 </section>
 <section id="recognized-roles">
-<h1>Recognized roles<a class="headerlink" href="#recognized-roles" title="Permalink to this headline">¶</a></h1>
+<h1>Recognized roles<a class="headerlink" href="#recognized-roles" title="Permalink to this heading">¶</a></h1>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 36%" />
-<col style="width: 64%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Role</p></th>
 <th class="head"><p>Description</p></th>
@@ -150,7 +143,7 @@
 <p>See <a class="reference internal" href="roles_detailed.html#roles"><span class="std std-ref">Roles</span></a> for more information.</p>
 </section>
 <section id="example-of-vhdl-code-written-for-auto-documentation">
-<h1>Example of VHDL code written for auto documentation<a class="headerlink" href="#example-of-vhdl-code-written-for-auto-documentation" title="Permalink to this headline">¶</a></h1>
+<h1>Example of VHDL code written for auto documentation<a class="headerlink" href="#example-of-vhdl-code-written-for-auto-documentation" title="Permalink to this heading">¶</a></h1>
 <div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="k">library</span> <span class="nn">ieee</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">ieee.numeric_std.</span><span class="k">all</span><span class="p">;</span>
 
@@ -204,7 +197,7 @@ when built.</p>
 <p>See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for more information.</p>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
@@ -255,7 +248,7 @@ when built.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -272,7 +265,7 @@ when built.</p>
       &copy;2021, Cesnet z.s.p.o..
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

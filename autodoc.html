@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Autodoc Usage &#8212; sphinx-vhdl  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +35,7 @@
           <div class="body" role="main">
             
   <section id="autodoc-usage">
-<span id="id1"></span><h1>Autodoc Usage<a class="headerlink" href="#autodoc-usage" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Autodoc Usage<a class="headerlink" href="#autodoc-usage" title="Permalink to this heading">¶</a></h1>
 <p>Before the automatic documentation feature of the Sphinx-VHDL plugin may be
 used, the plugin must be set up with the path to a directory where the project
 with the sources for automatic documentation reside. Please refer to
@@ -55,7 +56,7 @@ line, or placed after the object definition. For a very short documentation
 comments, the comment immediately following the declaration on the same line is
 also acceptable.</p>
 <section id="formatting">
-<h2>Formatting<a class="headerlink" href="#formatting" title="Permalink to this headline">¶</a></h2>
+<h2>Formatting<a class="headerlink" href="#formatting" title="Permalink to this heading">¶</a></h2>
 <p>For the automatic extraction to work, the code must be particularly formatted. Specifically:</p>
 <ul>
 <li><p>entity declaration must be on its own individual line</p>
@@ -75,7 +76,7 @@ as the <code class="docutils literal notranslate"><span class="pre">type</span><
 </ul>
 </section>
 <section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span>-- This is not a documentation comment
 
 -- This is also not a documentation comment
@@ -145,7 +146,7 @@ end entity entityName;
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -162,7 +163,7 @@ end entity entityName;
       &copy;2021, Cesnet z.s.p.o..
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

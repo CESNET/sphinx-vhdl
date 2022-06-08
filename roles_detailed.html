@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Roles &#8212; sphinx-vhdl  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,36 +35,36 @@
           <div class="body" role="main">
             
   <section id="roles">
-<span id="id1"></span><h1>Roles<a class="headerlink" href="#roles" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Roles<a class="headerlink" href="#roles" title="Permalink to this heading">¶</a></h1>
 <dl class="rst role">
 <dt class="sig sig-object rst" id="role-vhdl-entity">
-<span id="role-vhdl:entity"></span><span class="sig-name descname"><span class="pre">:vhdl:entity:</span></span><a class="headerlink" href="#role-vhdl-entity" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">:vhdl:entity:</span></span><a class="headerlink" href="#role-vhdl-entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>This role allows referencing entities defined by an <a class="reference internal" href="directives_detailed.html#directive-vhdl-entity" title="vhdl:entity directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:entity</span></code></a>
 directive or <a class="reference internal" href="directives_detailed.html#directive-vhdl-autoentity" title="vhdl:autoentity directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:autoentity</span></code></a> directive.</p>
 </dd></dl>
 
 <dl class="rst role">
 <dt class="sig sig-object rst" id="role-vhdl-genconstant">
-<span id="role-vhdl:genconstant"></span><span class="sig-name descname"><span class="pre">:vhdl:genconstant:</span></span><a class="headerlink" href="#role-vhdl-genconstant" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">:vhdl:genconstant:</span></span><a class="headerlink" href="#role-vhdl-genconstant" title="Permalink to this definition">¶</a></dt>
 <dd><p>This role allows referencing individual constants inside a
 <a class="reference internal" href="directives_detailed.html#directive-vhdl-generics" title="vhdl:generics directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:generics</span></code></a> or <a class="reference internal" href="directives_detailed.html#directive-vhdl-autogenerics" title="vhdl:autogenerics directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:autogenerics</span></code></a> directive.</p>
 </dd></dl>
 
 <dl class="rst role">
 <dt class="sig sig-object rst" id="role-vhdl-portsignal">
-<span id="role-vhdl:portsignal"></span><span class="sig-name descname"><span class="pre">:vhdl:portsignal:</span></span><a class="headerlink" href="#role-vhdl-portsignal" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">:vhdl:portsignal:</span></span><a class="headerlink" href="#role-vhdl-portsignal" title="Permalink to this definition">¶</a></dt>
 <dd><p>This role allows referencing individual ports inside a
 <a class="reference internal" href="directives_detailed.html#directive-vhdl-ports" title="vhdl:ports directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:ports</span></code></a> or <a class="reference internal" href="directives_detailed.html#directive-vhdl-autoports" title="vhdl:autoports directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:autoports</span></code></a> directive.</p>
 </dd></dl>
 
 <dl class="rst role">
 <dt class="sig sig-object rst" id="role-vhdl-type">
-<span id="role-vhdl:type"></span><span class="sig-name descname"><span class="pre">:vhdl:type:</span></span><a class="headerlink" href="#role-vhdl-type" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">:vhdl:type:</span></span><a class="headerlink" href="#role-vhdl-type" title="Permalink to this definition">¶</a></dt>
 <dd><p>This role allows referencing types defined by <a class="reference internal" href="directives_detailed.html#directive-vhdl-enum" title="vhdl:enum directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:enum</span></code></a> .</p>
 </dd></dl>
 
 <section id="name-resolution">
-<span id="id2"></span><h2>Name resolution<a class="headerlink" href="#name-resolution" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>Name resolution<a class="headerlink" href="#name-resolution" title="Permalink to this heading">¶</a></h2>
 <p>All identifiers can be referred to in a variety of names. Taking for example
 ports, they can be specified with either just a short name of the port, in
 which case it may however end up referring to identically named port on another
@@ -120,7 +121,7 @@ selected.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -137,7 +138,7 @@ selected.</p>
       &copy;2021, Cesnet z.s.p.o..
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
