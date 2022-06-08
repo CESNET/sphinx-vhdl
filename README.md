@@ -27,3 +27,7 @@ extensions = ['sphinxvhdl.vhdl']
 vhdl_autodoc_source_path = 'path/to/your/vhdl/sources/root'
 ```
 
+## Repository maintainer
+
+- Original: Jindřich Dítě, 230810@vut.cz
+- Backup: Jakub Cabal, cabal@cesnet.cz
