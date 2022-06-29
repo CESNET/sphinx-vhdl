@@ -185,6 +185,8 @@ REStructured text formatting and directives. Port definitions then take on
 the form <code class="docutils literal notranslate"><span class="pre">portName</span> <span class="pre">:</span> <span class="pre">mode</span> <span class="pre">sig_width</span></code>, where whitespace can be arbitrary.</p>
 <p>Data width signifies the width of the <code class="docutils literal notranslate"><span class="pre">std_logic_vector</span></code> on the port.</p>
 <p>The signal width and description may contain full ReST syntax.</p>
+<p>Cumulative description of a whole group of ports is also possible, by the
+means of a <code class="docutils literal notranslate"><span class="pre">SPHINXGRP</span> <span class="pre">groupname</span></code> definition in place of a port definition</p>
 <p>Example</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">vhdl:ports</span><span class="p">::</span> UART_RX
 
@@ -197,7 +199,9 @@ the form <code class="docutils literal notranslate"><span class="pre">portName</
         entity
     DIN      : in 1
         Data input line
-
+    SPHINXGRP output
+        The following two ports are used in conjunction as the output
+        of the receiver
     DOUT     : out <span class="na">:vhdl:genconstant:</span><span class="nv">`WORD_SIZE &lt;UART_RX.WORD_SIZE&gt;`</span>
         The received data will be written here
     DOUT_VLD : out 1
@@ -414,7 +418,7 @@ set up.</p>
       &copy;2021, Cesnet z.s.p.o..
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
