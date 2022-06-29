@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from collections import defaultdict
-from typing import Iterable, Tuple, List, Optional
+from typing import Iterable, Tuple, List, Optional, Union
 
 from docutils import nodes
 from docutils.statemachine import StringList
@@ -150,11 +150,11 @@ class VHDLEntityDirective(ObjectDescription):
 class VHDLEntityIOGenericDirective(SphinxDirective):
     has_content = True
     required_arguments = 1
-    table_headers: Tuple[str, str, str, str]
+    table_headers: Tuple[str, str, str, str, str]
     title: str
     id_title: str
 
-    def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
+    def get_fields_from_definition(self, definition: str) -> Union[Tuple[str, str, str], Tuple[str, str, str, str]]:
         raise NotImplementedError
 
     def run(self):
@@ -164,43 +164,62 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
 
         head = nodes.thead()
         body = nodes.tbody()
+
+        index = 0
+        has_groups = False
+        while len(self.content) > index:
+            if len(self.content[index]) > 0 and not self.content[index][0].isspace():
+                fields = self.get_fields_from_definition(self.content[index])
+                has_groups = has_groups or len(fields) == 4
+            index += 1
+        index = 0
+
+        row: Optional[nodes.row]
+        row = nodes.row()
+        if has_groups:
+            row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[0])))
+            pass
+        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[1])))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[2])))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[3])))
+        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[4])))
+        head += row
+        row = None
+        current_description_lines = StringList()
+        description_entry = nodes.entry('')
+        if has_groups:
+            group += nodes.colspec(colwidth=10)
+            pass
         group += nodes.colspec(colwidth=10)
         group += nodes.colspec(colwidth=10)
         group += nodes.colspec(colwidth=10)
         group += nodes.colspec(colwidth=70)
         group += head
         group += body
-
-        row: Optional[nodes.row]
-        row = nodes.row()
-        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[0])))
-        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[1])))
-        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[2])))
-        row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[3])))
-        head += row
-        row = None
-        current_description_lines = StringList()
-        index = 0
-        description_entry = nodes.entry('')
         while len(self.content) > index:
             if len(self.content[index]) > 0 and not self.content[index][0].isspace():
                 if row is not None:
                     body += row
                 row = nodes.row()
                 fields = self.get_fields_from_definition(self.content[index])
-                row_id = f'vhdl-{self.id_title}-{self.arguments[0].lower()}-{fields[0].lower()}'
-                self.env.domaindata['vhdl']['refs'][self.id_title][fields[0].lower()].append(
+                if len(fields) == 3:
+                    fields = "", fields[0], fields[1], fields[2]
+                row_id = f'vhdl-{self.id_title}-{self.arguments[0].lower()}-{fields[1].lower()}'
+                self.env.domaindata['vhdl']['refs'][self.id_title][fields[1].lower()].append(
                     (self.arguments[0].lower(), (self.env.docname, row_id)))
                 row['ids'].append(row_id)
-                row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[0])))
+                if has_groups:
+                    row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[0])))
+                    pass
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[1])))
 
-                refnode = pending_xref(refdomain='vhdl', reftype='type', reftarget=fields[1])
-                refnode += nodes.Text(fields[1])
+                refnode = pending_xref(refdomain='vhdl', reftype='type', reftarget=fields[2])
+                refnode += nodes.Text(fields[2])
                 type_node = nodes.entry('')
-                self.state.nested_parse(StringList(initlist=[fields[1]]), 0, type_node)
+                self.state.nested_parse(StringList(initlist=[fields[2]]), 0, type_node)
                 row += type_node
 
-                row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[2])))
+                row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[3])))
 
                 self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
                 description_entry = nodes.entry('')
@@ -212,17 +231,18 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
         if row is not None:
             self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
             body += row
-
         return [addnodes.desc_name(text=self.title), table]
 
 
 class VHDLPortsDirective(VHDLEntityIOGenericDirective):
     id_title = 'portsignal'
     title = 'Ports'
-    table_headers = 'Port', 'Type', 'Mode', 'Description'
+    table_headers = 'Group', 'Port', 'Type', 'Mode', 'Description'
 
-    def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
+    def get_fields_from_definition(self, definition: str) -> Union[Tuple[str, str, str], Tuple[str, str, str, str]]:
         try:
+            if definition.strip().startswith("SPHINXGRP "):
+                return definition.split(maxsplit=1)[1].strip(), "", "", ""
             return (
                 definition.split(":")[0].strip(),
                 definition.split(":", 1)[1].strip().split(maxsplit=1)[1],
@@ -237,7 +257,7 @@ class VHDLPortsDirective(VHDLEntityIOGenericDirective):
 class VHDLParametersDirective(VHDLEntityIOGenericDirective):
     id_title = 'parameters'
     title = 'Parameters'
-    table_headers = 'Parameter', 'Type', 'Mode', 'Description'
+    table_headers = 'Group', 'Parameter', 'Type', 'Mode', 'Description'
 
     def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
         try:
@@ -255,7 +275,7 @@ class VHDLParametersDirective(VHDLEntityIOGenericDirective):
 class VHDLGenericsDirective(VHDLEntityIOGenericDirective):
     id_title = 'genconstant'
     title = 'Generics'
-    table_headers = 'Generic', 'Type', 'Default', 'Description'
+    table_headers = 'Group', 'Generic', 'Type', 'Default', 'Description'
 
     def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
         try:

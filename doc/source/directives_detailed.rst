@@ -154,6 +154,9 @@ Directives
 
     The signal width and description may contain full ReST syntax.
 
+    Cumulative description of a whole group of ports is also possible, by the
+    means of a ``SPHINXGRP groupname`` definition in place of a port definition
+
     Example
 
     .. code-block:: rst
@@ -169,7 +172,9 @@ Directives
                 entity
             DIN      : in 1
                 Data input line
-
+            SPHINXGRP output
+                The following two ports are used in conjunction as the output
+                of the receiver
             DOUT     : out :vhdl:genconstant:`WORD_SIZE <UART_RX.WORD_SIZE>`
                 The received data will be written here
             DOUT_VLD : out 1
