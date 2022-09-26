@@ -30,3 +30,12 @@ port (
     OUT_EN : out std_logic_vector(log2(max_value) - 1 downto 0)  -- The output signal
 );
 end entity counter;
+
+architecture FULL of counter is
+
+    -- Width of counter
+    constant CNT_WIDTH : natural := 8;
+    -- Width of data stream
+    constant DATA_WIDTH : natural := 8;
+
+end architecture;
