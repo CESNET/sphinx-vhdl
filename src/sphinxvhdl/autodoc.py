@@ -16,6 +16,7 @@ LOG = logging.getLogger('sphinxvhdl-autodoc')
 
 entities = {}
 portsignals = defaultdict(dict)
+constants = defaultdict(dict)
 generics = defaultdict(dict)
 packages = {}
 records = {}
@@ -25,7 +26,7 @@ enumvals = defaultdict(dict)
 types = {}
 functions = {}
 
-
+# Function for parsing line comments
 def parse_inline_doc_or_raise(line: str, current_doc: List[str]):
     if '-- ' in line:
         if len(current_doc) > 0:
@@ -47,6 +48,7 @@ def parse_inline_doc_or_print_error(current_doc, filename, line, lineno):
 class ParseState(Enum):
     ENTITY_DECL = auto()
     PORT = auto()
+    CONST = auto()
     GENERIC = auto()
     PACKAGE = auto()
     RECORD = auto()
@@ -70,22 +72,41 @@ def init(path: str) -> None:
         for line in source_code:
             lineno += 1
             line = line.strip()
+            # Line comments logic
             if line.startswith('-- '):
                 current_doc.append(line[3:])
+            # If line start with keyword architecture then save name of architecture
+            elif line.lower().startswith('architecture'):
+                current_constant = line.split()[3]
+            # If line contains keyword constant and state is not generice then start to collecting constants
+            elif state != ParseState.GENERIC and 'constant' in line:
+                parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
+                definition = line.split('--')[0].split(';')[0]
+                if ':=' not in definition:
+                    definition += ':= UNDEFINED'
+                definition = definition[8:].strip()
+                constants[current_constant.lower()][definition] = current_doc
+                current_doc = []
+            # If there is -- without gap, then ignore
             elif line == '--':
                 current_doc.append('')
+            # If there is word entity then try parse, save entity name and add description of entity to associative array
+            # ID of ass. array is name of entity. At the end clear current description and change state to entity declaration
             elif line.lower().startswith('entity ') and ' is' in line:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 current_entity = line.split()[1]
                 entities[current_entity.lower()] = current_doc
                 current_doc = []
                 state = ParseState.ENTITY_DECL
+            # Check if there is any port declaration
             elif state == ParseState.ENTITY_DECL and line.lower().startswith('port'):
                 state = ParseState.PORT
                 current_doc = []
+            # Check if there is any generic declaration
             elif state == ParseState.ENTITY_DECL and line.lower().startswith('generic'):
                 state = ParseState.GENERIC
                 current_doc = []
+            # If there is line which contains ":" then it's one of ports, parse it and save his definition
             elif state == ParseState.PORT and ':' in line:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 definition = line.split('--')[0].split(';')[0].split(':=')[0].strip()
@@ -93,6 +114,7 @@ def init(path: str) -> None:
                     definition = definition[6:].strip()
                 portsignals[current_entity.lower()][definition] = current_doc
                 current_doc = []
+            # If there is line which contains ":" then it's one of generic, parse it and save his definition
             elif state == ParseState.GENERIC and ':' in line:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 definition = line.split('--')[0].split(';')[0].strip()
@@ -102,9 +124,11 @@ def init(path: str) -> None:
                     definition = definition[8:].strip()
                 generics[current_entity.lower()][definition] = current_doc
                 current_doc = []
+            # End of the entity was found
             elif state == ParseState.ENTITY_DECL and line.lower().startswith('end'):
                 state = None
                 current_doc = []
+            # If there is magic word package then parse package and save his definition
             elif (state is None or state is ParseState.PACKAGE) and line.lower().startswith('package'):
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 state = ParseState.PACKAGE

@@ -8,3 +8,4 @@ Example Documentation
   .. vhdl:autofunction:: log2
 
 .. vhdl:autoentity:: counter
+.. vhdl:autoconstants:: counter

@@ -253,6 +253,23 @@ class VHDLPortsDirective(VHDLEntityIOGenericDirective):
                 f'Malformed port definition, must be in the form `name : mode type`, got {definition}'
             )
 
+class VHDLConstantsDirective(VHDLEntityIOGenericDirective):
+    id_title = 'genconstant'
+    title = 'Constants'
+    table_headers = 'Group', 'Constant', 'Type', 'Value', 'Description'
+
+    def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
+        try:
+            return (
+                definition.split(':')[0].strip(),
+                definition.split(':', 1)[1].split(':=')[0].strip(),
+                definition.split(':=')[1].strip()
+            )
+        except:
+            raise ValueError(
+                f"Malformed constant definition, must be in the form `name : type := defaultValue`, got {definition}"
+            )
+
 
 class VHDLParametersDirective(VHDLEntityIOGenericDirective):
     id_title = 'parameters'
@@ -273,7 +290,7 @@ class VHDLParametersDirective(VHDLEntityIOGenericDirective):
 
 
 class VHDLGenericsDirective(VHDLEntityIOGenericDirective):
-    id_title = 'genconstant'
+    id_title = 'gengeneric'
     title = 'Generics'
     table_headers = 'Group', 'Generic', 'Type', 'Default', 'Description'
 
@@ -375,6 +392,16 @@ class VHDLAutoGenericsDirective(VHDLGenericsDirective):
         )
         return super().run()
 
+class VHDLAutoConstantsDirective(VHDLConstantsDirective):
+    has_content = False
+
+    def run(self):
+        init_autodoc(self.env.domains['vhdl'])
+        self.content = StringList(
+            [item for subitem in [[key, *[f'  {x}' for x in autodoc.constants[self.arguments[0].lower()][key]]]
+                                  for key in autodoc.constants[self.arguments[0].lower()].keys()] for item in subitem]
+        )
+        return super().run()
 
 class VHDLAutoTypeDirective(VHDLGeneralTypeDirective):
 
@@ -435,6 +462,7 @@ class VHDLDomain(Domain):
         'autoports': VHDLAutoPortsDirective,
         'autopackage': VHDLAutoPackageDirective,
         'autogenerics': VHDLAutoGenericsDirective,
+        'autoconstants': VHDLAutoConstantsDirective,
         'autorecord': VHDLAutoRecordDirective,
         'autoenum': VHDLAutoEnumDirective,
         'autotype': VHDLAutoTypeDirective,
@@ -443,6 +471,7 @@ class VHDLDomain(Domain):
         'parameters': VHDLParametersDirective,
         'ports': VHDLPortsDirective,
         'generics': VHDLGenericsDirective,
+        'constants': VHDLConstantsDirective,
         'package': VHDLPackagesDirective,
         'record': VHDLRecordTypeDirective,
         'recordelem': VHDLRecordElementDirective,
@@ -453,6 +482,7 @@ class VHDLDomain(Domain):
         'refs': {
             'types': defaultdict(list),
             'portsignal': defaultdict(list),
+            'gengeneric': defaultdict(list),
             'genconstant': defaultdict(list),
             'parameters': defaultdict(list),
             'entity': defaultdict(list),
@@ -465,6 +495,7 @@ class VHDLDomain(Domain):
     roles = {
         'portsignal': XRefRole(),
         'genconstant': XRefRole(),
+        'gengeneric': XRefRole(),
         'type': XRefRole(),
         'entity': XRefRole(),
     }
@@ -475,6 +506,8 @@ class VHDLDomain(Domain):
             index = self.data['refs']['types']
         elif typ == 'portsignal':
             index = self.data['refs']['portsignal']
+        elif typ == 'gengeneric':
+            index = self.data['refs']['gengeneric']
         elif typ == 'genconstant':
             index = self.data['refs']['genconstant']
         elif typ == 'entity':
