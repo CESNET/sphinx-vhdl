@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>sphinx-vhdl &#8212; sphinx-vhdl  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -14,6 +14,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Directives" href="directives_detailed.html" />
@@ -144,38 +145,38 @@
 </section>
 <section id="example-of-vhdl-code-written-for-auto-documentation">
 <h1>Example of VHDL code written for auto documentation<a class="headerlink" href="#example-of-vhdl-code-written-for-auto-documentation" title="Permalink to this heading">¶</a></h1>
-<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="k">library</span> <span class="nn">ieee</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">ieee.numeric_std.</span><span class="k">all</span><span class="p">;</span>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="k">library</span><span class="w"> </span><span class="nn">ieee</span><span class="p">;</span><span class="w"></span>
+<span class="k">use</span><span class="w"> </span><span class="nn">ieee.numeric_std.</span><span class="k">all</span><span class="p">;</span><span class="w"></span>
 
-<span class="c1">-- This package provides basic mathematic functions utilised all through</span>
-<span class="c1">-- the design</span>
-<span class="k">package</span> <span class="n">math_pack</span> <span class="k">is</span>
-    <span class="c1">-- This function calculates the base 2 logarithm of a number.</span>
-    <span class="c1">--</span>
-    <span class="c1">-- .. vhdl:parameters:: log2</span>
-    <span class="c1">--</span>
-    <span class="c1">--     a : in unsigned</span>
-    <span class="c1">--         The number of which to calculate the logarithm</span>
-    <span class="k">function</span> <span class="n">log2</span> <span class="n">parameter</span> <span class="p">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">unsigned</span><span class="p">)</span> <span class="k">return</span> <span class="kt">integer</span><span class="p">;</span>
-<span class="k">end</span> <span class="k">package</span> <span class="nc">math_pack</span><span class="p">;</span>
+<span class="c1">-- This package provides basic mathematic functions utilised all through</span><span class="w"></span>
+<span class="c1">-- the design</span><span class="w"></span>
+<span class="k">package</span><span class="w"> </span><span class="n">math_pack</span><span class="w"> </span><span class="k">is</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- This function calculates the base 2 logarithm of a number.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">--</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- .. vhdl:parameters:: log2</span><span class="w"></span>
+<span class="w">    </span><span class="c1">--</span><span class="w"></span>
+<span class="w">    </span><span class="c1">--     a : in unsigned</span><span class="w"></span>
+<span class="w">    </span><span class="c1">--         The number of which to calculate the logarithm</span><span class="w"></span>
+<span class="w">    </span><span class="k">function</span><span class="w"> </span><span class="n">log2</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">unsigned</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kt">integer</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"> </span><span class="k">package</span><span class="w"> </span><span class="nc">math_pack</span><span class="p">;</span><span class="w"></span>
 
-<span class="k">library</span> <span class="nn">ieee</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">work.math_pack.</span><span class="k">all</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">ieee.std_logic_1164.</span><span class="k">all</span><span class="p">;</span>
+<span class="k">library</span><span class="w"> </span><span class="nn">ieee</span><span class="p">;</span><span class="w"></span>
+<span class="k">use</span><span class="w"> </span><span class="nn">work.math_pack.</span><span class="k">all</span><span class="p">;</span><span class="w"></span>
+<span class="k">use</span><span class="w"> </span><span class="nn">ieee.std_logic_1164.</span><span class="k">all</span><span class="p">;</span><span class="w"></span>
 
-<span class="c1">-- This is a simple counter entity that counts the amount of passed input</span>
-<span class="c1">-- clock cycles up to :vhdl:genconstant:`max_value &lt;counter.max_value&gt;`.</span>
-<span class="k">entity</span> <span class="nc">counter</span> <span class="k">is</span>
-<span class="k">generic</span> <span class="p">(</span>
-    <span class="c1">-- Determines how many clock cycles must pass before the buffer</span>
-    <span class="c1">-- overflowing.</span>
-    <span class="k">constant</span> <span class="n">max_value</span> <span class="o">:</span> <span class="kt">integer</span> <span class="o">:=</span> <span class="mi">16</span>
-<span class="p">);</span>
-<span class="k">port</span> <span class="p">(</span>
-    <span class="n">IN_EN</span>  <span class="o">:</span> <span class="k">in</span> <span class="kt">std_logic</span><span class="p">;</span>                                       <span class="c1">-- The input clock</span>
-    <span class="n">OUT_EN</span> <span class="o">:</span> <span class="k">out</span> <span class="kt">std_logic_vector</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">max_value</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">downto</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1">-- The output signal</span>
-<span class="p">);</span>
-<span class="k">end</span> <span class="k">entity</span> <span class="nc">counter</span><span class="p">;</span>
+<span class="c1">-- This is a simple counter entity that counts the amount of passed input</span><span class="w"></span>
+<span class="c1">-- clock cycles up to :vhdl:genconstant:`max_value &lt;counter.max_value&gt;`.</span><span class="w"></span>
+<span class="k">entity</span><span class="w"> </span><span class="nc">counter</span><span class="w"> </span><span class="k">is</span><span class="w"></span>
+<span class="k">generic</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- Determines how many clock cycles must pass before the buffer</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- overflowing.</span><span class="w"></span>
+<span class="w">    </span><span class="k">constant</span><span class="w"> </span><span class="n">max_value</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">integer</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">16</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+<span class="k">port</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">IN_EN</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w">                                       </span><span class="c1">-- The input clock</span><span class="w"></span>
+<span class="w">    </span><span class="n">OUT_EN</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="kt">std_logic_vector</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">max_value</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">downto</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">  </span><span class="c1">-- The output signal</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"> </span><span class="k">entity</span><span class="w"> </span><span class="nc">counter</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>To use the automatically extracted comments in your documentation, you then
@@ -265,7 +266,7 @@ when built.</p>
       &copy;2021, Cesnet z.s.p.o..
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
