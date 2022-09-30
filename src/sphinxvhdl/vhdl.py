@@ -167,50 +167,76 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
 
         index = 0
         has_groups = False
+        has_group_desc = False
+
+        # Get all fields from ports or generics
+        # Then check if ports or generics have groups and group description
         while len(self.content) > index:
             if len(self.content[index]) > 0 and not self.content[index][0].isspace():
                 fields = self.get_fields_from_definition(self.content[index])
-                has_groups = has_groups or len(fields) == 4
             index += 1
         index = 0
 
         row: Optional[nodes.row]
         row = nodes.row()
-        if has_groups:
-            row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[0])))
-            pass
+        # Define first line of table
         row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[1])))
         row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[2])))
         row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[3])))
         row += nodes.entry('', nodes.paragraph('', nodes.Text(self.table_headers[4])))
         head += row
+
         row = None
         current_description_lines = StringList()
         description_entry = nodes.entry('')
-        if has_groups:
-            group += nodes.colspec(colwidth=10)
-            pass
+
+        # Define table fields and their dimensions
         group += nodes.colspec(colwidth=10)
         group += nodes.colspec(colwidth=10)
         group += nodes.colspec(colwidth=10)
-        group += nodes.colspec(colwidth=70)
+        group += nodes.colspec(colwidth=100)
+
+        # Insert group header to table
         group += head
         group += body
+        current_group = ''
+
+        # Fill the table with content
         while len(self.content) > index:
             if len(self.content[index]) > 0 and not self.content[index][0].isspace():
+
                 if row is not None:
                     body += row
                 row = nodes.row()
                 fields = self.get_fields_from_definition(self.content[index])
+                has_groups = has_groups or len(fields) >= 4
+                has_group_desc = has_groups and len(fields) == 5
+
+                # If there is a group then fill first line of table with name of group, separators and description
+                if has_groups:
+                    if current_group != (fields[0]):
+                        separator = "====="
+                        par = [
+                            separator,
+                            fields[0],
+                            separator,
+                            fields[4] if has_group_desc else separator,
+                        ]
+                        for p in par:
+                            row += nodes.entry('', nodes.paragraph('', nodes.Text(p)))
+                        body += row
+                        current_group = (fields[0])
+                        pass
+                    row = nodes.row()
+
+                # Fill the table with content
                 if len(fields) == 3:
                     fields = "", fields[0], fields[1], fields[2]
                 row_id = f'vhdl-{self.id_title}-{self.arguments[0].lower()}-{fields[1].lower()}'
                 self.env.domaindata['vhdl']['refs'][self.id_title][fields[1].lower()].append(
                     (self.arguments[0].lower(), (self.env.docname, row_id)))
                 row['ids'].append(row_id)
-                if has_groups:
-                    row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[0])))
-                    pass
+
                 row += nodes.entry('', nodes.paragraph('', nodes.Text(fields[1])))
 
                 refnode = pending_xref(refdomain='vhdl', reftype='type', reftarget=fields[2])
@@ -237,17 +263,34 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
 class VHDLPortsDirective(VHDLEntityIOGenericDirective):
     id_title = 'portsignal'
     title = 'Ports'
-    table_headers = 'Group', 'Port', 'Type', 'Mode', 'Description'
+    table_headers = 'Group', 'Port', 'Type', 'Mode', 'Description', 'Group_description'
 
-    def get_fields_from_definition(self, definition: str) -> Union[Tuple[str, str, str], Tuple[str, str, str, str]]:
+    def get_fields_from_definition(self, definition: str) -> Union[Tuple[str, str, str], Tuple[str, str, str, str], Tuple[str, str, str, str, str]]:
         try:
             if definition.strip().startswith("SPHINXGRP "):
                 return definition.split(maxsplit=1)[1].strip(), "", "", ""
-            return (
-                definition.split(":")[0].strip(),
-                definition.split(":", 1)[1].strip().split(maxsplit=1)[1],
-                definition.split(":", 1)[1].strip().split()[0]
+            elif '}' not in definition:
+                return (
+                    definition.split(":")[0].strip(),
+                    definition.split(":", 1)[1].strip().split(maxsplit=1)[1],
+                    definition.split(":", 1)[1].strip().split()[0]
             )
+            else:
+                if '{' not in definition:
+                    return(
+                        definition.split("}")[0].strip(),
+                        definition.split("}")[1].split(":")[0].strip(),
+                        definition.split("}")[1].split(":", 1)[1].strip().split(maxsplit=1)[1],
+                        definition.split("}")[1].split(":", 1)[1].strip().split()[0]
+                    )
+                else:
+                    return(
+                        definition.split("{")[0].strip(),
+                        definition.split("}")[1].split(":")[0].strip(),
+                        definition.split("}")[1].split(":", 1)[1].strip().split(maxsplit=1)[1],
+                        definition.split("}")[1].split(":", 1)[1].strip().split()[0],
+                        definition.split("{")[1].strip().split("}")[0].replace('{', '')
+                    )
         except:
             raise ValueError(
                 f'Malformed port definition, must be in the form `name : mode type`, got {definition}'
@@ -292,15 +335,32 @@ class VHDLParametersDirective(VHDLEntityIOGenericDirective):
 class VHDLGenericsDirective(VHDLEntityIOGenericDirective):
     id_title = 'gengeneric'
     title = 'Generics'
-    table_headers = 'Group', 'Generic', 'Type', 'Default', 'Description'
+    table_headers = 'Group', 'Generic', 'Type', 'Default', 'Description', 'Group_description'
 
-    def get_fields_from_definition(self, definition: str) -> Tuple[str, str, str]:
+    def get_fields_from_definition(self, definition: str) -> Union[Tuple[str, str, str], Tuple[str, str, str, str], Tuple[str, str, str, str, str]]:
         try:
-            return (
-                definition.split(':')[0].strip(),
-                definition.split(':', 1)[1].split(':=')[0].strip(),
-                definition.split(':=')[1].strip()
+            if '}' not in definition:
+                return (
+                    definition.split(':')[0].strip(),
+                    definition.split(':', 1)[1].split(':=')[0].strip(),
+                    definition.split(':=')[1].strip()
             )
+            else:
+                if '{' not in definition:
+                    return(
+                        definition.split("}")[0].strip(),
+                        definition.split("}")[1].split(":")[0].strip(),
+                        definition.split("}")[1].split(':', 1)[1].split(':=')[0].strip(),
+                        definition.split("}")[1].split(':=')[1].strip()
+                    )
+                else:
+                    return(
+                        definition.split("{")[0].strip(),
+                        definition.split("}")[1].split(":")[0].strip(),
+                        definition.split("}")[1].split(':', 1)[1].split(':=')[0].strip(),
+                        definition.split("}")[1].split(':=')[1].strip(),
+                        definition.split("{")[1].strip().split("}")[0].replace('{', '')
+                    )
         except:
             raise ValueError(
                 f"Malformed generic definition, must be in the form `name : type := defaultValue`, got {definition}"
