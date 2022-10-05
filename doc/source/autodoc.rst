@@ -45,6 +45,11 @@ For the automatic extraction to work, the code must be particularly formatted. S
   as the ``type`` keyword, and individual values must each have their own line
 - record-defined types must have the ``record`` keyword on the same line as the
   ``type`` keyword, and each element of that record must be on its own line
+- it's possible to create groups of ports and generics, but there are some 
+  rules that must be observed
+- every group must start and end with line containing the '==' pattern, followed 
+  by the name of the group and the group's description
+- underneath, the list of ports or generics should follow
 
 Example
 -------
@@ -70,5 +75,47 @@ Example
 
       portName2 : bit;
       portName3 : in bit    -- This is a documentation comment for portName3
+    );
+    end entity entityName;
+
+Example with groups
+-------------------
+
+The example below shows how to work with port groups and generics.
+See the output in :ref:group_example_doc.
+
+.. code-block:: vhdl
+
+    entity entityName is
+    generic (
+        -- This is how the group of generics looks
+
+        -- =====================================================================
+        -- GROUP OF GENERICS
+        --
+        -- Description of group
+        -- =====================================================================
+
+        -- List of generics and theirs descriptions
+        -- Description of generic
+        genericName  : natural := value;
+        -- Description of generic 2
+        genericName2 : natural := value;
+    );
+    port (
+        -- This is how the group of ports looks
+
+        -- =====================================================================
+        -- GROUP OF PORTS
+        --
+        -- Description of group
+        -- =====================================================================
+
+        -- List of ports and theirs descriptions
+        -- Description of port 1
+        portName  : in std_logic;
+        -- Description of port 2
+        portName2 : in std_logic;
+
     );
     end entity entityName;
