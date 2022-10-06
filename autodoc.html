@@ -74,6 +74,11 @@ whole declaration must be on one line</p></li>
 as the <code class="docutils literal notranslate"><span class="pre">type</span></code> keyword, and individual values must each have their own line</p></li>
 <li><p>record-defined types must have the <code class="docutils literal notranslate"><span class="pre">record</span></code> keyword on the same line as the
 <code class="docutils literal notranslate"><span class="pre">type</span></code> keyword, and each element of that record must be on its own line</p></li>
+<li><p>it’s possible to create groups of ports and generics, but there are some
+rules that must be observed</p></li>
+<li><p>every group must start and end with line containing the ‘==’ pattern, followed
+by the name of the group and the group’s description</p></li>
+<li><p>underneath, the list of ports or generics should follow</p></li>
 </ul>
 </section>
 <section id="example">
@@ -102,6 +107,46 @@ end entity entityName;
 </pre></div>
 </div>
 </section>
+<section id="example-with-groups">
+<h2>Example with groups<a class="headerlink" href="#example-with-groups" title="Permalink to this heading">¶</a></h2>
+<p>The example below shows how to work with port groups and generics.
+See the output in :ref:group_example_doc.</p>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="k">entity</span><span class="w"> </span><span class="nc">entityName</span><span class="w"> </span><span class="k">is</span><span class="w"></span>
+<span class="k">generic</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- This is how the group of generics looks</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">-- =====================================================================</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- GROUP OF GENERICS</span><span class="w"></span>
+<span class="w">    </span><span class="c1">--</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- Description of group</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- =====================================================================</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">-- List of generics and theirs descriptions</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- Description of generic</span><span class="w"></span>
+<span class="w">    </span><span class="n">genericName</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="kt">natural</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- Description of generic 2</span><span class="w"></span>
+<span class="w">    </span><span class="n">genericName2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">natural</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+<span class="k">port</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- This is how the group of ports looks</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">-- =====================================================================</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- GROUP OF PORTS</span><span class="w"></span>
+<span class="w">    </span><span class="c1">--</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- Description of group</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- =====================================================================</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">-- List of ports and theirs descriptions</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- Description of port 1</span><span class="w"></span>
+<span class="w">    </span><span class="n">portName</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- Description of port 2</span><span class="w"></span>
+<span class="w">    </span><span class="n">portName2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"> </span><span class="k">entity</span><span class="w"> </span><span class="nc">entityName</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -127,6 +172,7 @@ end entity entityName;
 <li class="toctree-l1"><a class="reference internal" href="config.html">Configuration options</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Autodoc Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example_built.html">Example Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="group_example_built.html">Group example Documentation</a></li>
 </ul>
 
 <div class="relations">
@@ -164,7 +210,7 @@ end entity entityName;
       &copy;2021, Cesnet z.s.p.o..
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.2.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.2.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
