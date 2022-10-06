@@ -22,13 +22,14 @@ See :ref:`configuration` for more information.
 Recognized directives
 =====================
 
-================================== ==================================
+================================== =============================================
 Directive                          Description
-================================== ==================================
+================================== =============================================
 :rst:dir:`vhdl:autoentity`         Automatic documentation of entity.
 :rst:dir:`vhdl:autoenum`           Automatic documentation of enumeration types.
 :rst:dir:`vhdl:autofunction`       Automatic documentation of functions.
 :rst:dir:`vhdl:autogenerics`       Automatic documentation of generics.
+:rst:dir:`vhdl:autoconstants`      Automatic documentation of constants.
 :rst:dir:`vhdl:autopackage`        Automatic documentation of package.
 :rst:dir:`vhdl:autoports`          Automatic documentation of ports.
 :rst:dir:`vhdl:autorecord`         Automatic documentation of record types.
@@ -37,28 +38,29 @@ Directive                          Description
 :rst:dir:`vhdl:enum`               Enumeration-defined type.
 :rst:dir:`vhdl:enumval`            A single value in :rst:dir:`vhdl:enum`.
 :rst:dir:`vhdl:function`           A pure function.
-:rst:dir:`vhdl:generics`           Ports of an :rst:dir:`vhdl:entity`.
+:rst:dir:`vhdl:generics`           Generics of an :rst:dir:`vhdl:entity`.
+:rst:dir:`vhdl:constants`          Constants of an VHDL architecture.
 :rst:dir:`vhdl:package`            A whole single package.
 :rst:dir:`vhdl:parameters`         A parameter list to a subprogram.
-:rst:dir:`vhdl:ports`              Generics of an :rst:dir:`vhdl:entity`.
+:rst:dir:`vhdl:ports`              Ports of an :rst:dir:`vhdl:entity`.
 :rst:dir:`vhdl:record`             Record-defined type.
 :rst:dir:`vhdl:recordelem`         A single field in :rst:dir:`vhdl:record`
 :rst:dir:`vhdl:type`               A type other than a record or enumeration.
-================================== ==================================
+================================== =============================================
 
 See :ref:`directives` for more information.
 
 Recognized roles
 ================
 
-================================== ==================================
+================================== ============================================================
 Role                               Description
-================================== ==================================
+================================== ============================================================
 :rst:role:`vhdl:entity`            References :rst:dir:`vhdl:entity`.
 :rst:role:`vhdl:genconstant`       References individual constants in :rst:dir:`vhdl:generics`.
 :rst:role:`vhdl:portsignal`        References individual ports in :rst:dir:`vhdl:ports`.
 :rst:role:`vhdl:type`              References :rst:dir:`vhdl:enum`.
-================================== ==================================
+================================== ============================================================
 
 See :ref:`roles` for more information.
 
@@ -135,5 +137,6 @@ Indices and tables
    config.rst
    autodoc.rst
    example_built.rst
+   group_example_built.rst
 
 .. _Sphinx: https://www.sphinx-doc.org

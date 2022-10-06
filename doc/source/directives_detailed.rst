@@ -97,9 +97,25 @@ Directives
             QWORD_SIZE : float     := 32.0
                 Because why sink when you can float?
 
+.. rst:directive:: vhdl:constants
+
+    Used for documenting the constants. Has one required argument: the name of the
+    documented architecture.
+
+    Example
+
+    .. code-block:: rst
+
+        .. vhdl:constants:: UART_RX
+
+            MEM_ADDR_WIDTH : :vhdl:type:`natural` := log2(ITEMS);
+                Address width of memory
+            ADDR_WIDTH     : :vhdl:type:`natural` := MEM_ADDR_WIDTH+1;
+                Address width
+
 .. rst:directive:: vhdl:package
 
-    Used for documenting packages.
+    Used for documenting VHDL packages.
 
 .. rst:directive:: vhdl:parameters
 
@@ -265,6 +281,16 @@ Auto- Directives
     configuration option must be set to point to a valid directory containing
     VHDL sources describing the target entity.  See  :ref:`autodoc_usage` for
     further instruction on how the source must be set up.
+
+.. rst:directive:: vhdl:autoconstants
+
+    Automatically generates documentation for an architecture's constants. 
+    Has one required argument, the name of the architecture whose constants 
+    are to be documented. For the automatic generation to work, the 
+    :py:attr:`vhdl_autodoc_source_path` configuration option must be set to 
+    point to a valid directory containing VHDL sources describing the target 
+    entity.  See  :ref:`autodoc_usage` for further instruction on how the 
+    source must be set up.
 
 .. rst:directive:: vhdl:autopackage
 
