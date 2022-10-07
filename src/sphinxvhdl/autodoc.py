@@ -76,12 +76,12 @@ def init(path: str) -> None:
         for line in source_code:
             lineno += 1
             line = line.strip()
+            # Group parsing logic
+            if state == ParseState.PORT and group_state == ParseState.GENERIC:
+                current_group = ""
+
             # Line comments logic
             if line.startswith('-- '):
-
-                # Group parsing logic
-                if state == ParseState.PORT and group_state == ParseState.GENERIC:
-                    current_group = ""
                 # Logic for sampling names of groups of ports and generics
                 if (state == ParseState.PORT or state == ParseState.GENERIC) and '==' in line:
                     group_state = state
