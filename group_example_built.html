@@ -51,18 +51,23 @@ Intel FPGA = 32 items, distributed memory in Xilinx FPGA = 64 items).</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even" id="vhdl-genconstant-asfifox-data_width"><td><p>DATA_WIDTH</p></td>
+<tr class="row-even"><td><p>=====</p></td>
+<td><p>FIFO PARAMETERS</p></td>
+<td><p>=====</p></td>
+<td><p>Base parameters of ASFIFOX memory.</p></td>
+</tr>
+<tr class="row-odd" id="vhdl-gengeneric-asfifox-data_width"><td><p>DATA_WIDTH</p></td>
 <td><p>natural</p></td>
 <td><p>512</p></td>
 <td><p>Data word width in bits.</p></td>
 </tr>
-<tr class="row-odd" id="vhdl-genconstant-asfifox-items"><td><p>ITEMS</p></td>
+<tr class="row-even" id="vhdl-gengeneric-asfifox-items"><td><p>ITEMS</p></td>
 <td><p>natural</p></td>
 <td><p>512</p></td>
 <td><p>FIFO depth in number of data words, must be a power of two!
 Minimum value is 2.</p></td>
 </tr>
-<tr class="row-even" id="vhdl-genconstant-asfifox-ram_type"><td><p>RAM_TYPE</p></td>
+<tr class="row-odd" id="vhdl-gengeneric-asfifox-ram_type"><td><p>RAM_TYPE</p></td>
 <td><p>string</p></td>
 <td><p>“BRAM”</p></td>
 <td><p>Select memory implementation. Options:</p>
@@ -72,26 +77,26 @@ Minimum value is 2.</p></td>
 </ul>
 </td>
 </tr>
-<tr class="row-odd" id="vhdl-genconstant-asfifox-fwft_mode"><td><p>FWFT_MODE</p></td>
+<tr class="row-even" id="vhdl-gengeneric-asfifox-fwft_mode"><td><p>FWFT_MODE</p></td>
 <td><p>boolean</p></td>
 <td><p>True</p></td>
 <td><p>First Word Fall Through mode. If FWFT_MODE=True, valid data will be
 ready at the ASFIFOX output without RD_EN requests.</p></td>
 </tr>
-<tr class="row-even" id="vhdl-genconstant-asfifox-output_reg"><td><p>OUTPUT_REG</p></td>
+<tr class="row-odd" id="vhdl-gengeneric-asfifox-output_reg"><td><p>OUTPUT_REG</p></td>
 <td><p>boolean</p></td>
 <td><p>True</p></td>
 <td><p>Enabled output registers allow better timing for a few flip-flops.</p></td>
 </tr>
-<tr class="row-odd" id="vhdl-genconstant-asfifox-almost_full_offset"><td><p>ALMOST_FULL_OFFSET</p></td>
+<tr class="row-even" id="vhdl-gengeneric-asfifox-almost_full_offset"><td><p>ALMOST_FULL_OFFSET</p></td>
 <td><p>natural</p></td>
 <td><p>ITEMS/2</p></td>
 <td><p>Determines how few data words must be left free for
 <a class="reference internal" href="#vhdl-portsignal-asfifox-wr_afull"><code class="xref vhdl vhdl-portsignal docutils literal notranslate"><span class="pre">WR_AFULL</span></code></a> to be triggered.</p>
-<p>(<code class="docutils literal notranslate"><span class="pre">currently_stored</span> <span class="pre">&gt;=</span> <span class="pre">(</span></code> <a href="#id1"><span class="problematic" id="id2">:vhdl:gengeneric:`ITEMS &lt;asfifox.items&gt;`</span></a> <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">ALMOST_FULL_OFFSET)</span></code></p>
+<p>(<code class="docutils literal notranslate"><span class="pre">currently_stored</span> <span class="pre">&gt;=</span> <span class="pre">(</span></code> <a class="reference internal" href="#vhdl-gengeneric-asfifox-items"><code class="xref vhdl vhdl-gengeneric docutils literal notranslate"><span class="pre">ITEMS</span></code></a> <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">ALMOST_FULL_OFFSET)</span></code></p>
 </td>
 </tr>
-<tr class="row-even" id="vhdl-genconstant-asfifox-almost_empty_offset"><td><p>ALMOST_EMPTY_OFFSET</p></td>
+<tr class="row-odd" id="vhdl-gengeneric-asfifox-almost_empty_offset"><td><p>ALMOST_EMPTY_OFFSET</p></td>
 <td><p>natural</p></td>
 <td><p>ITEMS/2</p></td>
 <td><p>Determines how few data words must be stored for
@@ -99,7 +104,12 @@ ready at the ASFIFOX output without RD_EN requests.</p></td>
 <p>( <code class="docutils literal notranslate"><span class="pre">currently_stored</span> <span class="pre">&lt;=</span> <span class="pre">ALMOST_EMPTY_OFFSET</span></code> )</p>
 </td>
 </tr>
-<tr class="row-odd" id="vhdl-genconstant-asfifox-device"><td><p>DEVICE</p></td>
+<tr class="row-even"><td><p>=====</p></td>
+<td><p>DEVICE PARAMETERS</p></td>
+<td><p>=====</p></td>
+<td><p>The DEVICE parameter allows the correct selection of the RAM implementation according to the FPGA used.</p></td>
+</tr>
+<tr class="row-odd" id="vhdl-gengeneric-asfifox-device"><td><p>DEVICE</p></td>
 <td><p>string</p></td>
 <td><p>“ULTRASCALE”</p></td>
 <td><p>Supported values are:</p>
@@ -123,43 +133,53 @@ ready at the ASFIFOX output without RD_EN requests.</p></td>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even" id="vhdl-portsignal-asfifox-wr_clk"><td><p>WR_CLK</p></td>
+<tr class="row-even"><td><p>=====</p></td>
+<td><p>WRITE INTERFACE</p></td>
+<td><p>=====</p></td>
+<td><p>(This interface) Processes write transactions.</p></td>
+</tr>
+<tr class="row-odd" id="vhdl-portsignal-asfifox-wr_clk"><td><p>WR_CLK</p></td>
 <td><p>std_logic</p></td>
 <td><p>in</p></td>
 <td><p>Clock for write interface</p></td>
 </tr>
-<tr class="row-odd" id="vhdl-portsignal-asfifox-wr_rst"><td><p>WR_RST</p></td>
+<tr class="row-even" id="vhdl-portsignal-asfifox-wr_rst"><td><p>WR_RST</p></td>
 <td><p>std_logic</p></td>
 <td><p>in</p></td>
 <td><p>Reset for write interface. Does not affect reset on read side</p></td>
 </tr>
-<tr class="row-even" id="vhdl-portsignal-asfifox-wr_data"><td><p>WR_DATA</p></td>
+<tr class="row-odd" id="vhdl-portsignal-asfifox-wr_data"><td><p>WR_DATA</p></td>
 <td><p>std_logic_vector(WR_DATA_WIDTH-1 downto 0)</p></td>
 <td><p>in</p></td>
 <td><p>Data to be written; must be valid when <code class="docutils literal notranslate"><span class="pre">WR_EN</span> <span class="pre">=</span> <span class="pre">'1'</span></code></p></td>
 </tr>
-<tr class="row-odd" id="vhdl-portsignal-asfifox-wr_en"><td><p>WR_EN</p></td>
+<tr class="row-even" id="vhdl-portsignal-asfifox-wr_en"><td><p>WR_EN</p></td>
 <td><p>std_logic</p></td>
 <td><p>in</p></td>
 <td><p>Indicates the validity of <code class="docutils literal notranslate"><span class="pre">WR_DATA</span></code>. Can be connected as SRC_RDY.</p></td>
 </tr>
-<tr class="row-even" id="vhdl-portsignal-asfifox-wr_full"><td><p>WR_FULL</p></td>
+<tr class="row-odd" id="vhdl-portsignal-asfifox-wr_full"><td><p>WR_FULL</p></td>
 <td><p>std_logic</p></td>
 <td><p>out</p></td>
 <td><p>Writing is accepted only when WR_FULL=0, otherwise it is ignored.
 Can be connected as “not DST_RDY”.</p></td>
 </tr>
-<tr class="row-odd" id="vhdl-portsignal-asfifox-wr_afull"><td><p>WR_AFULL</p></td>
+<tr class="row-even" id="vhdl-portsignal-asfifox-wr_afull"><td><p>WR_AFULL</p></td>
 <td><p>std_logic</p></td>
 <td><p>out</p></td>
 <td><p>Set to <code class="docutils literal notranslate"><span class="pre">'1'</span></code> when less than
-<a href="#id3"><span class="problematic" id="id4">:vhdl:gengeneric:`ALMOST_FULL_OFFSET &lt;asfifox.almost_full_offset&gt;`</span></a>
+<a class="reference internal" href="#vhdl-gengeneric-asfifox-almost_full_offset"><code class="xref vhdl vhdl-gengeneric docutils literal notranslate"><span class="pre">ALMOST_FULL_OFFSET</span></code></a>
 space is left for writing items.</p></td>
 </tr>
-<tr class="row-even" id="vhdl-portsignal-asfifox-wr_status"><td><p>WR_STATUS</p></td>
+<tr class="row-odd" id="vhdl-portsignal-asfifox-wr_status"><td><p>WR_STATUS</p></td>
 <td><p>std_logic_vector(log2(WR_ITEMS) downto 0)</p></td>
 <td><p>out</p></td>
 <td><p>Indicates the number of items currently stored in the FIFO</p></td>
+</tr>
+<tr class="row-even"><td><p>=====</p></td>
+<td><p>READ INTERFACE</p></td>
+<td><p>=====</p></td>
+<td><p>(This interface) Processes read transactions.</p></td>
 </tr>
 <tr class="row-odd" id="vhdl-portsignal-asfifox-rd_clk"><td><p>RD_CLK</p></td>
 <td><p>std_logic</p></td>
@@ -192,7 +212,7 @@ Can be connected as “not SRC_RDY”.</p></td>
 <td><p>std_logic</p></td>
 <td><p>out</p></td>
 <td><p>Set to <code class="docutils literal notranslate"><span class="pre">'1'</span></code> when less than
-<a href="#id5"><span class="problematic" id="id6">:vhdl:gengeneric:`ALMOST_EMPTY_OFFSET &lt;asfifox.almost_empty_offset&gt;`</span></a>
+<a class="reference internal" href="#vhdl-gengeneric-asfifox-almost_empty_offset"><code class="xref vhdl vhdl-gengeneric docutils literal notranslate"><span class="pre">ALMOST_EMPTY_OFFSET</span></code></a>
 items are left for reading.</p></td>
 </tr>
 <tr class="row-odd" id="vhdl-portsignal-asfifox-rd_status"><td><p>RD_STATUS</p></td>
@@ -207,6 +227,32 @@ output (<code class="docutils literal notranslate"><span class="pre">RD_EMPTY</s
 </table>
 </dd></dl>
 
+<span class="sig-name descname">Constants</span><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Constant</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even" id="vhdl-genconstant-asfifox-mem_addr_width"><td><p>MEM_ADDR_WIDTH</p></td>
+<td><p>natural</p></td>
+<td><p>log2(ITEMS)</p></td>
+<td><p>Address width of memory</p></td>
+</tr>
+<tr class="row-odd" id="vhdl-genconstant-asfifox-addr_width"><td><p>ADDR_WIDTH</p></td>
+<td><p>natural</p></td>
+<td><p>MEM_ADDR_WIDTH+1</p></td>
+<td><p>Address width</p></td>
+</tr>
+<tr class="row-even" id="vhdl-genconstant-asfifox-afull_capacity"><td><p>AFULL_CAPACITY</p></td>
+<td><p>natural</p></td>
+<td><p>ITEMS - ALMOST_FULL_OFFSET</p></td>
+<td><p>Value that says, when FIFO is almost full</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 
 
