@@ -148,10 +148,8 @@ def init(path: str) -> None:
                 if current_group == "":
                     definition = definition
                 else:
-                    if len(group_definition) == 0:
-                        definition = current_group + "}" + definition
-                    else:
-                        definition = current_group + " {" + (' '.join(group_definition).strip()) + "}" + definition
+                    definition = current_group + "}" + definition
+
                 portsignals[current_entity.lower()][definition] = current_doc
                 current_doc = []
 
@@ -166,10 +164,8 @@ def init(path: str) -> None:
                 if current_group == "":
                     definition = definition
                 else:
-                    if len(group_definition) == 0:
-                        definition = current_group + "}" + definition
-                    else:
-                        definition = current_group + " {" + (' '.join(group_definition).strip()) + "}" + definition
+                    definition = current_group + "}" + definition
+
                 generics[current_entity.lower()][definition] = current_doc
                 current_doc = []
 
