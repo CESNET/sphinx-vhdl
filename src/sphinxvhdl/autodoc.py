@@ -92,7 +92,7 @@ def init(path: str) -> None:
                 elif state == ParseState.GROUPS and current_group != '' and '====' not in line:
                     current_doc.append(line[3:])
                 elif state == ParseState.GROUPS and '====' not in line:
-                    current_group = line[3:]
+                    current_group = line[3:].strip()
                     current_doc = []
                 elif state == ParseState.GROUPS and '====' in line:
                     group_definition = current_doc
