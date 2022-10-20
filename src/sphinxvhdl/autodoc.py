@@ -16,6 +16,7 @@ LOG = logging.getLogger('sphinxvhdl-autodoc')
 
 entities = {}
 portsignals = defaultdict(dict)
+groups_desc = {}
 constants = defaultdict(dict)
 generics = defaultdict(dict)
 packages = {}
@@ -83,18 +84,19 @@ def init(path: str) -> None:
             # Line comments logic
             if line.startswith('-- '):
                 # Logic for sampling names of groups of ports and generics
-                if (state == ParseState.PORT or state == ParseState.GENERIC) and '==' in line:
+                if (state == ParseState.PORT or state == ParseState.GENERIC) and '====' in line:
                     group_state = state
                     state = ParseState.GROUPS
                     current_group = ""
                     current_doc = []
-                elif state == ParseState.GROUPS and current_group != '' and '==' not in line:
+                elif state == ParseState.GROUPS and current_group != '' and '====' not in line:
                     current_doc.append(line[3:])
-                elif state == ParseState.GROUPS and '==' not in line:
+                elif state == ParseState.GROUPS and '====' not in line:
                     current_group = line[3:]
                     current_doc = []
-                elif state == ParseState.GROUPS and '==' in line:
+                elif state == ParseState.GROUPS and '====' in line:
                     group_definition = current_doc
+                    groups_desc[current_group] = group_definition
                     state = group_state
                     current_doc = []
                 else:

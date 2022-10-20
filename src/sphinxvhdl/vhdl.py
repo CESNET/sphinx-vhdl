@@ -215,17 +215,25 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
                 # If there is a group then fill first line of table with name of group, separators and description
                 if has_groups:
                     if current_group != (fields[0]):
+                        current_group = (fields[0])
+
+                        # Create nodes that contains name and description of group
+                        group_name = nodes.entry('')
+                        group_desc = nodes.entry('')
+                        self.state.nested_parse(StringList(initlist=[fields[0]]), 0, group_name)
+                        self.state.nested_parse(StringList(autodoc.groups_desc[current_group]), 0, group_desc)
+
+                        # Create row that contains information about group (name, description and separators)
                         separator = "====="
                         par = [
-                            separator,
-                            fields[0],
-                            separator,
-                            fields[4] if has_group_desc else separator,
+                            nodes.entry('', nodes.paragraph('', nodes.Text(separator))),
+                            group_name,
+                            nodes.entry('', nodes.paragraph('', nodes.Text(separator))),
+                            group_desc,
                         ]
                         for p in par:
-                            row += nodes.entry('', nodes.paragraph('', nodes.Text(p)))
+                            row += p
                         body += row
-                        current_group = (fields[0])
                         pass
                     row = nodes.row()
 
