@@ -47,7 +47,7 @@ For the automatic extraction to work, the code must be particularly formatted. S
   ``type`` keyword, and each element of that record must be on its own line
 - it's possible to create groups of ports and generics, but there are some 
   rules that must be observed
-- every group must start and end with line containing the '==' pattern, followed 
+- every group must start and end with line containing the ``==`` pattern, followed 
   by the name of the group and the group's description
 - underneath, the list of ports or generics should follow
 
