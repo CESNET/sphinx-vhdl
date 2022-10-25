@@ -50,6 +50,7 @@ For the automatic extraction to work, the code must be particularly formatted. S
 - every group must start and end with line containing the ``==`` pattern, followed 
   by the name of the group and the group's description
 - underneath, the list of ports or generics should follow
+- there cannot be more than one group with the same name in one entity
 
 Example
 -------
