@@ -220,7 +220,7 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
                         # Create nodes that contains name and description of group
                         group_name = nodes.entry('')
                         group_desc = nodes.entry('')
-                        self.state.nested_parse(StringList(initlist=[fields[0]]), 0, group_name)
+                        self.state.nested_parse(StringList(initlist=[fields[0].split(' ', 1)[1]]), 0, group_name)
                         self.state.nested_parse(StringList(autodoc.groups_desc[current_group]), 0, group_desc)
 
                         # Create row that contains information about group (name, description and separators)
