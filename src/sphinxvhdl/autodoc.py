@@ -48,6 +48,7 @@ def parse_inline_doc_or_print_error(current_doc, filename, line, lineno):
 
 class ParseState(Enum):
     ENTITY_DECL = auto()
+    ARCH_DECL = auto()
     PORT = auto()
     CONST = auto()
     GROUPS = auto()
@@ -66,6 +67,7 @@ def init(path: str) -> None:
 
         current_doc = []
         current_entity = '' # Name of the enetity
+        current_constant = '' # Name of the constant
         current_group = '' # Name of the group
         group_definition = '' # Description of group of ports or generics
         current_package = ''
@@ -104,10 +106,11 @@ def init(path: str) -> None:
 
             # If line start with keyword architecture then save name of architecture
             elif line.lower().startswith('architecture'):
+                state = ParseState.ARCH_DECL
                 current_constant = line.split()[3]
 
             # If line contains keyword constant and state is not generice then start to collecting constants
-            elif state != ParseState.GENERIC and 'constant' in line:
+            elif state == ParseState.ARCH_DECL and 'constant' in line:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 definition = line.split('--')[0].split(';')[0]
                 if ':=' not in definition:
