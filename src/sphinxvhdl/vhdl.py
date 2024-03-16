@@ -14,7 +14,7 @@ from docutils.parsers.rst import directives
 from sphinx import addnodes
 from sphinx.addnodes import desc_signature, pending_xref
 from sphinx.application import Sphinx
-from sphinx.directives import ObjectDescription, T
+from sphinx.directives import ObjectDescription, ObjDescT
 from sphinx.domains import Domain, Index, IndexEntry
 from sphinx.roles import XRefRole
 from sphinx.util.docutils import SphinxDirective
@@ -40,7 +40,7 @@ class VHDLEnumTypeDirective(ObjectDescription):
 
         return sig
 
-    def add_target_and_index(self, name: T, sig: str, signode: desc_signature) -> None:
+    def add_target_and_index(self, name: ObjDescT, sig: str, signode: desc_signature) -> None:
         name = f'vhdl-enum-{sig.lower()}'
         signode['ids'].append(name)
         if 'noindex' not in self.options:
@@ -60,7 +60,7 @@ class VHDLRecordTypeDirective(ObjectDescription):
 
         return sig
 
-    def add_target_and_index(self, name: T, sig: str, signode: desc_signature) -> None:
+    def add_target_and_index(self, name: ObjDescT, sig: str, signode: desc_signature) -> None:
         name = f'vhdl-record-{sig.lower()}'
         signode['ids'].append(name)
         if 'noindex' not in self.options:
@@ -73,7 +73,7 @@ class VHDLGeneralTypeDirective(ObjectDescription):
     has_content = True
     required_arguments = 1
 
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         signode += addnodes.desc_sig_keyword(text='TYPE ')
         signode += addnodes.desc_name(text=sig.split(':')[0].strip())
         signode += addnodes.desc_sig_keyword(text=' : ')
@@ -84,7 +84,7 @@ class VHDLGeneralTypeDirective(ObjectDescription):
         type_name += tempnode[0][0]
         return sig
 
-    def add_target_and_index(self, name: T, sig: str, signode: desc_signature) -> None:
+    def add_target_and_index(self, name: ObjDescT, sig: str, signode: desc_signature) -> None:
         name = f'vhdl-type-{sig.lower()}'
         signode['ids'].append(name)
         if 'noindex' not in self.options:
@@ -96,7 +96,7 @@ class VHDLEnumValDirective(ObjectDescription):
     has_content = True
     required_arguments = 1
 
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         signode += addnodes.desc_name(text=sig)
         return sig
 
@@ -105,7 +105,7 @@ class VHDLRecordElementDirective(ObjectDescription):
     has_content = True
     required_arguments = 1
 
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         signode += addnodes.desc_name(text=sig.split(':')[0].strip())
         signode += addnodes.desc_sig_keyword(text=' : ')
         tempnode = nodes.entry('')
@@ -120,7 +120,7 @@ class VHDLFunctionDirective(ObjectDescription):
     has_content = True
     required_arguments = 1
 
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         signode += addnodes.desc_sig_keyword(text='FUNCTION ')
         signode += addnodes.desc_name(text=sig.split()[0])
         signode += addnodes.desc_sig_keyword(text=' RETURNS ')
@@ -132,13 +132,13 @@ class VHDLEntityDirective(ObjectDescription):
     has_content = True
     required_arguments = 1
 
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         signode += addnodes.desc_sig_keyword(text='ENTITY ')
         signode += addnodes.desc_name(text=sig)
         signode += addnodes.desc_sig_keyword(text=' IS')
         return sig
 
-    def add_target_and_index(self, name: T, sig: str, signode: desc_signature) -> None:
+    def add_target_and_index(self, name: ObjDescT, sig: str, signode: desc_signature) -> None:
         name = f'vhdl-entity-{sig.lower()}'
         signode['ids'].append(name)
         if 'noindex' not in self.options:
@@ -361,7 +361,7 @@ class VHDLPackagesDirective(ObjectDescription):
     has_content = True
     required_arguments = 1
 
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         signode += addnodes.desc_sig_keyword(text='PACKAGE ')
         signode += addnodes.desc_name(text=sig)
         signode += addnodes.desc_sig_keyword(text=' IS')
@@ -374,7 +374,7 @@ class VHDLAutoEntityDirective(VHDLEntityDirective):
         'noautogenerics': directives.flag
     }
 
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
         self.content = self.content + StringList(['', ''] + autodoc.entities[sig.lower()])
         if 'noautogenerics' not in self.options:
@@ -385,7 +385,7 @@ class VHDLAutoEntityDirective(VHDLEntityDirective):
 
 
 class VHDLAutoRecordDirective(VHDLRecordTypeDirective):
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
         self.content = self.content + StringList(['', ''] + autodoc.records[sig])
         for key, value in autodoc.record_elements[sig].items():
@@ -395,7 +395,7 @@ class VHDLAutoRecordDirective(VHDLRecordTypeDirective):
 
 
 class VHDLAutoFunctionDirective(VHDLFunctionDirective):
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
         identifier = get_closest_identifier(sig.lower(), list(autodoc.functions.items()))
         self.content = self.content + StringList(['', ''] + identifier[1])
@@ -404,7 +404,7 @@ class VHDLAutoFunctionDirective(VHDLFunctionDirective):
 
 
 class VHDLAutoEnumDirective(VHDLEnumTypeDirective):
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
         self.content = self.content + StringList(['', ''] + autodoc.enums[sig])
         for key, value in autodoc.enumvals[sig].items():
@@ -413,7 +413,7 @@ class VHDLAutoEnumDirective(VHDLEnumTypeDirective):
 
 
 class VHDLAutoPackageDirective(VHDLPackagesDirective):
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
         self.content = StringList(get_closest_identifier(sig, list(autodoc.packages.items()))[1] + ['', '']) + self.content
         return super().handle_signature(sig, signode)
@@ -455,7 +455,7 @@ class VHDLAutoConstantsDirective(VHDLConstantsDirective):
 
 class VHDLAutoTypeDirective(VHDLGeneralTypeDirective):
 
-    def handle_signature(self, sig: str, signode: desc_signature) -> T:
+    def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
         closest_identifier = get_closest_identifier(sig, autodoc.types.items())
         self.content = self.content + StringList(['', ''] + closest_identifier[1][1])
@@ -483,7 +483,7 @@ class VHDLTypeIndex(Index):
         return result, True
 
 
-def get_closest_identifier(target_identifier: str, search_through: List[Tuple[str, T]]) -> Tuple[str, T]:
+def get_closest_identifier(target_identifier: str, search_through: List[Tuple[str, ObjDescT]]) -> Tuple[str, ObjDescT]:
     """
     Finds the item with the closes matching identifier to a target one in a list
     :param target_identifier: an identifier to match against
