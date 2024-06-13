@@ -29,6 +29,5 @@ vhdl_autodoc_source_path = 'path/to/your/vhdl/sources/root'
 
 ## Repository maintainer
 
-- Original: Jindřich Dítě, 230810@vut.cz
-- Backup: Jakub Cabal, cabal@cesnet.cz
-- Backup: Daniel Kříž, danielkriz@cesnet.cz
+- Jakub Cabal, cabal@cesnet.cz
+- Vladislav Válek, valekv@cesnet.cz
