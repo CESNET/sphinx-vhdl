@@ -71,7 +71,7 @@ Example
     begin
     port (
       -- This is a documentation for the port
-      signal portName : inout std_logic bus := ‘1’;
+      signal portName : inout std_logic bus := '1';
       -- This is not a documentation comment due to the blank line
 
       portName2 : bit;

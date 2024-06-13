@@ -1,20 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Directives &#8212; sphinx-vhdl  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Roles" href="roles_detailed.html" />
@@ -22,8 +18,9 @@
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -36,10 +33,10 @@
           <div class="body" role="main">
             
   <section id="directives">
-<span id="id1"></span><h1>Directives<a class="headerlink" href="#directives" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Directives<a class="headerlink" href="#directives" title="Link to this heading">¶</a></h1>
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-entity">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:entity::</span></span><a class="headerlink" href="#directive-vhdl-entity" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:entity::</span></span><a class="headerlink" href="#directive-vhdl-entity" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting individual entities. Individual ports and generics
 should be specified under <a class="reference internal" href="#directive-vhdl-ports" title="vhdl:ports directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:ports</span></code></a> or
 <a class="reference internal" href="#directive-vhdl-generics" title="vhdl:generics directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:generics</span></code></a>, respectively.</p>
@@ -60,7 +57,7 @@ should be specified under <a class="reference internal" href="#directive-vhdl-po
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-enum">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:enum::</span></span><a class="headerlink" href="#directive-vhdl-enum" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:enum::</span></span><a class="headerlink" href="#directive-vhdl-enum" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting enumeration defined types. Individual enum values can
 be defined using <a class="reference internal" href="#directive-vhdl-enumval" title="vhdl:enumval directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:enumVal</span></code></a>.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">vhdl:enum</span><span class="p">::</span> YourTypeName
@@ -78,14 +75,14 @@ be defined using <a class="reference internal" href="#directive-vhdl-enumval" ti
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-enumval">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:enumval::</span></span><a class="headerlink" href="#directive-vhdl-enumval" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:enumval::</span></span><a class="headerlink" href="#directive-vhdl-enumval" title="Link to this definition">¶</a></dt>
 <dd><p>Describes a single possible enumeration type value. Should only appear in
 <a class="reference internal" href="#directive-vhdl-enum" title="vhdl:enum directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:enum</span></code></a></p>
 </dd></dl>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-function">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:function::</span></span><a class="headerlink" href="#directive-vhdl-function" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:function::</span></span><a class="headerlink" href="#directive-vhdl-function" title="Link to this definition">¶</a></dt>
 <dd><p>Describes a pure function. Has two required space-separated arguments - the
 name of the function and the return type.</p>
 <p>Parameters of the function should be documented using
@@ -104,7 +101,7 @@ name of the function and the return type.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-generics">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:generics::</span></span><a class="headerlink" href="#directive-vhdl-generics" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:generics::</span></span><a class="headerlink" href="#directive-vhdl-generics" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting the generic constants of an entity. Has one required
 argument; the name of the entity being documented, and uses a custom syntax
 for description of the individual constants.</p>
@@ -134,7 +131,7 @@ where all the fields are mandatory and whitespace may be arbitrary.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-constants">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:constants::</span></span><a class="headerlink" href="#directive-vhdl-constants" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:constants::</span></span><a class="headerlink" href="#directive-vhdl-constants" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting the constants. Has one required argument: the name of the
 documented architecture.</p>
 <p>Example</p>
@@ -150,13 +147,13 @@ documented architecture.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-package">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:package::</span></span><a class="headerlink" href="#directive-vhdl-package" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:package::</span></span><a class="headerlink" href="#directive-vhdl-package" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting VHDL packages.</p>
 </dd></dl>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-parameters">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:parameters::</span></span><a class="headerlink" href="#directive-vhdl-parameters" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:parameters::</span></span><a class="headerlink" href="#directive-vhdl-parameters" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting the parameters of a subprogram (
 <a class="reference internal" href="#directive-vhdl-function" title="vhdl:function directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:function</span></code></a> or <code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:procedure</span></code> ). Has one required
 argument; the name of the subprogram being documented, and uses a custom
@@ -191,7 +188,7 @@ Parameter definitions then take on the form
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-ports">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:ports::</span></span><a class="headerlink" href="#directive-vhdl-ports" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:ports::</span></span><a class="headerlink" href="#directive-vhdl-ports" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting the ports of an entity. Has one required argument;
 the name of the entity being documented, and uses a custom syntax for
 descriptions of the individual ports.</p>
@@ -229,7 +226,7 @@ means of a <code class="docutils literal notranslate"><span class="pre">SPHINXGR
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-record">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:record::</span></span><a class="headerlink" href="#directive-vhdl-record" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:record::</span></span><a class="headerlink" href="#directive-vhdl-record" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting record-defined types. Individual fields of the type
 can be documented using <a class="reference internal" href="#directive-vhdl-recordelem" title="vhdl:recordelem directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:recordelem</span></code></a>.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">vhdl:record</span><span class="p">::</span> PACKET_DATA
@@ -249,7 +246,7 @@ can be documented using <a class="reference internal" href="#directive-vhdl-reco
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-recordelem">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:recordelem::</span></span><a class="headerlink" href="#directive-vhdl-recordelem" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:recordelem::</span></span><a class="headerlink" href="#directive-vhdl-recordelem" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting individual fields of a <a class="reference internal" href="#directive-vhdl-record" title="vhdl:record directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:record</span></code></a>. The
 argument of this directive should take on the form of
 <code class="docutils literal notranslate"><span class="pre">fieldName</span> <span class="pre">:</span> <span class="pre">fieldType</span></code>, where <code class="docutils literal notranslate"><span class="pre">fieldType</span></code> can contain arbitrary sphinx
@@ -258,7 +255,7 @@ syntax.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-type">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:type::</span></span><a class="headerlink" href="#directive-vhdl-type" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:type::</span></span><a class="headerlink" href="#directive-vhdl-type" title="Link to this definition">¶</a></dt>
 <dd><p>Used for documenting types other than record- and enumeration-defined ones.</p>
 <p>For enumeration-defined types, please use <a class="reference internal" href="#directive-vhdl-enum" title="vhdl:enum directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:enum</span></code></a>. For record
 defined types, please use <a class="reference internal" href="#directive-vhdl-record" title="vhdl:record directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:record</span></code></a>.</p>
@@ -268,10 +265,10 @@ arbitrary sphinx formatting.</p>
 </dd></dl>
 
 <section id="auto-directives">
-<h2>Auto- Directives<a class="headerlink" href="#auto-directives" title="Permalink to this heading">¶</a></h2>
+<h2>Auto- Directives<a class="headerlink" href="#auto-directives" title="Link to this heading">¶</a></h2>
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autoentity">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autoentity::</span></span><a class="headerlink" href="#directive-vhdl-autoentity" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autoentity::</span></span><a class="headerlink" href="#directive-vhdl-autoentity" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates a documentation for an entity. Has one required
 argument, the  name of the entity. For the automatic generation to work,
 the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration option must be set to
@@ -280,14 +277,14 @@ See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class=
 must be set up.</p>
 <dl class="rst directive:option">
 <dt class="sig sig-object rst" id="directive-option-vhdl-autoentity-noautogenerics">
-<span class="sig-name descname"><span class="pre">:noautogenerics:</span></span><a class="headerlink" href="#directive-option-vhdl-autoentity-noautogenerics" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">:noautogenerics:</span></span><a class="headerlink" href="#directive-option-vhdl-autoentity-noautogenerics" title="Link to this definition">¶</a></dt>
 <dd><p>Do not generate a <a class="reference internal" href="#directive-vhdl-autogenerics" title="vhdl:autogenerics directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:autogenerics</span></code></a> directive as part of
 generating the automatic documentation for the entity.</p>
 </dd></dl>
 
 <dl class="rst directive:option">
 <dt class="sig sig-object rst" id="directive-option-vhdl-autoentity-noautoports">
-<span class="sig-name descname"><span class="pre">:noautoports:</span></span><a class="headerlink" href="#directive-option-vhdl-autoentity-noautoports" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">:noautoports:</span></span><a class="headerlink" href="#directive-option-vhdl-autoentity-noautoports" title="Link to this definition">¶</a></dt>
 <dd><p>Do not generate a <a class="reference internal" href="#directive-vhdl-autoentity" title="vhdl:autoentity directive"><code class="xref rst rst-dir docutils literal notranslate"><span class="pre">vhdl:autoentity</span></code></a> directive as part of
 generating the automatic documentation for the entity.</p>
 </dd></dl>
@@ -296,7 +293,7 @@ generating the automatic documentation for the entity.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autoenum">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autoenum::</span></span><a class="headerlink" href="#directive-vhdl-autoenum" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autoenum::</span></span><a class="headerlink" href="#directive-vhdl-autoenum" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates a documentation for an enumeration defined type.
 Has one required argument, the name of the type. For the automatic
 generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration
@@ -307,7 +304,7 @@ on how the source code must be set up.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autofunction">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autofunction::</span></span><a class="headerlink" href="#directive-vhdl-autofunction" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autofunction::</span></span><a class="headerlink" href="#directive-vhdl-autofunction" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates a documentation for a pure function.
 Has one required argument, the name of the type. For the automatic
 generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration
@@ -318,7 +315,7 @@ on how the source code must be set up.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autogenerics">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autogenerics::</span></span><a class="headerlink" href="#directive-vhdl-autogenerics" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autogenerics::</span></span><a class="headerlink" href="#directive-vhdl-autogenerics" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates a documentation for an entity’s generics. Has one
 required argument, the name of the entity whose generics to document. For
 the automatic generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a>
@@ -329,7 +326,7 @@ further instruction on how the source must be set up.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autoconstants">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autoconstants::</span></span><a class="headerlink" href="#directive-vhdl-autoconstants" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autoconstants::</span></span><a class="headerlink" href="#directive-vhdl-autoconstants" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates documentation for an architecture’s constants.
 Has one required argument, the name of the architecture whose constants
 are to be documented. For the automatic generation to work, the
@@ -341,7 +338,7 @@ source must be set up.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autopackage">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autopackage::</span></span><a class="headerlink" href="#directive-vhdl-autopackage" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autopackage::</span></span><a class="headerlink" href="#directive-vhdl-autopackage" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates a documentation for a package. Has one required
 argument, the name of the package to document. For the automatic generation
 to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration option must
@@ -352,7 +349,7 @@ the source must be set up.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autoports">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autoports::</span></span><a class="headerlink" href="#directive-vhdl-autoports" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autoports::</span></span><a class="headerlink" href="#directive-vhdl-autoports" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates a documentation for an entity’s ports. Has one
 required argument, the name of the entity whose ports to document. For the
 automatic generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a>
@@ -363,7 +360,7 @@ further instruction on how the source must be set up.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autorecord">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autorecord::</span></span><a class="headerlink" href="#directive-vhdl-autorecord" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autorecord::</span></span><a class="headerlink" href="#directive-vhdl-autorecord" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates a documentation for a record-defined type. Has one
 required argument, the name of the type to document. For the automatic
 generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration
@@ -374,7 +371,7 @@ how the source must be set up.</p>
 
 <dl class="rst directive">
 <dt class="sig sig-object rst" id="directive-vhdl-autotype">
-<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autotype::</span></span><a class="headerlink" href="#directive-vhdl-autotype" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">..</span> <span class="pre">vhdl:autotype::</span></span><a class="headerlink" href="#directive-vhdl-autotype" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically generates a documentation for a type other than enumeration-
 record-defined one. Has one required argument, the name of the type to
 document. For the automatic generation to work, the
@@ -422,7 +419,7 @@ set up.</p>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -430,7 +427,7 @@ set up.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -445,11 +442,11 @@ set up.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2021, Cesnet z.s.p.o..
+      &#169;2021, Cesnet z.s.p.o..
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
       <a href="_sources/directives_detailed.rst.txt"
