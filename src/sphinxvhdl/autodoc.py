@@ -1,6 +1,7 @@
 # autodoc.py: A basic VHDL parser and documentation extractor
 # Copyright (C) 2021 CESNET z.s.p.o.
 # Author(s): Jindrich Dite <xditej01@stud.fit.vutbr.cz>
+#            Jakub Cabal <cabal@cesnet.cz>
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -10,9 +11,8 @@ import os
 from typing import Optional, List
 from enum import Enum, auto
 
-import logging
-
-LOG = logging.getLogger('sphinxvhdl-autodoc')
+from sphinx.util import logging
+logger = logging.getLogger(__name__)
 
 entities = {}
 portsignals = defaultdict(dict)
@@ -28,22 +28,12 @@ types = {}
 functions = {}
 
 # Function for parsing line comments
-def parse_inline_doc_or_raise(line: str, current_doc: List[str]):
+def parse_inline_doc_or_print_error(current_doc, filename, line, lineno):
     if '-- ' in line:
         if len(current_doc) > 0:
-            raise ValueError(
-                'Documented entity has both a pre- and inline documentation; only one is allowed. Offending line:\n' +
-                line)
+            logger.warning(f"SPHINX-VHDL: Documented entity has both a pre- and inline documentation; only one is allowed!\n Offending line: {line}", location=f"{filename}:{lineno}")
         else:
             current_doc.append(line.split('-- ', 1)[1])
-
-
-def parse_inline_doc_or_print_error(current_doc, filename, line, lineno):
-    try:
-        parse_inline_doc_or_raise(line, current_doc)
-    except ValueError as ex:
-        LOG.warning(f'Error parsing file {filename} at line {lineno}:')
-        LOG.warning(ex.args)
 
 
 class ParseState(Enum):
