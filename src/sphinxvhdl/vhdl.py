@@ -1,6 +1,7 @@
 # vhdl.py: A vhdl domain for the Sphinx documentation system
 # Copyright (C) 2021 CESNET z.s.p.o.
 # Author(s): Jindrich Dite <xditej01@stud.fit.vutbr.cz>
+#            Jakub Cabal <cabal@cesnet.cz>
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -19,14 +20,17 @@ from sphinx.domains import Domain, Index, IndexEntry
 from sphinx.roles import XRefRole
 from sphinx.util.docutils import SphinxDirective
 from sphinx.util.nodes import make_refnode
+from sphinx.util import logging
 
 from . import autodoc
 
+logger = logging.getLogger(__name__)
 
 def init_autodoc(domain: Domain):
     if not domain.data['autodoc_initialized']:
         domain.data['autodoc_initialized'] = True
         autodoc.init(domain.env.app.config.vhdl_autodoc_source_path)
+        logger.info('SPHINX-VHDL: Parsing of VHDL files completed.')
 
 
 class VHDLEnumTypeDirective(ObjectDescription):
@@ -376,11 +380,17 @@ class VHDLAutoEntityDirective(VHDLEntityDirective):
 
     def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
-        self.content = self.content + StringList(['', ''] + autodoc.entities[sig.lower()])
-        if 'noautogenerics' not in self.options:
-            self.content = self.content + StringList(['', f'.. vhdl:autogenerics:: {sig}', ''])
-        if 'noautoports' not in self.options:
-            self.content = self.content + StringList(['', f'.. vhdl:autoports:: {sig}', ''])
+        try:
+            my_entity = autodoc.entities[sig.lower()]
+            self.content = self.content + StringList(['', ''] + autodoc.entities[sig.lower()])
+            if 'noautogenerics' not in self.options:
+                self.content = self.content + StringList(['', f'.. vhdl:autogenerics:: {sig}', ''])
+            if 'noautoports' not in self.options:
+                self.content = self.content + StringList(['', f'.. vhdl:autoports:: {sig}', ''])
+        except:
+            logger.warning(f"SPHINX-VHDL: Entity {sig.lower()} was not found in parsed VHDL files!", location=self.get_location())
+            self.content = self.content + StringList([f"SPHINX-VHDL: Entity was not found in parsed VHDL files!"])
+
         return super().handle_signature(sig, signode)
 
 
@@ -398,9 +408,15 @@ class VHDLAutoFunctionDirective(VHDLFunctionDirective):
     def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
         identifier = get_closest_identifier(sig.lower(), list(autodoc.functions.items()))
-        self.content = self.content + StringList(['', ''] + identifier[1])
-        super().handle_signature(f'{identifier[0].split(".")[-1]} {identifier[0].split(".")[0]}', signode)
-        return sig
+        if identifier is None:
+            logger.warning(f"SPHINX-VHDL: Function {sig.lower()} was not found in parsed VHDL files!", location=self.get_location())
+            self.content = StringList([f"SPHINX-VHDL: Function was not found in parsed VHDL files!"]) + self.content
+            sig = f'{sig.lower()} Unknown'
+        else:
+            self.content = self.content + StringList(['', ''] + identifier[1])
+            sig = f'{identifier[0].split(".")[-1]} {identifier[0].split(".")[0]}'
+
+        return super().handle_signature(sig, signode)
 
 
 class VHDLAutoEnumDirective(VHDLEnumTypeDirective):
@@ -415,7 +431,12 @@ class VHDLAutoEnumDirective(VHDLEnumTypeDirective):
 class VHDLAutoPackageDirective(VHDLPackagesDirective):
     def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
-        self.content = StringList(get_closest_identifier(sig, list(autodoc.packages.items()))[1] + ['', '']) + self.content
+        identifier = get_closest_identifier(sig.lower(), list(autodoc.packages.items()))
+        if identifier is None:
+            logger.warning(f"SPHINX-VHDL: Package {sig.lower()} was not found in parsed VHDL files!", location=self.get_location())
+            self.content = StringList([f"SPHINX-VHDL: Package was not found in parsed VHDL files!"]) + self.content
+        else:
+            self.content = StringList(identifier[1] + ['', '']) + self.content
         return super().handle_signature(sig, signode)
 
 
@@ -457,9 +478,14 @@ class VHDLAutoTypeDirective(VHDLGeneralTypeDirective):
 
     def handle_signature(self, sig: str, signode: desc_signature) -> ObjDescT:
         init_autodoc(self.env.domains['vhdl'])
-        closest_identifier = get_closest_identifier(sig, autodoc.types.items())
-        self.content = self.content + StringList(['', ''] + closest_identifier[1][1])
-        return super().handle_signature(sig + " : " + closest_identifier[1][0], signode)
+        identifier = get_closest_identifier(sig.lower(), autodoc.types.items())
+        if identifier is None:
+            logger.warning(f"SPHINX-VHDL: Type {sig.lower()} was not found in parsed VHDL files!", location=self.get_location())
+            self.content = StringList([f"SPHINX-VHDL: Type was not found in parsed VHDL files!"]) + self.content
+            return super().handle_signature(sig + " : Unknown", signode)
+        else:
+            self.content = self.content + StringList(['', ''] + identifier[1][1])
+            return super().handle_signature(sig + " : " + identifier[1][0], signode)
 
 
 class VHDLTypeIndex(Index):
@@ -483,22 +509,28 @@ class VHDLTypeIndex(Index):
         return result, True
 
 
-def get_closest_identifier(target_identifier: str, search_through: List[Tuple[str, ObjDescT]]) -> Tuple[str, ObjDescT]:
+def get_closest_identifier(target_identifier: str, search_through: List[Tuple[str, ObjDescT]]):
     """
     Finds the item with the closes matching identifier to a target one in a list
     :param target_identifier: an identifier to match against
     :param search_through: List of pairs of an identifier and any other bound data
-    :return: The tuple with closes match
+    :return: The tuple with closes match or None
     """
     identifier_part = target_identifier.split('.')
     option_list = []
+    match = False
     for x in search_through:
         a = 0
         for y in x[0].split('.'):
             if y in identifier_part:
+                match = True
                 a += 1
         option_list.append((a, x))
-    return max(option_list, key=lambda z: z[0])[1]
+
+    if match:
+        return max(option_list, key=lambda z: z[0])[1]
+    else:
+        return None
 
 
 class VHDLDomain(Domain):
@@ -566,17 +598,21 @@ class VHDLDomain(Domain):
             raise NotImplementedError
         simple_name = target.split('.')[-1].lower()
         if simple_name in index:
-            target_address = get_closest_identifier(target, index[simple_name])
-            result = make_refnode(builder, fromdocname,
-                                  target_address[1][0],
-                                  target_address[1][1],
-                                  contnode)
-            return result
+            target_address = get_closest_identifier(target.lower(), index[simple_name])
+            if target_address is None:
+                logger.warning(f"SPHINX-VHDL: Unknown reference {target} discovered by resolve_xref function!")
+            else:
+                result = make_refnode(builder, fromdocname,
+                                    target_address[1][0],
+                                    target_address[1][1],
+                                    contnode)
+                return result
 
 
 def setup(app: Sphinx):
     app.add_domain(VHDLDomain)
     app.add_config_value('vhdl_autodoc_source_path', '.', 'env', [str])
+    logger.verbose('The sphinx-vhdl extension has been activated.')
 
     return {
         'version': '0.1'
