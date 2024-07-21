@@ -16,7 +16,7 @@ The python package must be installed with
 pip3 install sphinx-vhdl
 ```
 
-The usage of this extension requires Python >= 3.6 and Sphinx >= 4.0.0.
+The usage of this extension requires Python >= 3.8 and Sphinx >= 6.0.0.
 
 ## Configuration
 
