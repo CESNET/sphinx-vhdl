@@ -69,24 +69,25 @@ def init(path: str) -> None:
         for line in source_code:
             lineno += 1
             line = line.strip()
+            line_lowercase = line.lower()
             # Group parsing logic
             if state == ParseState.PORT and group_state == ParseState.GENERIC:
                 current_group = ""
 
             # Line comments logic
-            if line.startswith('-- '):
+            if line_lowercase.startswith('-- '):
                 # Logic for sampling names of groups of ports and generics
-                if (state == ParseState.PORT or state == ParseState.GENERIC) and '====' in line:
+                if (state == ParseState.PORT or state == ParseState.GENERIC) and '====' in line_lowercase:
                     group_state = state
                     state = ParseState.GROUPS
                     current_group = ""
                     current_doc = []
-                elif state == ParseState.GROUPS and current_group != '' and '====' not in line:
+                elif state == ParseState.GROUPS and current_group != '' and '====' not in line_lowercase:
                     current_doc.append(line[3:])
-                elif state == ParseState.GROUPS and '====' not in line:
+                elif state == ParseState.GROUPS and '====' not in line_lowercase:
                     current_group = current_entity + " " + line[3:].strip()
                     current_doc = []
-                elif state == ParseState.GROUPS and '====' in line:
+                elif state == ParseState.GROUPS and '====' in line_lowercase:
                     group_definition = current_doc
                     groups_desc[current_group] = group_definition
                     state = group_state
@@ -95,12 +96,12 @@ def init(path: str) -> None:
                     current_doc.append(line[3:])
 
             # If line start with keyword architecture then save name of architecture
-            elif line.lower().startswith('architecture'):
+            elif line_lowercase.startswith('architecture'):
                 state = ParseState.ARCH_DECL
                 current_constant = line.split()[3]
 
             # If line contains keyword constant and state is not generice then start to collecting constants
-            elif state == ParseState.ARCH_DECL and 'constant' in line:
+            elif state == ParseState.ARCH_DECL and 'constant' in line_lowercase:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 definition = line.split('--')[0].split(';')[0]
                 if ':=' not in definition:
@@ -110,12 +111,12 @@ def init(path: str) -> None:
                 current_doc = []
 
             # If there is -- without gap, then ignore
-            elif line == '--':
+            elif line_lowercase == '--':
                 current_doc.append('')
 
             # If there is word entity then try parse, save entity name and add description of entity to associative array
             # ID of ass. array is name of entity. At the end clear current description and change state to entity declaration
-            elif line.lower().startswith('entity ') and ' is' in line:
+            elif line_lowercase.startswith('entity ') and ' is' in line_lowercase:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 current_entity = line.split()[1]
                 entities[current_entity.lower()] = current_doc
@@ -123,17 +124,17 @@ def init(path: str) -> None:
                 state = ParseState.ENTITY_DECL
 
             # Check if there is any port declaration
-            elif state == ParseState.ENTITY_DECL and line.lower().startswith('port'):
+            elif state == ParseState.ENTITY_DECL and line_lowercase.startswith('port'):
                 state = ParseState.PORT
                 current_doc = []
 
             # Check if there is any generic declaration
-            elif state == ParseState.ENTITY_DECL and line.lower().startswith('generic'):
+            elif state == ParseState.ENTITY_DECL and line_lowercase.startswith('generic'):
                 state = ParseState.GENERIC
                 current_doc = []
 
             # If there is line which contains ":" then it's one of ports, parse it and save his definition
-            elif state == ParseState.PORT and ':' in line:
+            elif state == ParseState.PORT and ':' in line_lowercase:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 definition = line.split('--')[0].split(';')[0].split(':=')[0].strip()
                 if definition.lower().startswith('signal'):
@@ -147,7 +148,7 @@ def init(path: str) -> None:
                 current_doc = []
 
             # If there is line which contains ":" then it's one of generic, parse it and save his definition
-            elif state == ParseState.GENERIC and ':' in line:
+            elif state == ParseState.GENERIC and ':' in line_lowercase:
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 definition = line.split('--')[0].split(';')[0].strip()
                 if ':=' not in definition:
@@ -163,13 +164,13 @@ def init(path: str) -> None:
                 current_doc = []
 
             # End of the entity was found
-            elif state == ParseState.ENTITY_DECL and line.lower().startswith('end'):
+            elif state == ParseState.ENTITY_DECL and line_lowercase.startswith('end'):
                 state = None
                 group_state = None
                 current_doc = []
 
             # If there is magic word package then parse package and save his definition
-            elif (state is None or state is ParseState.PACKAGE) and line.lower().startswith('package'):
+            elif (state is None or state is ParseState.PACKAGE) and line_lowercase.startswith('package'):
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 state = ParseState.PACKAGE
                 current_package = ('' if current_package == '' else (current_package + '.')) + line.split()[1]
@@ -177,13 +178,13 @@ def init(path: str) -> None:
                 current_doc = []
 
             # Signalization of end of the package
-            elif state is ParseState.PACKAGE and line.lower().startswith('end package'):
+            elif state is ParseState.PACKAGE and line_lowercase.startswith('end package'):
                 current_package = '.'.join(current_package.split('.')[:-1])
                 state = None if current_package == '' else ParseState.PACKAGE
                 current_doc = []
 
             # Package contains type, parse it
-            elif (state is None or state is ParseState.PACKAGE) and line.lower().startswith('type'):
+            elif (state is None or state is ParseState.PACKAGE) and line_lowercase.startswith('type'):
                 if ' record' in line.split('--')[0].lower().split(maxsplit=2)[-1]:
                     parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                     records[line.split()[1]] = current_doc
@@ -202,7 +203,7 @@ def init(path: str) -> None:
                     current_doc = []
 
             # Signalization of the end of record
-            elif state is ParseState.RECORD and line.lower().startswith('end record'):
+            elif state is ParseState.RECORD and line_lowercase.startswith('end record'):
                 if current_package != '':
                     state = ParseState.PACKAGE
                 else:
@@ -218,16 +219,16 @@ def init(path: str) -> None:
 
             # Enumarate parsing
             elif state is ParseState.ENUM:
-                if not line.startswith(')'):
+                if not line_lowercase.startswith(')'):
                     parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                     enumvals[current_type_name][line.split(',')[0]] = current_doc
                     current_doc = []
 
             # Function parsing
-            elif line.lower().startswith('function') and line.split('--')[0].strip().endswith(';'):
+            elif line_lowercase.startswith('function') and line.split('--')[0].strip().endswith(';'):
                 parse_inline_doc_or_print_error(current_doc, filename, line, lineno)
                 return_type = '' if 'return' not in line else (line.split('return')[1].strip()[:-1] + '.')
-                functions[return_type + line.lower().split()[1]] = current_doc
+                functions[return_type + line_lowercase.split()[1]] = current_doc
                 current_doc = []
 
             # Ignore others
