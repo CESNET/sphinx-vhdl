@@ -1,7 +1,7 @@
 # Sphinx-vhdl
 
 [![PyPI](https://img.shields.io/pypi/v/sphinx-vhdl)](https://pypi.org/project/sphinx-vhdl/)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CESNET/sphinx-vhdl/documentation?label=documentation)](https://cesnet.github.io/sphinx-vhdl/)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/CESNET/sphinx-vhdl/.github/workflows/doc.yml)](https://cesnet.github.io/sphinx-vhdl/)
 
 > A [sphinx](https://www.sphinx-doc.org/) domain for semi-automatically documenting VHDL
 
