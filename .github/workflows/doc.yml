@@ -14,7 +14,7 @@ jobs:
       - name: Setup and build 🔧
         run: |
           sudo apt-get install python3-pip
-          pip3 install sphinx sphinx-vhdl
+          pip3 install sphinx sphinx-vhdl sphinx_rtd_theme
           sphinx-build -M html doc/source public
           touch public/html/.nojekyll
       - name: Deploy 🚀

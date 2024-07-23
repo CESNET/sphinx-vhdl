@@ -5,7 +5,7 @@ Example Documentation
 
 .. vhdl:autopackage:: math_pack
 
-  .. vhdl:autofunction:: log2
+.. vhdl:autofunction:: log2
 
 .. vhdl:autoentity:: counter
 .. vhdl:autoconstants:: counter
