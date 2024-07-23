@@ -615,5 +615,5 @@ def setup(app: Sphinx):
     logger.verbose('The sphinx-vhdl extension has been activated.')
 
     return {
-        'version': '0.1'
+        'version': '0.2'
     }
