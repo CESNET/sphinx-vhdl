@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'sphinx-vhdl'
-copyright = '2021, Cesnet z.s.p.o.'
+copyright = '2024, Cesnet z.s.p.o.'
 author = 'Cesnet z.s.p.o.'
 
 
@@ -31,7 +31,7 @@ extensions = [
     'sphinxvhdl.vhdl'
 ]
 
-vhdl_autodoc_source_path = 'doc/source'
+vhdl_autodoc_source_path = './'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -47,7 +47,7 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
