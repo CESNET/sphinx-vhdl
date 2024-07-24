@@ -54,6 +54,8 @@ def init(path: str) -> None:
                                                                                      recursive=True)):
         with open(filename, 'r') as source_file:
             source_code = source_file.readlines()
+        
+        logger.info(f"SPHINX-VHDL: Start parsing VHDL file: {filename}")
 
         current_doc = []
         current_entity = '' # Name of the enetity
