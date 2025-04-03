@@ -611,7 +611,7 @@ class VHDLDomain(Domain):
 
 def setup(app: Sphinx):
     app.add_domain(VHDLDomain)
-    app.add_config_value('vhdl_autodoc_source_path', '.', 'env', [str])
+    app.add_config_value('vhdl_autodoc_source_path', '.', 'env', [str, list])
     logger.verbose('The sphinx-vhdl extension has been activated.')
 
     return {

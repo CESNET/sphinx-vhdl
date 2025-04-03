@@ -241,9 +241,9 @@ Auto- Directives
     Automatically generates a documentation for an entity. Has one required
     argument, the  name of the entity. For the automatic generation to work,
     the :py:attr:`vhdl_autodoc_source_path` configuration option must be set to
-    point to a valid directory containing VHDL sources describing this entity.
-    See :ref:`autodoc_usage` for further instructions on how the source code
-    must be set up.
+    point to a valid directory (or list of directories) containing VHDL sources 
+    describing this entity. See :ref:`autodoc_usage` for further instructions 
+    on how the source code must be set up.
 
     .. rst:directive:option:: noautogenerics
 
@@ -260,27 +260,28 @@ Auto- Directives
     Automatically generates a documentation for an enumeration defined type.
     Has one required argument, the name of the type. For the automatic
     generation to work, the :py:attr:`vhdl_autodoc_source_path` configuration
-    option must be set to point to a valid directory containing VHDL sources
-    describing this entity. See :ref:`autodoc_usage` for further instructions
-    on how the source code must be set up.
+    option must be set to point to a valid directory (or list of directories) 
+    containing VHDL sources describing this entity. See :ref:`autodoc_usage` 
+    for further instructions on how the source code must be set up.
 
 .. rst:directive:: vhdl:autofunction
 
     Automatically generates a documentation for a pure function.
     Has one required argument, the name of the type. For the automatic
     generation to work, the :py:attr:`vhdl_autodoc_source_path` configuration
-    option must be set to point to a valid directory containing VHDL sources
-    describing this entity. See :ref:`autodoc_usage` for further instructions
-    on how the source code must be set up.
+    option must be set to point to a valid directory (or list of directories) 
+    containing VHDL sources describing this entity. See :ref:`autodoc_usage`
+    for further instructions on how the source code must be set up.
 
 .. rst:directive:: vhdl:autogenerics
 
     Automatically generates a documentation for an entity's generics. Has one
     required argument, the name of the entity whose generics to document. For
     the automatic generation to work, the :py:attr:`vhdl_autodoc_source_path`
-    configuration option must be set to point to a valid directory containing
-    VHDL sources describing the target entity.  See  :ref:`autodoc_usage` for
-    further instruction on how the source must be set up.
+    configuration option must be set to point to a valid directory (or list 
+    of directories)  containing VHDL sources describing the target entity.  
+    See  :ref:`autodoc_usage` for further instruction on how the source 
+    must be set up.
 
 .. rst:directive:: vhdl:autoconstants
 
@@ -288,36 +289,36 @@ Auto- Directives
     Has one required argument, the name of the architecture whose constants 
     are to be documented. For the automatic generation to work, the 
     :py:attr:`vhdl_autodoc_source_path` configuration option must be set to 
-    point to a valid directory containing VHDL sources describing the target 
-    entity.  See  :ref:`autodoc_usage` for further instruction on how the 
-    source must be set up.
+    point to a valid directory (or list of directories) containing VHDL 
+    sources describing the target  entity.  See  :ref:`autodoc_usage` for 
+    further instruction on how the source must be set up.
 
 .. rst:directive:: vhdl:autopackage
 
     Automatically generates a documentation for a package. Has one required
     argument, the name of the package to document. For the automatic generation
     to work, the :py:attr:`vhdl_autodoc_source_path` configuration option must
-    be set to point to a valid directory containing VHDL sources defining the
-    target package. See :ref:`autodoc_usage` for further instructions on how
-    the source must be set up.
+    be set to point to a valid directory (or list of directories) containing 
+    VHDL sources defining the target package. See :ref:`autodoc_usage` for 
+    further instructions on how the source must be set up.
 
 .. rst:directive:: vhdl:autoports
 
     Automatically generates a documentation for an entity's ports. Has one
     required argument, the name of the entity whose ports to document. For the
     automatic generation to work, the :py:attr:`vhdl_autodoc_source_path`
-    configuration option must be set to point to a valid directory containing
-    VHDL sources describing the target entity. See :ref:`autodoc_usage` for
-    further instruction on how the source must be set up.
+    configuration option must be set to point to a valid directory (or list 
+    of directories) containing VHDL sources describing the target entity. 
+    See :ref:`autodoc_usage` for further instruction on how the source must be set up.
 
 .. rst:directive:: vhdl:autorecord
 
     Automatically generates a documentation for a record-defined type. Has one
     required argument, the name of the type to document. For the automatic
     generation to work, the :py:attr:`vhdl_autodoc_source_path` configuration
-    option must be set to point to a valid directory containing VHDL sources
-    describing the type. See :ref:`autodoc_usage` for further instructions on
-    how the source must be set up.
+    option must be set to point to a valid directory (or list of directories) 
+    containing VHDL sources describing the type. See :ref:`autodoc_usage` for 
+    further instructions on how the source must be set up.
 
 .. rst:directive:: vhdl:autotype
 
@@ -325,6 +326,6 @@ Auto- Directives
     record-defined one. Has one required argument, the name of the type to
     document. For the automatic generation to work, the
     :py:attr:`vhdl_autodoc_source_path` configuration option must be set to
-    point to a valid directory containing VHDL sources describing the type. See
-    :ref:`autodoc_usage` for further instructions on how the sources must be
-    set up.
+    point to a valid directory (or list of directories) containing VHDL sources 
+    describing the type. See :ref:`autodoc_usage` for further instructions on 
+    how the sources must be set up.
