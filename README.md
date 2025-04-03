@@ -31,8 +31,7 @@ vhdl_autodoc_source_path = 'path/to/your/vhdl/sources/root'
 
 ## Where is the SPHINX-VHDL extension used?
 
-- [Open FPGA Modules (OFM) by CESNET](https://github.com/CESNET/ofm/)
-- [NDK Minimal Application by CESNET](https://github.com/CESNET/ndk-app-minimal)
+- [NDK-FPGA by CESNET](https://github.com/CESNET/ndk-fpga)
 - *Do you use SPHINX-VHDL in your public VHDL repository? Please add a link to this list!*
 
 ## Repository maintainer
