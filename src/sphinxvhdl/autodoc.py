@@ -69,6 +69,8 @@ def init(path) -> None:
                 logger.warning(f"SPHINX-VHDL: Skip VHDL file: {filename} due to unexpected error.")
                 continue
 
+            logger.debug(f"SPHINX-VHDL: Start parsing VHDL file: {filename}")
+
             current_doc = []
             current_entity = '' # Name of the enetity
             current_constant = '' # Name of the constant
