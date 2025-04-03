@@ -59,8 +59,15 @@ def init(path) -> None:
         for filename in (
                 glob.glob(os.path.join(dir, "**", "*.vhd"), recursive=True) + glob.glob(os.path.join(dir, "**", "*.vhdl"),
                                                                                         recursive=True)):
-            with open(filename, 'r') as source_file:
+            try:
+                source_file = open(filename, 'r')
                 source_code = source_file.readlines()
+            except UnicodeDecodeError:
+                logger.warning(f"SPHINX-VHDL: Skip VHDL file: {filename} due to UnicodeDecodeError. Use UTF-8 encoding please.")
+                continue
+            except:
+                logger.warning(f"SPHINX-VHDL: Skip VHDL file: {filename} due to unexpected error.")
+                continue
 
             current_doc = []
             current_entity = '' # Name of the enetity
