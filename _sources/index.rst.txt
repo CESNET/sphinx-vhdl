@@ -17,6 +17,14 @@ To setup sphinx-vhdl for your project, please edit your sphinx ``conf.py`` file 
   extensions = ['sphinxvhdl.vhdl']
   vhdl_autodoc_source_path = 'path/to/your/vhdl/sources/root'
 
+In case VHDL source files reside in two different directories, You can specify a list 
+in :py:attr:`vhdl_autodoc_source_path`
+
+.. code-block:: python
+
+  extensions = ['sphinxvhdl.vhdl']
+  vhdl_autodoc_source_path = ['path/to/your/vhdl/sources1', 'path/to/your/vhdl/sources1']
+
 See :ref:`configuration` for more information.
 
 Recognized directives

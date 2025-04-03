@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -6,18 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Directives &mdash; sphinx-vhdl  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -347,9 +345,9 @@ arbitrary sphinx formatting.</p>
 <dd><p>Automatically generates a documentation for an entity. Has one required
 argument, the  name of the entity. For the automatic generation to work,
 the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration option must be set to
-point to a valid directory containing VHDL sources describing this entity.
-See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instructions on how the source code
-must be set up.</p>
+point to a valid directory (or list of directories) containing VHDL sources
+describing this entity. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instructions
+on how the source code must be set up.</p>
 <dl class="rst directive:option">
 <dt class="sig sig-object rst" id="directive-option-vhdl-autoentity-noautogenerics">
 <span class="sig-name descname"><span class="pre">:noautogenerics:</span></span><a class="headerlink" href="#directive-option-vhdl-autoentity-noautogenerics" title="Link to this definition"></a></dt>
@@ -372,9 +370,9 @@ generating the automatic documentation for the entity.</p>
 <dd><p>Automatically generates a documentation for an enumeration defined type.
 Has one required argument, the name of the type. For the automatic
 generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration
-option must be set to point to a valid directory containing VHDL sources
-describing this entity. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instructions
-on how the source code must be set up.</p>
+option must be set to point to a valid directory (or list of directories)
+containing VHDL sources describing this entity. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a>
+for further instructions on how the source code must be set up.</p>
 </dd></dl>
 
 <dl class="rst directive">
@@ -383,9 +381,9 @@ on how the source code must be set up.</p>
 <dd><p>Automatically generates a documentation for a pure function.
 Has one required argument, the name of the type. For the automatic
 generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration
-option must be set to point to a valid directory containing VHDL sources
-describing this entity. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instructions
-on how the source code must be set up.</p>
+option must be set to point to a valid directory (or list of directories)
+containing VHDL sources describing this entity. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a>
+for further instructions on how the source code must be set up.</p>
 </dd></dl>
 
 <dl class="rst directive">
@@ -394,9 +392,10 @@ on how the source code must be set up.</p>
 <dd><p>Automatically generates a documentation for an entity’s generics. Has one
 required argument, the name of the entity whose generics to document. For
 the automatic generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a>
-configuration option must be set to point to a valid directory containing
-VHDL sources describing the target entity.  See  <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for
-further instruction on how the source must be set up.</p>
+configuration option must be set to point to a valid directory (or list
+of directories)  containing VHDL sources describing the target entity.
+See  <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instruction on how the source
+must be set up.</p>
 </dd></dl>
 
 <dl class="rst directive">
@@ -406,9 +405,9 @@ further instruction on how the source must be set up.</p>
 Has one required argument, the name of the architecture whose constants
 are to be documented. For the automatic generation to work, the
 <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration option must be set to
-point to a valid directory containing VHDL sources describing the target
-entity.  See  <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instruction on how the
-source must be set up.</p>
+point to a valid directory (or list of directories) containing VHDL
+sources describing the target  entity.  See  <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for
+further instruction on how the source must be set up.</p>
 </dd></dl>
 
 <dl class="rst directive">
@@ -417,9 +416,9 @@ source must be set up.</p>
 <dd><p>Automatically generates a documentation for a package. Has one required
 argument, the name of the package to document. For the automatic generation
 to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration option must
-be set to point to a valid directory containing VHDL sources defining the
-target package. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instructions on how
-the source must be set up.</p>
+be set to point to a valid directory (or list of directories) containing
+VHDL sources defining the target package. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for
+further instructions on how the source must be set up.</p>
 </dd></dl>
 
 <dl class="rst directive">
@@ -428,9 +427,9 @@ the source must be set up.</p>
 <dd><p>Automatically generates a documentation for an entity’s ports. Has one
 required argument, the name of the entity whose ports to document. For the
 automatic generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a>
-configuration option must be set to point to a valid directory containing
-VHDL sources describing the target entity. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for
-further instruction on how the source must be set up.</p>
+configuration option must be set to point to a valid directory (or list
+of directories) containing VHDL sources describing the target entity.
+See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instruction on how the source must be set up.</p>
 </dd></dl>
 
 <dl class="rst directive">
@@ -439,9 +438,9 @@ further instruction on how the source must be set up.</p>
 <dd><p>Automatically generates a documentation for a record-defined type. Has one
 required argument, the name of the type to document. For the automatic
 generation to work, the <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration
-option must be set to point to a valid directory containing VHDL sources
-describing the type. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instructions on
-how the source must be set up.</p>
+option must be set to point to a valid directory (or list of directories)
+containing VHDL sources describing the type. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for
+further instructions on how the source must be set up.</p>
 </dd></dl>
 
 <dl class="rst directive">
@@ -451,9 +450,9 @@ how the source must be set up.</p>
 record-defined one. Has one required argument, the name of the type to
 document. For the automatic generation to work, the
 <a class="reference internal" href="config.html#vhdl_autodoc_source_path" title="vhdl_autodoc_source_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">vhdl_autodoc_source_path</span></code></a> configuration option must be set to
-point to a valid directory containing VHDL sources describing the type. See
-<a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instructions on how the sources must be
-set up.</p>
+point to a valid directory (or list of directories) containing VHDL sources
+describing the type. See <a class="reference internal" href="autodoc.html#autodoc-usage"><span class="std std-ref">Autodoc Usage</span></a> for further instructions on
+how the sources must be set up.</p>
 </dd></dl>
 
 </section>
