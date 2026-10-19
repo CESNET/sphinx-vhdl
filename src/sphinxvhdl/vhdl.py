@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from collections import defaultdict
-from typing import Iterable, Tuple, List, Optional, Union
+from typing import Any, Iterable, Tuple, List, Optional, Union
 
 from docutils import nodes
 from docutils.statemachine import StringList
@@ -15,7 +15,7 @@ from docutils.parsers.rst import directives
 from sphinx import addnodes
 from sphinx.addnodes import desc_signature, pending_xref
 from sphinx.application import Sphinx
-from sphinx.directives import ObjectDescription, ObjDescT
+from sphinx.directives import ObjectDescription
 from sphinx.domains import Domain, Index, IndexEntry
 from sphinx.roles import XRefRole
 from sphinx.util.docutils import SphinxDirective
@@ -23,6 +23,11 @@ from sphinx.util.nodes import make_refnode
 from sphinx.util import logging
 
 from . import autodoc
+
+try:
+    from sphinx.directives import ObjDescT
+except ImportError:  # Sphinx >= 9: a type parameter, no longer importable
+    ObjDescT = Any
 
 logger = logging.getLogger(__name__)
 
@@ -264,7 +269,8 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
                 row += description_entry
                 current_description_lines = StringList()
             else:
-                current_description_lines.append(self.content[index], source=self.content.info(index))
+                source, offset = self.content.info(index)
+                current_description_lines.append(self.content[index], source=source or '', offset=offset)
             index += 1
         if row is not None:
             self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
