@@ -269,7 +269,7 @@ class VHDLEntityIOGenericDirective(SphinxDirective):
         if row is not None:
             self.state.nested_parse(current_description_lines.get_indented()[0], 0, description_entry)
             body += row
-        return [addnodes.desc_name(text=self.title), table]
+        return [nodes.rubric(text=self.title), table]
 
 
 class VHDLPortsDirective(VHDLEntityIOGenericDirective):
